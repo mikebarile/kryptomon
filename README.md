@@ -1,7 +1,7 @@
-# CRYTROMON!
+# CRYPTOMON!
 
 ## Dependencies
 truffle
 
 ## Commands
-yarn truffle run contracts/Cryptomon.sol
+` $ yarn truffle run contracts/Cryptomon.sol`

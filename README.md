@@ -1,1 +1,7 @@
-Very scary cryptographic monsters
+# CRYTROMON!
+
+## Dependencies
+truffle
+
+## Commands
+yarn truffle run contracts/Cryptomon.sol

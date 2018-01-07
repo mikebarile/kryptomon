@@ -1,0 +1,210 @@
+.add-listing-home {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: sans-serif;
+  color: #4F4F4F;
+  margin-bottom: 100px;
+}
+
+.alh-first-col {
+  margin-top: 60px;
+  margin-left: 170px;
+  max-width: 480px;
+}
+
+.bh-subtitle {
+  font-size: 18px;
+}
+
+.alh-error-handler {
+  color: #FE0000;
+}
+
+.alh-step-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.alh-step-container-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 380px;
+  max-width: 480px;
+}
+
+.alh-header {
+  font-size: 30px;
+  font-family: pretty-font;
+}
+
+.alh-step-name-next {
+  font-size: 13px;
+  color: #BBBBBB;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.alh-step-name-previous {
+  font-size: 13px;
+  color: #BBBBBB;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.alh-step-name-dead {
+  color: #DBDBDB;
+  font-size: 13px;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.alh-step-title-next {
+  font-size: 22px;
+  font-family: pretty-font;
+  margin-top: 5px;
+}
+
+.alh-step-title-previous {
+  font-size: 22px;
+  font-family: pretty-font;
+  margin-top: 5px;
+}
+
+.alh-step-title-dead {
+  font-size: 22px;
+  font-family: pretty-font;
+  margin-top: 5px;
+  color: #9E9E9E;
+}
+
+.alh-step-description-next {
+  color: #767676;
+  font-size: 15.5px;
+  font-weight: lighter;
+}
+
+.alh-step-description-previous {
+  color: #767676;
+  font-size: 15.5px;
+  font-weight: lighter;
+}
+
+.alh-step-description-dead {
+  color: #B6B6B6;
+  font-size: 15.5px;
+  font-weight: lighter;
+}
+
+.alh-step-button-next {
+  content: "Continue";
+  color: white;
+  background-color: #00A699;
+  min-width: 110px;
+  min-height: 38px;
+  font-size: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alh-step-button-next::after {
+  content: "Continue";
+}
+
+.alh-step-button-next:hover {
+  background-color: #4DDFD4;
+}
+
+.alh-step-button-previous {
+  margin-top: 6px;
+  content: "Change";
+  color: #00A699;
+  font-size: 15.5px;
+}
+
+.alh-step-button-previous::after {
+  content: "Change";
+  color: #00A699;
+  font-size: 15.5px;
+}
+
+.alh-step-button-previous:hover {
+  text-decoration: underline;
+}
+
+.alh-step-button-dead {
+}
+
+.alh-check-next {
+  display: none;
+}
+
+.alh-check-previous {
+  background-color: #008489;
+  width: 40px;
+  height: 40px;
+  margin-top: 60px;
+  border-radius: 20px;
+}
+
+.alh-check-dead {
+  display: none;
+}
+
+.alh-second-col {
+  margin-top: 60px;
+  display: flex;
+  margin-right: 100px;
+}
+
+.alh-img-container {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478478002/Icons/0_0_0_0_391_315_library_60443.png');
+  display: flex;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  min-width: 700px;
+  min-height: 550px;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.alh-tip-container {
+  min-width: 350px;
+  min-height: 165px;
+  margin-top: 20px;
+  margin-right: 20px;
+  background-color: white;
+  border: 1px solid #DCE0E0;
+  display: flex;
+  flex-direction: column;
+}
+
+.alh-tip-icon {
+  padding-left: 18px;
+  padding-top: 20px;
+  padding-bottom: 12px;
+  max-width: 32px;
+  max-height: 38px;
+}
+
+.alh-tip-description {
+  color: #767676;
+  padding-left: 20px;
+  padding-bottom: 5px;
+  font-weight: lighter;
+}
+
+.alh-tip-quantity {
+  color: #484848;
+  padding-left: 20px;
+  font-size: 30px;
+
+}

@@ -1,0 +1,116 @@
+.session-form {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-family: pretty-font;
+  color: #4F4F4F;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.errors-list {
+
+}
+
+.error {
+  align-self: flex-start;
+  padding-bottom: 10px;
+  color: red;
+}
+
+.form-input-row {
+  display: flex;
+  border: 1px solid black;
+  width: 350px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+}
+
+.form-input {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-bottom: 20px;
+  border: 1px solid black;
+  width: 340px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+}
+
+.email-row {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478115862/Icons/mail_lncn7p.png');
+}
+
+.password-row {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478115863/Icons/lock_qn4pof.ico');
+}
+
+.person-row {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478115862/Icons/person-icon_ywsnf9.png');
+}
+
+.form-input:focus {
+  box-shadow: 0 0 6px #3F7BB8;
+}
+
+.submit-button {
+  display: flex;
+  width: 350px;
+  justify-content: center;
+  align-items: center;
+  background-color: #FF5A5F;
+  color: white;
+  height: 60px;
+  border-radius: 5px;
+}
+
+.guest-login {
+  display: flex;
+  width: 350px;
+  justify-content: center;
+  align-items: center;
+  background-color: #00A699;
+  color: white;
+  height: 60px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #FF7E82
+}
+
+.guest-login:hover {
+  background-color: #01ccbc
+}
+
+.form-bottom {
+  display: flex;
+  margin-top: 20px;
+  border-top: grey solid 1px;
+  justify-content: space-between;
+  height: 80px;
+  width: 350px;
+}
+
+.form-bottom-text {
+  align-self: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.other-form-button {
+  align-self: center;
+  color: #FF5A5F;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #FF5A5F;
+  border-radius: 5px;
+  font-size: 13px;
+}

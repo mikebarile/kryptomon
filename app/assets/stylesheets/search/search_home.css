@@ -1,0 +1,106 @@
+.search {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: pretty-font;
+  color: #4F4F4F;
+  margin-bottom: 40px;
+}
+
+.search-no-listings {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.s-form-col {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  width: 59%;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.s-form-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;;
+  align-items: center;
+  height: 80px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #EEF0F0;
+  margin-right: 20px;
+  margin-top: 30px;
+}
+
+.s-dates-title {
+  font-size: 13px;
+  margin-right: 100px;
+}
+
+.s-date-input {
+  font-size: 14px;
+  border: 1px solid #AAAAAA;
+  border-radius: 2px;
+  height: 34px;
+  width: 180px;
+  padding-top: 2px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
+}
+
+input[type=date][class=s-date-input] {
+  font-size: 14px;
+  width: 180px;
+}
+
+.s-date-input:focus {
+  outline:none;
+  border:1px solid #4D90FE;
+  -webkit-box-shadow: 0px 0px 5px  #4D90FE;
+  box-shadow: 0px 0px 5px  #4D90FE;
+}
+
+.s-guest-input {
+  padding-top: 2px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+  display: flex;
+  font-family: pretty-font;
+  font-size: 14px;
+  color: #484848;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #AAAAAA;
+  border-radius: 2px;
+  height: 36px;
+  width: 200px;
+  padding-left: 10px;
+  background-size: 10px 7px;
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478576077/Icons/Screen_Shot_2016-11-07_at_7.32.28_PM.png');
+  resize: none;
+}
+
+.s-listings-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.s-map-col {
+  display: flex;
+  width: 41%;
+  height: 100%;
+  justify-content: center;
+}

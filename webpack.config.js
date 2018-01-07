@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
   context: __dirname,
-  entry: './frontend/cryptomon.jsx',
+  entry: './frontend/hair_bnb.jsx',
   output: {
     path: path.join(__dirname, 'app', 'assets', 'javascripts'),
     filename: 'bundle.js'

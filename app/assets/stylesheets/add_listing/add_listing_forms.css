@@ -1,0 +1,419 @@
+.add-listing-form {
+  display: flex;
+  justify-content: center;
+  color: #484848;
+  font-family: pretty-font;
+}
+
+.alf-first-half {
+  display: flex;
+  justify-content: flex-end;
+  width: 58%;
+}
+
+.alf-col-first {
+  margin-top: 65px;
+  width: 470px;
+  min-width: 470px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+}
+
+.alf-form {
+  width: 470px;
+  min-width: 470px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #DCE0E0;
+}
+
+.alf-field-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.alf-input-row {
+  display: flex;
+}
+
+.alf-text-full {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #DCE0E0;
+  width: 430px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+  margin-bottom: 40px;
+  -webkit-transition: border .3s;
+  transition: border .3s;
+  resize: none;
+}
+
+.alf-title-counter {
+  color: #767676;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  padding-left: 450px;
+  padding-top: 7px;
+}
+
+.alf-description-counter {
+  color: #767676;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  padding-left: 440px;
+  padding-top: 7px;
+}
+
+.alf-low {
+  color: #B34143;
+}
+
+.alf-text-full:focus {
+  border: 1px solid #484848;
+}
+
+.alf-upload {
+  display: flex;
+  width: 185px;
+  height: 42px;
+  justify-content: center;
+  align-items: center;
+  background-color: #00A699;
+  color: white;
+  border-radius: 5px;
+}
+
+.alf-file-image {
+  max-width: 300px;
+  height: auto;
+}
+
+.alf-file-name {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.alf-upload:hover{
+  background-color: #01ccbc
+}
+
+.alf-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  margin-bottom: 30px;
+}
+
+.alf-errors {
+}
+
+.alf-error {
+  color: #B34143;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.alf-back {
+  color: #484848;
+}
+
+.alf-back:hover {
+  color: #6c6c6c;
+}
+
+.alf-header-over {
+  margin-bottom: 10px;
+}
+
+.alf-next {
+  display: flex;
+  width: 185px;
+  height: 42px;
+  justify-content: center;
+  align-items: center;
+  background-color: #FF5A5F;
+  color: white;
+  border-radius: 4px;
+}
+
+.alf-next:hover {
+  background-color: #FF7E82
+}
+
+.alf-next-dead {
+  display: flex;
+  width: 185px;
+  height: 42px;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFD2D3;
+  color: white;
+  border-radius: 4px;
+}
+
+.alf-second-half {
+  display: flex;
+  justify-content: flex-start;
+  width: 45%;
+  background-color: #FAFAFA;
+}
+
+.alf-col-second {
+  width: 330px;
+  min-width: 330px;
+  height: 100%;
+}
+
+.alf-tip-box {
+  margin-top: 60px;
+  margin-left: 30px;
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 240px;
+  max-height: 240px;
+  background-color: white;
+  display: flex;
+  border: 1px solid #DCE0E0;
+  border-radius: 4px;
+  flex-direction: column;
+}
+
+.alf-tip-content {
+  color: #767676;
+  margin-left: 25px;
+  margin-right: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+  line-height: 25px;
+}
+
+.alf-input-buttons {
+  display: flex;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #DCE0E0;
+}
+
+.alf-input-column {
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+}
+
+.alf-amenity-true {
+  width: 170px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 16px;
+  height: 45px;
+  font-weight: 500;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  background-position: 5% 50%;
+  margin-bottom: 20px;
+  padding-left: 50px;
+  border-radius: 4px;
+  background-color: #4DDFD4;
+}
+
+.alf-amenity-true:hover {
+  background-color: #00A699;
+}
+
+.alf-amenity-false {
+  width: 205px;
+  height: 45px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  background-size: 15px 15px;
+  background-repeat: no-repeat;
+  background-position: 95% 50%;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-radius: 4px;
+  background-color: #C7C9C9;
+  -webkit-transition: background-color .2s;
+  transition: background-color .2s;
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478566087/Icons/1194994263582955302add.svg.hi.png');
+}
+
+.alf-text-full-add {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #DCE0E0;
+  width: 430px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+  margin-bottom: 30px;
+  -webkit-transition: border .3s;
+  transition: border .3s;
+  resize: none;
+}
+
+.alf-text-full-add:focus {
+  border: 1px solid #484848;
+}
+
+.alf-text-half-add {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #DCE0E0;
+  width: 180px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+  margin-bottom: 30px;
+  -webkit-transition: border .3s;
+  transition: border .3s;
+  resize: none;
+}
+
+.alf-text-half-add:focus {
+  border: 1px solid #484848;
+}
+
+.alf-country {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+  display: flex;
+  font-family: pretty-font;
+  font-size: 16px;
+  height: 64px;
+  padding-left: 20px;
+  color: #484848;
+  border: 1px solid #AAAAAA;
+  width: 470px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+  background-size: 16px 10px;
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478576077/Icons/Screen_Shot_2016-11-07_at_7.32.28_PM.png');
+  margin-bottom: 23px;
+  -webkit-transition: border .3s;
+  transition: border .3s;
+  resize: none;
+}
+
+.alf-add-row{
+  display: flex;
+  justify-content: space-between;
+}
+
+.alf-add-col{
+  display: flex;
+  flex-direction: column;
+}
+
+.alf-extra-margin {
+  margin-bottom: 40px;
+}
+
+.alf-add-title {
+  font-size: 16px;
+  padding-bottom: 8px;
+}
+
+.alf-amenity-false:hover {
+  background-color: #DCE0E0
+}
+
+.alf-rules-col{
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  border-bottom: 0;
+}
+
+.alf-dog_walks {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478565304/Icons/20983.png');
+}
+
+.alf-deluxe_bed {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478377852/Icons/amenities/dog-bed.png');
+}
+
+.alf-house_cat {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478565371/Icons/cat.png');
+}
+
+.alf-cuddle_buddy {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478377956/Icons/amenities/cuddle.png');
+}
+
+.alf-gourmet_food {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478377860/Icons/amenities/dog-food.png');
+}
+
+.alf-chew_toys {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478379134/Icons/amenities/nature-dog-bone-icons-4.png');
+  background-size: 25px 25px;
+}
+
+.alf-frisbee {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478377865/Icons/amenities/frisbee.png');
+}
+
+.alf-mailman {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478377952/Icons/amenities/mailman.png');
+}
+
+.alf-grooming {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478377953/Icons/amenities/grooming.png');
+}
+
+.alf-barking {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478567999/Icons/80e6b27b.png');
+  background-size: 25px 25px;
+}
+
+.alf-indoor_pee {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478567999/Icons/80e6b27b.png');
+  background-size: 25px 25px;
+}
+.alf-indoor_poop {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478567999/Icons/80e6b27b.png');
+  background-size: 25px 25px;
+}
+.alf-begging {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478567999/Icons/80e6b27b.png');
+  background-size: 25px 25px;
+}
+.alf-whining {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478567999/Icons/80e6b27b.png');
+  background-size: 25px 25px;
+}
+.alf-shedding {
+  background-image: url('https://res.cloudinary.com/dsguwnfdw/image/upload/v1478567999/Icons/80e6b27b.png');
+  background-size: 25px 25px;
+}

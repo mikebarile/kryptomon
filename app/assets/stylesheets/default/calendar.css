@@ -1,0 +1,158 @@
+.input-calendar {
+  font-family: 'Pontano Sans', sans-serif;
+  position: relative;
+}
+
+.input-calendar-wrapper {
+  position: absolute;
+  padding: 5px 12px;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  box-shadow: 0 0 9px 5px rgba(0,0,0,0.05);
+  background-color: #fff;
+  text-align: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input-calendar .input-calendar-field {
+  font-size: 12px;
+  padding-left: 7px;
+  height: 35px;
+  width: 90px;
+  border: 1px solid grey;
+  border-radius: 2px;
+}
+
+.input-calendar .input-calendar-field:focus {
+  outline:none;
+  border:1px solid #4D90FE;
+  -webkit-box-shadow: 0px 0px 5px  #4D90FE;
+  box-shadow: 0px 0px 5px  #4D90FE;
+}
+
+.input-calendar .calendar-icon {
+  display: inline-block;
+  position: absolute;
+  padding-top: 6px;
+  right: 6px;
+  height: 27px;
+  line-height: 27px;
+  transform: translateY(4px);
+  cursor: pointer;
+}
+
+.input-calendar .days,
+.input-calendar .months,
+.input-calendar .years {
+  width: 189px;
+  padding-bottom: 2px;
+}
+
+.input-calendar .cell {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #fff;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input-calendar .cell:hover {
+  color: #FF5A5F;
+  border: 1px solid #FF5A5F;
+  border-radius: 4px;
+}
+
+.input-calendar .cell.current {
+  background: #FF5A5F;
+  color: #fff;
+  border-radius: 4px;
+  opacity: .8;
+}
+
+.input-calendar .day {
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.input-calendar .day.prev,
+.input-calendar .day.next {
+  opacity: .4;
+}
+
+.input-calendar .month {
+  width: 58px;
+  height: 38px;
+  line-height: 38px;
+}
+
+.input-calendar .year {
+  width: 58px;
+  height: 38px;
+  line-height: 38px;
+}
+
+.input-calendar .days-title .cell {
+  height: 25px;
+  line-height: 28px;
+  opacity: 0.5;
+  cursor: default;
+}
+
+.input-calendar .days-title .cell:hover {
+  color: #FF5A5F;
+  border: 1px solid #FF5A5F;
+}
+
+.input-calendar .navigation-title {
+  width: 100px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.input-calendar .years-view .navigation-title {
+  cursor: default;
+}
+
+.input-calendar .years-view .navigation-title:hover {
+  color: #FF5A5F;
+}
+
+.input-calendar .navigation-title:hover {
+  color: #FF5A5F;
+}
+
+.input-calendar .icon-wrapper {
+  cursor: pointer;
+}
+
+.input-calendar .icon:hover,
+.input-calendar .today-btn:hover,
+.input-calendar .icon-wrapper:hover {
+  color: #FF5A5F;
+}
+
+.input-calendar .icon {
+  cursor: pointer;
+  width: 20px;
+}
+
+.input-calendar .today-btn {
+  cursor: pointer;
+}
+
+.input-calendar .cell.day.today {
+  position: relative;
+}
+
+.hsb-input-row .input-calendar .input-calendar-field {
+  font-size: 16px;
+}

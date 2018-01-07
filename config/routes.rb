@@ -1,3 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'static_pages#show'
+  resources :static_pages, only: [:show]
+
+  namespace :api, defaults: {format: :json} do
+    resources :users
+    resource :session
+    resources :cities
+    resources :listings
+    resources :bookings
+    resources :reviews
+  end
 end

@@ -13,3 +13,42 @@
  *= require_tree .
  *= require_self
  */
+
+ @font-face {
+   font-family: pretty-font;
+   src: url('https://res.cloudinary.com/dsguwnfdw/raw/upload/v1478195629/Gifs/prima_sans.ttf');
+ }
+
+@font-face {
+  font-family: pretty-font-bold;
+  src: url('https://res.cloudinary.com/dsguwnfdw/raw/upload/v1478195629/Gifs/prima_sans_bold.ttf');
+}
+
+::-webkit-input-placeholder {
+   color: #767676;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #767676;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #767676;
+}
+
+:-ms-input-placeholder {
+   color: #767676;
+}
+
+::-webkit-inner-spin-button{
+    display: none;
+    -webkit-appearance: none;
+}
+
+::-webkit-calendar-picker-indicator { padding: 0px; margin: 0px; }
+::-webkit-datetime-edit { padding: 0px; margin: 0px; }
+::-webkit-datetime-edit-fields-wrapper { padding: 0px; margin: 0px; }
+::-webkit-datetime-edit-text { padding: 0px; margin: 0px; }
+::-webkit-datetime-edit-month-field { padding: 0px; margin: 0px; }
+::-webkit-datetime-edit-day-field { padding: 0px; margin: 0px; }
+::-webkit-datetime-edit-year-field { padding: 0px; margin: 0px; }

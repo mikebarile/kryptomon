@@ -24,7 +24,6 @@ gem 'binding_of_caller'
 gem 'pry-rails'
 gem 'annotate'
 gem 'bcrypt'
-gem 'jquery-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

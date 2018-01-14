@@ -10,7 +10,7 @@ contract KryptomonBase is KryptomonAccessControl {
   event KryptomonHatch();
 
   // The EggTransfer event is defined in current draft of ERC721. Every
-  // time egg ownership is assigned.
+  // time egg ownership is assigned, including when an egg is created.
   event EggTransfer();
 
   // The EggTransfer event is defined in current draft of ERC721. Every
@@ -21,7 +21,7 @@ contract KryptomonBase is KryptomonAccessControl {
   struct Egg {
     // The generation of the Kryptomon that will be hatched from this
     // egg. The generation is calculated as the max of the two parents'
-    // generations (e.g. if parent1 is gen 0 and parent 2 is gen 9,
+    // generations (e.g. if parent1 is gen 1 and parent 2 is gen 9,
     // the child will be gen 9 as well).
     uint16 generation;
 
@@ -39,32 +39,26 @@ contract KryptomonBase is KryptomonAccessControl {
     // lookup table.
     uint16 speciesId;
 
-    //
+    // The Kryptomon's unique genetic code, packed into 256 bits. This
+    // value is intepreted to produce a Kryptomon's unique stat
+    // strengths and weaknesses.
     uint256 genes;
 
-    //
+    // The Kryptomon's generation. Higher generation Kryptomon have
+    // increasingly degredated base stats.
     uint16 generation;
 
-    //
-    uint32 id;
+    // Initiated when the Kryptomon is hatched from an egg. Used by
+    // various
+    uint32 birthTimeStamp;
 
-    // Set to the index in the cooldown array (see below) that represents
-    // the current cooldown duration for this Kitty. This starts at zero
-    // for gen0 cats, and is initialized to floor(generation/2) for others.
-    // Incremented by one for each successful breeding action, regardless
-    // of whether this cat is acting as matron or sire.
+    // An index associated
     uint16 cooldownIndex;
 
     // The minimum timestamp after which this cat can engage in breeding
     // activities again. This same timestamp is used for the pregnancy
     // timer (for matrons) as well as the siring cooldown.
     uint64 cooldownEnd;
-
-    //
-    uint16 level;
-
-    //
-    uint64 levelUpBlock;
 
     // The number of eggs that this kryptomon has produced. Kryptomon
     // can produce at most 2 eggs over their lifetime.

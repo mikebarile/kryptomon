@@ -10,9 +10,9 @@ contract KryptomonAccessControl {
     //         contracts. It is also the only role that can unpause the smart contract. It is initially
     //         set to the address that created the smart contract in the Kryptomon constructor.
     //
-    //     - The CFO: The CFO can withdraw funds from Kryptomon and its auction contracts.
+    //     - The CFO: The CFO can withdraw funds from Kryptomon and its marketplace contracts.
     //
-    //     - The COO: The COO can release gen0 kryptomon to auction, and mint kryptomon eggs.
+    //     - The COO: The COO can mint kryptomon eggs.
     //
     // It should be noted that these roles are distinct without overlap in their access abilities, the
     // abilities listed for each role above are exhaustive. In particular, while the CEO can assign any

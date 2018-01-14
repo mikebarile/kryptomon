@@ -25,10 +25,14 @@ contract KryptomonBase is KryptomonAccessControl {
     // the child will be gen 9 as well).
     uint16 generation;
 
-    // The id associated with the egg's matron.
+    // The id associated with the egg's matron. The Kryptomon are
+    // slightly more likely to hatch into the same species as and to
+    // have similar genes to their parents.
     uint32 matronId;
 
-    // The id associated with the egg's sire.
+    // The id associated with the egg's sire. The Kryptomon are
+    // slightly more likely to hatch into the same species as and to
+    // have similar genes to their parents.
     uint32 sireId;
   }
 
@@ -40,10 +44,11 @@ contract KryptomonBase is KryptomonAccessControl {
     uint16 speciesId;
 
     // A value between 0 and 200 that modifies the Kryptomon's stats.
-    // A value of 0 results in the maximum genetic base stat decrease
-    // while a value of 200 results in the maximum genetic base stat
-    // increase. Children inherit the average of their parents' dna.
-    uint8 dna;
+    // A value of 0 results in a 10% decrease in base stats while a
+    // value of 200 results in a 10% increase. Children are
+    // predisposed to have similar genes as their parents but there is
+    // an element of randomness in gene assignment.
+    uint8 genes;
 
     // The Kryptomon's generation. Higher generation Kryptomon have
     // increasingly degredated base stats.
@@ -62,8 +67,11 @@ contract KryptomonBase is KryptomonAccessControl {
     // breeding activities again.
     uint32 breedingCooldown;
 
-    // The number of eggs that this kryptomon has produced. Kryptomon
-    // can produce at most 4 eggs over their lifetime.
+    // The number of eggs that this kryptomon has produced. Different
+    // species of Kryptomon have different restrictions on how many
+    // children they can have.
     uint16 numChildren;
   }
+
+
 }

@@ -60,7 +60,7 @@ contract KryptomonBase is KryptomonAccessControl {
     uint32 birthTimeStamp;
 
     // The minimum timestamp after which this Kryptomon can engage in
-    // breeding activities again.
+    // breeding activities again. Is based on a Kryptomon's species.
     uint32 breedingCooldown;
 
     // The number of eggs that this kryptomon has produced. Different
@@ -69,7 +69,44 @@ contract KryptomonBase is KryptomonAccessControl {
     uint16 numChildren;
   }
 
-  /*** CONSTANTS ***/
+  struct Species {
+    // Stat used to determine potentcy of all "physical" type attacks.
+    uint8 attack;
+
+    // Stat used to determine effectiveness in defending against all
+    // "physical" type attacks.
+    uint8 defense;
+
+    // Stat used to determine potentcy of all "special" type attacks.
+    uint8 specialAttack;
+
+    // Stat used to determine effectiveness in defending against all
+    // "special" type attacks.
+    uint8 specialDefense;
+
+    // A number of points representing how much damage a Kryptomon can
+    // sustain before being knocked out.
+    uint8 hitPoints;
+
+    // Represents how frequently the Kryptomon can attack and the order
+    // of attacks.
+    uint8 speed;
+
+    // The maximum number of children a Kryptomon can sire.
+    uint8 maxChildren;
+
+    // The amount of time a Kryptomon must wait before it can breed
+    // again.
+    uint32 breedingCooldown;
+
+    // The ID for the species this type of Kryptomon will evolve into.
+    // A non-zero value indicates this type of Kryptomon can evolve. 
+    uint8 evolveId;
+
+    // Base amount time it takes for this Kryptomon to evolve. Actual
+    // evolution time is also based on Kryptomon's generation.
+    uint32 timeToEvolve;
+  }
 
 
 

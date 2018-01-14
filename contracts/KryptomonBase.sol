@@ -26,15 +26,18 @@ contract KryptomonBase is KryptomonAccessControl {
     // the child will be gen 9 as well).
     uint16 generation;
 
-    // The id associated with the egg's matron. The Kryptomon are
-    // slightly more likely to hatch into the same species as and to
-    // have similar genes to their parents.
-    uint32 matronId;
+    // The average of the egg's parents' gene attributes. The Kryptomon
+    // that hatches from this egg is slightly more likely to have this
+    // as their genetic value.
+    uint8 genes;
 
-    // The id associated with the egg's sire. The Kryptomon are
-    // slightly more likely to hatch into the same species as and to
-    // have similar genes to their parents.
-    uint32 sireId;
+    // The species ID associated with the egg's matron. The egg has a
+    // slightly larger chance of hatching into this species.
+    uint16 matronSpeciesId;
+
+    // The species ID associated with the egg's sire. The egg has a
+    // slightly larger chance of hatching into this species.
+    uint16 sireSpeciesId;
   }
 
   // The main Kryptomon struct.
@@ -112,7 +115,7 @@ contract KryptomonBase is KryptomonAccessControl {
 
   /*** START Storage ***/
   // An array containing the egg struct for all eggs in existence. Each
-  // egg's ID is actually an index in this array. 
+  // egg's ID is actually an index in this array.
   Egg[] eggList;
 
   // An array containing the Kryptomon struct for all Kryptomon in

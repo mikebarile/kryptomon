@@ -1,10 +1,10 @@
 pragma solidity ^0.4.11;
-import './KryptomonAccessControl.sol'
+import './KryptomonAccessControl.sol';
 
 contract KryptomonBase is KryptomonAccessControl {
   /*** Events ***/
 
-  // The KryptomonHatch event is fired whenever a kryptomon egg is hatched. 
+  // The KryptomonHatch event is fired whenever a kryptomon egg is hatched.
   // This occurs whenever an egg owner calls the "hatch" method resulting in a
   // new Kryptomon.
   event KryptomonHatch();
@@ -32,7 +32,7 @@ contract KryptomonBase is KryptomonAccessControl {
   // The main Kryptomon struct.
   struct Kryptomon {
     //
-    uint16 type;
+    uint16 species;
 
     //
     uint256 genes;
@@ -59,6 +59,6 @@ contract KryptomonBase is KryptomonAccessControl {
     uint16 level;
 
     //
-    uint64 levelUpBlock
+    uint64 levelUpBlock;
   }
 }

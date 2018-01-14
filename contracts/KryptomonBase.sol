@@ -2,8 +2,7 @@ pragma solidity ^0.4.11;
 import './KryptomonAccessControl.sol';
 
 contract KryptomonBase is KryptomonAccessControl {
-  /*** Events ***/
-
+  /*** START Event Definitions ***/
   // The KryptomonHatch event is fired whenever a kryptomon egg is
   // hatched. This occurs whenever an egg owner calls the "hatch"
   // method resulting in a new Kryptomon.
@@ -16,12 +15,14 @@ contract KryptomonBase is KryptomonAccessControl {
   // The EggTransfer event is defined in current draft of ERC721. Every
   // time kryptomon ownership is assigned, including birth.
   event KryptomonTransfer();
+  /*** END Event Definitions ***/
 
+  /*** START Structs Definitions ***/
   // The main Egg struct.
   struct Egg {
     // The generation of the Kryptomon that will be hatched from this
     // egg. The generation is calculated as the max of the two parents'
-    // generations (e.g. if parent1 is gen 1 and parent 2 is gen 9,
+    // generations (e.g. if parent1 is gen0 and parent 2 is gen9,
     // the child will be gen 9 as well).
     uint16 generation;
 
@@ -70,14 +71,14 @@ contract KryptomonBase is KryptomonAccessControl {
   }
 
   struct Species {
-    // Stat used to determine potentcy of all "physical" type attacks.
+    // Stat used to determine "physical" type attack potency.
     uint8 attack;
 
     // Stat used to determine effectiveness in defending against all
     // "physical" type attacks.
     uint8 defense;
 
-    // Stat used to determine potentcy of all "special" type attacks.
+    // Stat used to determine "special" type attack potency.
     uint8 specialAttack;
 
     // Stat used to determine effectiveness in defending against all
@@ -100,14 +101,31 @@ contract KryptomonBase is KryptomonAccessControl {
     uint32 breedingCooldown;
 
     // The ID for the species this type of Kryptomon will evolve into.
-    // A non-zero value indicates this type of Kryptomon can evolve. 
-    uint8 evolveId;
+    // A non-zero value indicates this type of Kryptomon can evolve.
+    uint8 evolveToId;
 
     // Base amount time it takes for this Kryptomon to evolve. Actual
     // evolution time is also based on Kryptomon's generation.
     uint32 timeToEvolve;
   }
+  /*** END Struct Definitions ***/
 
+  /*** START Storage ***/
+  // An array containing the egg struct for all eggs in existence. Each
+  // egg's ID is actually an index in this array. 
+  Egg[] eggList;
 
+  // An array containing the Kryptomon struct for all Kryptomon in
+  // existence. The ID of each Kryptomon is actually an index in this
+  // array. Note that the ID 0 is the Kryptogod, the creator of all
+  // Kryptomon who produced all gen1 Kryptomon through a divine act of
+  // parthogenesis. Kryptomon ID 0 should be considered invalid.
+  Kryptomon[] kryptomonList;
+
+  /*** END Storage ***/
+
+  /*** START Species Definitions ***/
+
+  /*** END Species Definitions ***/
 
 }

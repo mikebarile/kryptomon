@@ -39,10 +39,11 @@ contract KryptomonBase is KryptomonAccessControl {
     // lookup table.
     uint16 speciesId;
 
-    // The Kryptomon's unique genetic code, packed into 256 bits. This
-    // value is intepreted to produce a Kryptomon's unique stat
-    // strengths and weaknesses.
-    uint256 genes;
+    // A value between 0 and 200 that modifies the Kryptomon's stats.
+    // A value of 0 results in the maximum genetic base stat decrease
+    // while a value of 200 results in the maximum genetic base stat
+    // increase. Children inherit the average of their parents' dna.
+    uint8 dna;
 
     // The Kryptomon's generation. Higher generation Kryptomon have
     // increasingly degredated base stats.
@@ -52,16 +53,17 @@ contract KryptomonBase is KryptomonAccessControl {
     // various
     uint32 birthTimeStamp;
 
-    // An index associated
-    uint16 cooldownIndex;
+    // An index associated with the Kryptomon's 'breedability'. Highly
+    // breedable Kryptomon can lay eggs much faster than Kryptomon
+    // with a poor breedability index.
+    uint16 breedingIndex;
 
-    // The minimum timestamp after which this cat can engage in breeding
-    // activities again. This same timestamp is used for the pregnancy
-    // timer (for matrons) as well as the siring cooldown.
-    uint64 cooldownEnd;
+    // The minimum timestamp after which this Kryptomon can engage in
+    // breeding activities again.
+    uint32 breedingCooldown;
 
     // The number of eggs that this kryptomon has produced. Kryptomon
-    // can produce at most 2 eggs over their lifetime.
+    // can produce at most 4 eggs over their lifetime.
     uint16 numChildren;
   }
 }

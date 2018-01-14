@@ -51,17 +51,13 @@ contract KryptomonBase is KryptomonAccessControl {
     uint8 genes;
 
     // The Kryptomon's generation. Higher generation Kryptomon have
-    // increasingly degredated base stats.
+    // increasingly degredated base stats and take exponentially more
+    // time to evolve.
     uint16 generation;
 
     // Initiated when the Kryptomon is hatched from an egg. Used by
     // various
     uint32 birthTimeStamp;
-
-    // An index associated with the Kryptomon's 'breedability'. Highly
-    // breedable Kryptomon can lay eggs much faster than Kryptomon
-    // with a poor breedability index.
-    uint16 breedingIndex;
 
     // The minimum timestamp after which this Kryptomon can engage in
     // breeding activities again.
@@ -72,6 +68,9 @@ contract KryptomonBase is KryptomonAccessControl {
     // children they can have.
     uint16 numChildren;
   }
+
+  /*** CONSTANTS ***/
+
 
 
 }

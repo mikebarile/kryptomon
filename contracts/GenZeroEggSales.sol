@@ -27,7 +27,7 @@ contract GenZeroEggSales is KryptomonBase {
   }
 
   // Function that allows the Manager to distribute gen0 reserve eggs.
-  // To be used for beta testing, bug bounty rewards, etc. 
+  // To be used for beta testing, bug bounty rewards, etc.
   function assignReserveEggs(address _sendTo, uint _numEggs)
     external
     managerOnly
@@ -76,30 +76,37 @@ contract GenZeroEggSales is KryptomonBase {
     return uint32(kryptomonList.length - 1);
   }
 
+  // Function that pseudo-randomly determines a species ID for a new
+  // gen 0 Kryptomon. 
+  // TODO(mikebarile): Create lookup table and assign Kryptomon once
+  // we've finished designing them.
   function determineGenZeroSpeciesId(uint id)
     private
     view
     returns(uint16)
   {
     uint256 randSpecies = randomSpecies(id);
-    if (randSpecies < 350000) {
-      // Set to a common creature (35% probability).
+    if (randSpecies < 400000) {
+      // Set to a common creature (40% probability).
 
-    } else if (randSpecies >= 350000 && randSpecies < 600000) {
+    } else if (randSpecies >= 400000 && randSpecies < 650000) {
       // Set to an uncommon creature (25% probability).
 
-    } else if (randSpecies >= 600000 && randSpecies < 800000) {
+    } else if (randSpecies >= 650000 && randSpecies < 850000) {
       // Set to a rare creature (20% probability).
 
-    } else if (randSpecies >= 800000 && randSpecies < 950000) {
-      // Set to a super rare creature (15% probability).
+    } else if (randSpecies >= 850000 && randSpecies < 950000) {
+      // Set to a super rare creature (10% probability).
 
     } else if (randSpecies >= 950000 && randSpecies < 998000) {
       // Set to an ultra rare creature (~5% probability).
-    } else if (randSpecies >= 998000 && randSpecies < 999997) {
+
+    } else if (randSpecies >= 998000 && randSpecies < 999996) {
       // Set to a mega rare creature (~0.1% probability).
-    } else if (randSpecies >= 999997 && randSpecies <= 1000000) {
-      // Set to a legendary creature (0.0003% probability).
+
+    } else if (randSpecies >= 999996 && randSpecies <= 1000000) {
+      // Set to a legendary creature (0.0005% probability).
+
     }
   }
 }

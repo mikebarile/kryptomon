@@ -11,8 +11,19 @@ contract GenZeroEggSales is KryptomonBase {
   // "owned" by the COO and are non transferable.
   uint32 numGenZeroEggsRemaining = 100000;
 
+  uint genZeroEggPrice = 10 finney;
+
+  // Function that allows the COO to change the gen0 egg price.
+  function setGenZeroEggPrice(uint price) external onlyCOO {
+    genZeroEggPrice = price;
+  }
+
   // Public function called by users to purchase a gen0 egg.
-  function buyGenZeroEggs(uint numEggs) internal {}
+  function buyGenZeroEggs(uint numEggs) external payable {
+    require(numEggs <= numGenZeroEggsRemaining);
+    uint totalCost = numEggs * genZeroEggPrice;
+
+  }
 
   // Function called when a user successfully purchases a gen0 egg
   // from the COO.

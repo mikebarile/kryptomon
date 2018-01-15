@@ -125,14 +125,6 @@ contract KryptomonBase is KryptomonAccessControl {
   // parthogenesis. Kryptomon ID 0 should be considered invalid.
   Kryptomon[] kryptomonList;
 
-  // The total number of "gen 0" eggs remaining. These eggs can only
-  // be hatched by the COO, have no parents or genetics, and hatch
-  // into a random Kryptomon. These eggs are stored as an int so that
-  // the Kryptomon creators don't ahve to pay a crazy gas cost to
-  // initialize thousands of identical eggs. These eggs are effecitvely
-  // "owned" by the COO and are non transferable.
-  uint32 numGenZeroEggsRemaining = 100000;
-
   // A mapping of kryptomon IDs to the address that owns them. All
   // kryptomon have a valid owner address.
   mapping (uint32 => address) public kryptomonIndexToOwner;

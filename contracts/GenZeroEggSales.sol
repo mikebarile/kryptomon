@@ -2,40 +2,57 @@ pragma solidity ^0.4.11;
 import './KryptomonBase.sol';
 
 contract GenZeroEggSales is KryptomonBase {
-
   // The total number of "gen 0" eggs remaining. These eggs have no
   // parents or genetics, and hatch into a Kryptomon. These eggs are
   // stored as an int so that the Kryptomon creators don't have to pay
   // a crazy gas cost to initialize thousands of identical eggs. These
   // eggs are effecitvely owned by the Kryptomon board and are non
   // transferable.
-  uint numGenZeroEggsRemaining = 1000000;
+  uint genZeroEggs = 1000000;
 
   // A reserve of gen0 eggs that is controlled by the Manager. For use
   // with beta testing, bug bounties, etc.
-  uint genZeroEggReserve = 50000;
+  uint genZeroEggsReserve = 50000;
 
+  // The price per gen0 egg. Can be reassigned by the Manager based on
+  // ether <-> fiat price movements.
   uint genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
   event genZeroEggHatched(address buyerId, uint kryptomonId);
 
   // Function that allows the Manager to change the gen0 egg price.
-  function setGenZeroEggPrice(uint price) external onlyManager {
+  function setGenZeroEggPrice(uint price) external managerOnly {
     genZeroEggPrice = price;
   }
 
-  // The function users call to purchase gen0 eggs. Automatically
-  // hatches a kryptomon and sets ownership to the purchaser.
+  // Function that allows the Manager to distribute gen0 reserve eggs.
+  // To be used for beta testing, bug bounty rewards, etc. 
+  function assignReserveEggs(address _sendTo, uint _numEggs)
+    external
+    managerOnly
+  {
+    require(_numEggs <= genZeroEggsReserve);
+    genZeroEggsReserve -= _numEggs;
+    for(uint i = 0; i < _numEggs; i++) {
+      uint32 kryptomonId = createGenZeroKryptomon(i);
+      kryptomonIndexToOwner[kryptomonId] = _sendTo;
+      genZeroEggHatched(_sendTo, kryptomonId);
+    }
+  }
+
+  // The function Kryptomon players call to purchase gen0 eggs.
+  // Automatically hatches a kryptomon and sets ownership to the
+  // purchaser.
   function buyGenZeroEggs(uint _numEggs)
     external
     whenGenZeroNotPaused
     payable
   {
-    require(_numEggs <= numGenZeroEggsRemaining);
+    require(_numEggs <= genZeroEggs);
     uint totalCost = _numEggs * genZeroEggPrice;
-    require(msg.value < totalCost);
-    numGenZeroEggsRemaining -= _numEggs;
+    require(msg.value >= totalCost);
+    genZeroEggs -= _numEggs;
     for(uint i = 0; i < _numEggs; i++) {
       uint32 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;

@@ -14,26 +14,26 @@ contract KryptomonBoardController {
 
   // Modifier for functions that can only be executed by the
   // the Kryptomon president.
-  modifier onlyPresident() {
+  modifier presidentOnly() {
     require(msg.sender == presidentAddress);
     _;
   }
 
   /// Modifier for functions that can only be executed by the
   // the Kryptomon manager.
-  modifier onlyManager() {
+  modifier managerOnly() {
     require(msg.sender == managerAddress);
     _;
   }
 
   // Modifier for functions that can only be executed by the
   // the Kryptomon treasurer.
-  modifier onlyTreasurer() {
+  modifier treasurerOnly() {
     require(msg.sender == treasurerAddress);
     _;
   }
 
-  modifier onlyBoardMember() {
+  modifier boardMemberOnly() {
     require(
       msg.sender == presidentAddress ||
       msg.sender == managerAddress ||
@@ -44,22 +44,25 @@ contract KryptomonBoardController {
 
   // Allows the president to reset the address associated with the
   // president.
-  function setPresident(address _newPresident) external onlyPresident {
+  function setNewPresident(address _newPresident)
+    external
+    presidentOnly
+  {
     require(_newPresident != address(0));
     presidentAddress = presidentAddress;
   }
 
   // Allows the president to reset the address associated with the
   // manager.
-  function setManager(address _newManager) external onlyPresident {
+  function setNewManager(address _newManager) external presidentOnly {
     require(_newManager != address(0));
     managerAddress = _newManager;
   }
 
   // Allows the president to reset the address associated with the
   // treasurer.
-  function setTreasurer(address _newTreasurer)
-      external onlyPresident {
+  function setNewTreasurer(address _newTreasurer)
+      external presidentOnly {
     require(_newTreasurer != address(0));
     treasurerAddress = _newTreasurer;
   }

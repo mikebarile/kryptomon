@@ -12,7 +12,7 @@ contract KryptomonAccessControl {
     //
     //     - The CFO: The CFO can withdraw funds from Kryptomon and its marketplace contracts.
     //
-    //     - The COO: The COO can mint kryptomon eggs.
+    //     - The COO: The COO can hatch gen0 eggs and assign the resulting Kryptomon to their owners.
     //
     // It should be noted that these roles are distinct without overlap in their access abilities, the
     // abilities listed for each role above are exhaustive. In particular, while the CEO can assign any

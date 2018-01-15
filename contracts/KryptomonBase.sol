@@ -125,9 +125,19 @@ contract KryptomonBase is KryptomonAccessControl {
   // parthogenesis. Kryptomon ID 0 should be considered invalid.
   Kryptomon[] kryptomonList;
 
+  // The total number of "gen 0" eggs remaining. These eggs can only
+  // be hatched by the COO, have no parents or genetics, and hatch
+  // into a random Kryptomon. These eggs are stored as an int so that
+  // the Kryptomon creators don't ahve to pay a crazy gas cost to
+  // initialize thousands of identical eggs. These eggs are effecitvely
+  // "owned" by the COO and are non transferable.
+  uint32 numGenZeroEggsRemaining = 1000000;
+
   /*** END Storage ***/
 
   /*** START Species Definitions ***/
+
+  Species[] speciesList;
 
   /*** END Species Definitions ***/
 

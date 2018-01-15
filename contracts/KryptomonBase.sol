@@ -22,8 +22,8 @@ contract KryptomonBase is KryptomonAccessControl {
   struct Egg {
     // The generation of the Kryptomon that will be hatched from this
     // egg. The generation is calculated as the max of the two parents'
-    // generations (e.g. if parent1 is gen0 and parent 2 is gen9,
-    // the child will be gen 9 as well).
+    // generations plus 1 (e.g. if parent1 is gen0 and parent 2 is gen9,
+    // the child will be gen10).
     uint16 generation;
 
     // The average of the egg's parents' gene attributes. The Kryptomon
@@ -131,7 +131,32 @@ contract KryptomonBase is KryptomonAccessControl {
   // the Kryptomon creators don't ahve to pay a crazy gas cost to
   // initialize thousands of identical eggs. These eggs are effecitvely
   // "owned" by the COO and are non transferable.
-  uint32 numGenZeroEggsRemaining = 1000000;
+  uint32 numGenZeroEggsRemaining = 100000;
+
+  // A mapping of kryptomon IDs to the address that owns them. All
+  // kryptomon have a valid owner address.
+  mapping (uint32 => address) public kryptomonIndexToOwner;
+
+  // A mapping of egg IDs to the address that owns them. All eggs have
+  // have a valid owner address.
+  mapping (uint32 => address) public eggIndexToOwner;
+
+  // Function used to return pseudo-random numbers. Probably needs to
+  // be reexamined to ensure that egg hatching can't be attacked by
+  // miners.
+  function random() internal view returns(uint) {
+    return uint256(keccak256(now, msg.gas, msg.sender, block.timestamp));
+  }
+
+  // function createKryptomon() internal {}
+
+  // function hatchEgg(uint32 _eggId) external {}
+
+  // function evolve(uint32 _kryptomonId) external {}
+
+  // function transferEgg(uint32 eggId, address _toAddress) internal {}
+
+  // function transferKryptomon(uint32 kryptomonId, address _toAddress) internal {}
 
   /*** END Storage ***/
 

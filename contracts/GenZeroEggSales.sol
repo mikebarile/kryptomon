@@ -3,27 +3,35 @@ import './KryptomonBase.sol';
 
 contract GenZeroEggSales is KryptomonBase {
 
-  // The total number of "gen 0" eggs remaining. These eggs can only
-  // be hatched by the COO, have no parents or genetics, and hatch
-  // into a random Kryptomon. These eggs are stored as an int so that
-  // the Kryptomon creators don't ahve to pay a crazy gas cost to
-  // initialize thousands of identical eggs. These eggs are effecitvely
-  // "owned" by the COO and are non transferable.
+  // The total number of "gen 0" eggs remaining. These eggs have no
+  // parents or genetics, and hatch into a Kryptomon. These eggs are
+  // stored as an int so that the Kryptomon creators don't have to pay
+  // a crazy gas cost to initialize thousands of identical eggs. These
+  // eggs are effecitvely owned by the Kryptomon board and are non
+  // transferable.
   uint numGenZeroEggsRemaining = 1000000;
+
+  // A reserve of gen0 eggs that is controlled by the Manager. For use
+  // with beta testing, bug bounties, etc.
+  uint genZeroEggReserve = 50000;
 
   uint genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
   event genZeroEggHatched(address buyerId, uint kryptomonId);
 
-  // Function that allows the COO to change the gen0 egg price.
-  function setGenZeroEggPrice(uint price) external onlyCOO {
+  // Function that allows the Manager to change the gen0 egg price.
+  function setGenZeroEggPrice(uint price) external onlyManager {
     genZeroEggPrice = price;
   }
 
   // The function users call to purchase gen0 eggs. Automatically
   // hatches a kryptomon and sets ownership to the purchaser.
-  function buyGenZeroEggs(uint _numEggs) external whenNotPaused payable {
+  function buyGenZeroEggs(uint _numEggs)
+    external
+    whenGenZeroNotPaused
+    payable
+  {
     require(_numEggs <= numGenZeroEggsRemaining);
     uint totalCost = _numEggs * genZeroEggPrice;
     require(msg.value < totalCost);
@@ -51,7 +59,11 @@ contract GenZeroEggSales is KryptomonBase {
     return uint32(kryptomonList.length - 1);
   }
 
-  function determineGenZeroSpeciesId(uint id) private view returns(uint16){
+  function determineGenZeroSpeciesId(uint id)
+    private
+    view
+    returns(uint16)
+  {
     uint256 randSpecies = randomSpecies(id);
     if (randSpecies < 350000) {
       // Set to a common creature (35% probability).

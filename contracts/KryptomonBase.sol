@@ -1,20 +1,9 @@
 pragma solidity ^0.4.11;
-import './KryptomonAccessControl.sol';
+import './KryptomonBoardController.sol';
 
-contract KryptomonBase is KryptomonAccessControl {
+contract KryptomonBase is KryptomonBoardController {
   /*** START Event Definitions ***/
-  // The KryptomonHatch event is fired whenever a kryptomon egg is
-  // hatched. This occurs whenever an egg owner calls the "hatch"
-  // method resulting in a new Kryptomon.
-  event KryptomonHatch();
 
-  // The EggTransfer event is defined in current draft of ERC721. Every
-  // time egg ownership is assigned, including when an egg is created.
-  event EggTransfer();
-
-  // The EggTransfer event is defined in current draft of ERC721. Every
-  // time kryptomon ownership is assigned, including birth.
-  event KryptomonTransfer();
   /*** END Event Definitions ***/
 
   /*** START Structs Definitions ***/
@@ -136,15 +125,15 @@ contract KryptomonBase is KryptomonAccessControl {
   // parthogenesis. Kryptomon ID 0 should be considered invalid.
   Kryptomon[] kryptomonList;
 
-  // A mapping of kryptomon IDs to the address that owns them. All
-  // kryptomon have a valid owner address.
+  // Maps all kryptomon IDs to an owner. All Kryptomon should have an
+  // owner at all times.
   mapping (uint32 => address) public kryptomonIndexToOwner;
 
-  // A mapping of egg IDs to the address that owns them. All eggs have
-  // have a valid owner address.
+  // Maps all egg IDs to an owner. All eggs should have an owner at all
+  // times.
   mapping (uint32 => address) public eggIndexToOwner;
 
-  // Function used to return a pseudo-random int used to identy a
+  // Function used to return a deterministic int used to identy a
   // new Kryptomon's species.
   function random(uint id) internal view returns(uint256) {
     return uint256(keccak256(

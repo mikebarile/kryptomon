@@ -136,11 +136,14 @@ contract KryptomonBase is KryptomonAccessControl {
   // Function used to return pseudo-random numbers. Probably needs to
   // be reexamined to ensure that egg hatching can't be attacked by
   // miners.
-  function random() internal view returns(uint) {
+  function random() internal view returns(uint256) {
     return uint256(keccak256(now, msg.gas, msg.sender, block.timestamp));
   }
 
-  // function createKryptomon() internal {}
+  function createKryptomon() internal returns(uint32) {
+    uint256 rand = random() % 1000000 + 1;
+
+  }
 
   // function hatchEgg(uint32 _eggId) external {}
 

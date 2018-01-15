@@ -9,7 +9,7 @@ contract GenZeroEggSales is KryptomonBase {
   // the Kryptomon creators don't ahve to pay a crazy gas cost to
   // initialize thousands of identical eggs. These eggs are effecitvely
   // "owned" by the COO and are non transferable.
-  uint32 numGenZeroEggsRemaining = 100000;
+  uint numGenZeroEggsRemaining = 100000;
 
   uint genZeroEggPrice = 10 finney;
 
@@ -18,18 +18,22 @@ contract GenZeroEggSales is KryptomonBase {
     genZeroEggPrice = price;
   }
 
-  // Public function called by users to purchase a gen0 egg.
-  function buyGenZeroEggs(uint numEggs) external payable {
-    require(numEggs <= numGenZeroEggsRemaining);
-    uint totalCost = numEggs * genZeroEggPrice;
-
+  // The function users call to purchase gen0 eggs. Automatically
+  // hatches a kryptomon and sets ownership to the purchaser.
+  function buyGenZeroEggs(uint _numEggs) external whenNotPaused payable {
+    require(_numEggs <= numGenZeroEggsRemaining);
+    uint totalCost = _numEggs * genZeroEggPrice;
+    require(msg.value < totalCost);
+    numGenZeroEggsRemaining -= _numEggs;
+    for(uint i = 0; i < _numEggs; i++) {
+      uint32 kryptomonId = createKryptomon();
+      kryptomonIndexToOwner[kryptomonId] = msg.sender;
+    }
   }
 
   // Function called when a user successfully purchases a gen0 egg
   // from the COO.
   function hatchGenZeroEgg(address _toAddress) internal {
     require(numGenZeroEggsRemaining > 0);
-    uint256 rand = random() % 1000000 + 1;
-
   }
 }

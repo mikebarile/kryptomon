@@ -9,9 +9,12 @@ contract GenZeroEggSales is KryptomonBase {
   // the Kryptomon creators don't ahve to pay a crazy gas cost to
   // initialize thousands of identical eggs. These eggs are effecitvely
   // "owned" by the COO and are non transferable.
-  uint numGenZeroEggsRemaining = 100000;
+  uint numGenZeroEggsRemaining = 1000000;
 
   uint genZeroEggPrice = 10 finney;
+
+  // Event triggered when a gen zero egg is successfully hatched.
+  event genZeroEggHatched(address buyerId, uint kryptomonId);
 
   // Function that allows the COO to change the gen0 egg price.
   function setGenZeroEggPrice(uint price) external onlyCOO {
@@ -26,14 +29,48 @@ contract GenZeroEggSales is KryptomonBase {
     require(msg.value < totalCost);
     numGenZeroEggsRemaining -= _numEggs;
     for(uint i = 0; i < _numEggs; i++) {
-      uint32 kryptomonId = createKryptomon();
+      uint32 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
+      genZeroEggHatched(msg.sender, kryptomonId);
     }
   }
 
-  // Function called when a user successfully purchases a gen0 egg
-  // from the COO.
-  function hatchGenZeroEgg(address _toAddress) internal {
-    require(numGenZeroEggsRemaining > 0);
+  // Function used to create a gen0 kryptomon. Employs similar logic to
+  // createKryptomon except that there aren't any genetic effects.
+  function createGenZeroKryptomon(uint id) internal returns(uint32) {
+    uint16 speciesId = determineGenZeroSpeciesId(id);
+    uint256 genes = randomGenes(id);
+    kryptomonList.push(Kryptomon({
+      speciesId: speciesId,
+      genes: uint8(genes),
+      generation: 0,
+      birthTimeStamp: uint32(now),
+      breedingCooldown: uint32(now),
+      numChildren: 0
+    }));
+    return uint32(kryptomonList.length - 1);
+  }
+
+  function determineGenZeroSpeciesId(uint id) private view returns(uint16){
+    uint256 randSpecies = randomSpecies(id);
+    if (randSpecies < 350000) {
+      // Set to a common creature (35% probability).
+
+    } else if (randSpecies >= 350000 && randSpecies < 600000) {
+      // Set to an uncommon creature (25% probability).
+
+    } else if (randSpecies >= 600000 && randSpecies < 800000) {
+      // Set to a rare creature (20% probability).
+
+    } else if (randSpecies >= 800000 && randSpecies < 950000) {
+      // Set to a super rare creature (15% probability).
+
+    } else if (randSpecies >= 950000 && randSpecies < 998000) {
+      // Set to an ultra rare creature (~5% probability).
+    } else if (randSpecies >= 998000 && randSpecies < 999997) {
+      // Set to a mega rare creature (~0.1% probability).
+    } else if (randSpecies >= 999997 && randSpecies <= 1000000) {
+      // Set to a legendary creature (0.0003% probability).
+    }
   }
 }

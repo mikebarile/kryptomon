@@ -110,6 +110,17 @@ contract KryptomonBase is KryptomonAccessControl {
     // Base amount time it takes for this Kryptomon to evolve. Actual
     // evolution time is also based on Kryptomon's generation.
     uint32 timeToEvolve;
+
+    // Number representing the creature's rarity. Values can be between
+    // 1 - 8 which translate into the following:
+    // 1: Common
+    // 2: Uncommon
+    // 3: Rare
+    // 4: Super Rare
+    // 5: Ultra Rare
+    // 6: Mega Rare
+    // 7: Legendary
+    uint8 rarity;
   }
   /*** END Struct Definitions ***/
 
@@ -133,17 +144,29 @@ contract KryptomonBase is KryptomonAccessControl {
   // have a valid owner address.
   mapping (uint32 => address) public eggIndexToOwner;
 
-  // Function used to return pseudo-random numbers. Probably needs to
-  // be reexamined to ensure that egg hatching can't be attacked by
-  // miners.
-  function random() internal view returns(uint256) {
-    return uint256(keccak256(now, msg.gas, msg.sender, block.timestamp));
+  // Function used to return a pseudo-random int used to identy a
+  // new Kryptomon's species.
+  function random(uint id) internal view returns(uint256) {
+    return uint256(keccak256(
+      id,
+      msg.gas,
+      msg.sender,
+      block.timestamp
+    ));
   }
 
-  function createKryptomon() internal returns(uint32) {
+  function randomGenes(uint id) internal view returns(uint256) {
+    return random(id + 1000000) % 200;
+  }
+
+  function randomSpecies(uint id) internal view returns(uint256) {
+    return random(id + 1000000) % 1000000 + 1;
+  }
+
+  /* function createKryptomon(uint32 eggId) internal returns(uint32) {
     uint256 rand = random() % 1000000 + 1;
 
-  }
+  } */
 
   // function hatchEgg(uint32 _eggId) external {}
 

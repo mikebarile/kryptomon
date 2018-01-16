@@ -141,7 +141,11 @@ contract KryptomonDefinitions is KryptomonBoardController {
   // times.
   mapping (uint256 => address) public eggIndexToOwner;
 
-  // Function used to return a deterministic int used to identy a
+  // A mapping of speciesIds to Species structs that house each species'
+  // unique attributes.
+  mapping (uint256 => Species) public speciesMapping;
+
+  // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.
   function random(uint256 id) internal view returns(uint256) {
     return uint256(keccak256(
@@ -152,7 +156,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
     ));
   }
 
-  // Function used to return a deterministic int between 1 and
+  // Function used to return a pseudo-random int between 1 and
   // 1,000,000 for use in generating a species ID.
   function randomSpecies(uint256 id) internal view returns(uint256) {
     return random(id + 1000000) % 1000000 + 1;
@@ -269,24 +273,39 @@ contract KryptomonDefinitions is KryptomonBoardController {
   // External function called by users to evolve their Kryptomon.
   // Maintains the same Kryptomon struct and just changes the
   // Kryptomon's speciesId.
+  // TODO(mikebarile): Update the logic to incorporate a penalty for
+  // generation. We should consider whether "evolutionDate" should just
+  // be stored in the species struct.
   function evolve(uint256 _kryptomonId) external {
     require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
-    Species memory species = speciesList[kryptomon.speciesId];
+    Species memory species = speciesMapping[kryptomon.speciesId];
     require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
     kryptomonEvolved(msg.sender, _kryptomonId);
   }
-
-  // function transferEgg(uint32 eggId, address _toAddress) internal {}
-
-  // function transferKryptomon(uint32 kryptomonId, address _toAddress) internal {}
-
   /*** END Storage ***/
 
   /*** START Species Definitions ***/
-
-  Species[] public speciesList;
+  // Function that intializes the species mapping. This function is
+  // only called when KryptomonKore is being initialized.
+  // TODO(mikebarile): Add all the Kryptomon!
+  function intializeSpecies() internal {
+    // Example Kryptomon species
+    speciesMapping[1] = Species({
+      attack: 100,
+      defense: 100,
+      specialAttack: 100,
+      specialDefense: 100,
+      hitPoints: 100,
+      speed: 100,
+      maxChildren: 2,
+      breedingCooldown: 20000,
+      evolveToId: 2,
+      timeToEvolve: 10000000,
+      rarity: 1
+    });
+  }
 
   /*** END Species Definitions ***/
 

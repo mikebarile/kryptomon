@@ -12,5 +12,7 @@ import './KryptomonMarketplace.sol';
 // 6. KryptomonMarketplace
 // 7. KryptomonInit
 contract KryptomonKore is KryptomonMarketplace {
-
+  function KryptomonKore() public {
+    intializeSpecies();
+  }
 }

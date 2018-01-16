@@ -18,7 +18,7 @@ contract KryptomonBase is KryptomonBoardController {
     // The average of the egg's parents' gene attributes. The Kryptomon
     // that hatches from this egg is slightly more likely to have this
     // as their genetic value.
-    uint8 genes;
+    uint8 geneticPredisposition;
 
     // The species ID associated with the egg's matron. The egg has a
     // slightly larger chance of hatching into this species.
@@ -41,7 +41,7 @@ contract KryptomonBase is KryptomonBoardController {
     // value of 200 results in a 10% increase. Children are
     // predisposed to have similar genes as their parents but there is
     // an element of randomness in gene assignment.
-    uint8 genes;
+    uint8 geneticValue;
 
     // The Kryptomon's generation. Higher generation Kryptomon have
     // increasingly degredated base stats and take exponentially more
@@ -144,20 +144,115 @@ contract KryptomonBase is KryptomonBoardController {
     ));
   }
 
-  function randomGenes(uint id) internal view returns(uint256) {
-    return random(id + 1000000) % 200;
-  }
-
+  // Function used to return a deterministic int between 1 and
+  // 1,000,000 for use in generating a species ID.
   function randomSpecies(uint id) internal view returns(uint256) {
     return random(id + 1000000) % 1000000 + 1;
   }
 
-  /* function createKryptomon(uint32 eggId) internal returns(uint32) {
-    uint256 rand = random() % 1000000 + 1;
+  // Function called by Kryptomon users to hatch their eggs. Destroys
+  // the egg, removes the egg ID from the ownership mapping, creates
+  // a new Kryptomon, and assigns ownership of the new Kryptomon to
+  // the egg's owner.
+  function hatchEgg(uint32 _eggId) external {
+    require(eggIndexToOwner[_eggId] == msg.sender);
+    uint32 kryptomonId = createKryptomon(_eggId);
+    delete eggList[_eggId];
+    delete eggIndexToOwner[_eggId];
+    kryptomonIndexToOwner[kryptomonId] = msg.sender;
+  }
 
-  } */
+  // Creates a new Kryptomon and returns its id. The new Kryptomon will
+  // have a higher probability of having one of its parents' species
+  // and a higher probability of inheriting the average of their
+  // gene value.
+  function createKryptomon(uint32 _eggId) internal returns(uint32) {
+    Egg memory egg = eggList[_eggId];
+    uint16 speciesId = determineSpeciesId(
+      egg.matronSpeciesId,
+      egg.sireSpeciesId,
+      _eggId
+    );
+    uint8 geneticValue = determineGeneticValue(
+      egg.geneticPredisposition,
+      _eggId
+    );
+    kryptomonList.push(Kryptomon({
+      speciesId: speciesId,
+      geneticValue: geneticValue,
+      generation: egg.generation,
+      birthTimeStamp: uint32(now),
+      breedingCooldown: uint32(now),
+      numChildren: 0
+    }));
+    return uint32(kryptomonList.length - 1);
+  }
 
-  // function hatchEgg(uint32 _eggId) external {}
+  // Function used to determine a new Kryptomon's species ID. There is
+  // a 2% chance that the resulting Kryptomon will inherit one of its
+  // parents' species.
+  function determineSpeciesId(
+    uint16 _matronSpeciesId,
+    uint16 _sireSpeciesId,
+    uint32 _eggId
+  ) private
+    view
+    returns(uint16)
+  {
+    uint256 randSpecies = randomSpecies(_eggId);
+    if (randSpecies <= 1000) {
+      // Set species ID to matron's species ID.
+      return _matronSpeciesId;
+    } else if (randSpecies > 10000 && randSpecies <= 20000) {
+      // Set species ID to sire's species ID.
+      return _sireSpeciesId;
+    } else if (randSpecies > 20000 && randSpecies <= 400000) {
+      // Set to a common creature (38% probability).
+
+    } else if (randSpecies > 400000 && randSpecies <= 650000) {
+      // Set to an uncommon creature (25% probability).
+
+    } else if (randSpecies > 650000 && randSpecies <= 850000) {
+      // Set to a rare creature (20% probability).
+
+    } else if (randSpecies > 850000 && randSpecies <= 950000) {
+      // Set to a super rare creature (10% probability).
+
+    } else if (randSpecies > 950000 && randSpecies <= 998000) {
+      // Set to an ultra rare creature (~5% probability).
+
+    } else if (randSpecies > 998000 && randSpecies <= 999995) {
+      // Set to a mega rare creature (~0.1% probability).
+
+    } else if (randSpecies > 999995 && randSpecies <= 1000000) {
+      // Set to a legendary creature (0.0005% probability).
+
+    }
+  }
+
+  // Determines the genetic value of the resulting Kryptomon. Produces
+  // a value between 0 and 200. There is a 50% chance that the
+  // resulting Kryptomon will have the same genetic value as its
+  // genetic predisposition.
+  function determineGeneticValue(
+    uint8 _geneticPredisposition,
+    uint32 _eggId
+  ) private
+    view
+    returns(uint8) 
+  {
+    uint8 genes = uint8(randomGenes(_eggId) % 400);
+    if (genes <= 200) {
+      return genes;
+    } else {
+      return _geneticPredisposition;
+    }
+  }
+
+  // Produces a random genetic code for use in gen0 eggs.
+  function randomGenes(uint _eggId) internal view returns(uint256) {
+    return random(_eggId + 1000000) % 400;
+  }
 
   // function evolve(uint32 _kryptomonId) external {}
 

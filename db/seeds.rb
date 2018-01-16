@@ -1,5 +1,0 @@
-require_relative 'users'
-require_relative 'cities'
-require_relative 'bookings'
-require_relative 'listings'
-require_relative 'reviews'

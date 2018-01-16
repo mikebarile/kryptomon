@@ -8,34 +8,34 @@ contract GenZeroEggSales is KryptomonBase {
   // a crazy gas cost to initialize thousands of identical eggs. These
   // eggs are effecitvely owned by the Kryptomon board and are non
   // transferable.
-  uint genZeroEggs = 1000000;
+  uint256 genZeroEggs = 1000000;
 
   // A reserve of gen0 eggs that is controlled by the Manager. For use
   // with beta testing, bug bounties, etc.
-  uint genZeroEggsReserve = 50000;
+  uint256 genZeroEggsReserve = 50000;
 
   // The price per gen0 egg. Can be reassigned by the Manager based on
   // ether <-> fiat price movements.
-  uint genZeroEggPrice = 10 finney;
+  uint256 genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
   event genZeroEggHatched(address buyerId);
 
   // Function that allows the Manager to change the gen0 egg price.
-  function setGenZeroEggPrice(uint price) external managerOnly {
+  function setGenZeroEggPrice(uint256 price) external managerOnly {
     genZeroEggPrice = price;
   }
 
   // Function that allows the Manager to distribute gen0 reserve eggs.
   // To be used for beta testing, bug bounty rewards, etc.
-  function assignReserveEggs(address _sendTo, uint _numEggs)
+  function assignReserveEggs(address _sendTo, uint256 _numEggs)
     external
     managerOnly
   {
     require(_numEggs <= genZeroEggsReserve);
     genZeroEggsReserve -= _numEggs;
-    for(uint i = 0; i < _numEggs; i++) {
-      uint32 kryptomonId = createGenZeroKryptomon(i);
+    for(uint256 i = 0; i < _numEggs; i++) {
+      uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = _sendTo;
       genZeroEggHatched(_sendTo);
       kryptomonAssigned(_sendTo, kryptomonId);
@@ -45,17 +45,17 @@ contract GenZeroEggSales is KryptomonBase {
   // The function Kryptomon players call to purchase gen0 eggs.
   // Automatically hatches a kryptomon and sets ownership to the
   // purchaser.
-  function buyGenZeroEggs(uint _numEggs)
+  function buyGenZeroEggs(uint256 _numEggs)
     external
     whenGenZeroNotPaused
     payable
   {
     require(_numEggs <= genZeroEggs);
-    uint totalCost = _numEggs * genZeroEggPrice;
+    uint256 totalCost = _numEggs * genZeroEggPrice;
     require(msg.value >= totalCost);
     genZeroEggs -= _numEggs;
-    for(uint i = 0; i < _numEggs; i++) {
-      uint32 kryptomonId = createGenZeroKryptomon(i);
+    for(uint256 i = 0; i < _numEggs; i++) {
+      uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
       genZeroEggHatched(msg.sender);
       kryptomonAssigned(msg.sender, kryptomonId);
@@ -64,28 +64,33 @@ contract GenZeroEggSales is KryptomonBase {
 
   // Function used to create a gen0 kryptomon. Employs similar logic to
   // createKryptomon except that there aren't any genetic effects.
-  function createGenZeroKryptomon(uint id) internal returns(uint32) {
-    uint16 speciesId = determineGenZeroSpeciesId(id);
-    uint8 geneticValue = determineGenZeroGeneticValue(id);
-    kryptomonList.push(Kryptomon({
-      speciesId: speciesId,
-      geneticValue: geneticValue,
-      generation: 0,
-      birthTimeStamp: uint32(now),
-      breedingCooldown: uint32(now),
-      numChildren: 0
-    }));
-    return uint32(kryptomonList.length - 1);
+  function createGenZeroKryptomon(uint256 id)
+    internal
+    returns(uint256)
+  {
+    uint256 speciesId = determineGenZeroSpeciesId(id);
+    uint256 geneticValue = determineGenZeroGeneticValue(id);
+    kryptomonList.push(
+      Kryptomon({
+        speciesId: uint16(speciesId),
+        geneticValue: uint8(geneticValue),
+        generation: 0,
+        birthTimeStamp: uint32(now),
+        breedingCooldown: uint32(now),
+        numChildren: 0
+      })
+    );
+    return uint256(kryptomonList.length - 1);
   }
 
   // Function that pseudo-randomly determines a species ID for a new
   // gen 0 Kryptomon.
   // TODO(mikebarile): Create lookup table and assign Kryptomon once
   // we've finished designing them.
-  function determineGenZeroSpeciesId(uint id)
+  function determineGenZeroSpeciesId(uint256 id)
     private
     view
-    returns(uint16)
+    returns(uint256)
   {
     uint256 randSpecies = randomSpecies(id);
     if (randSpecies <= 400000) {
@@ -113,11 +118,11 @@ contract GenZeroEggSales is KryptomonBase {
   }
 
   // Determines the genetic value for a new gen0 Kryptomon.
-  function determineGenZeroGeneticValue(uint id)
+  function determineGenZeroGeneticValue(uint256 id)
     internal
     view
-    returns(uint8)
+    returns(uint256)
   {
-    return uint8(random(id + 1000000) % 200);
+    return uint256(random(id + 1000000) % 200);
   }
 }

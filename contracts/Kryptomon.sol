@@ -4,14 +4,14 @@ import './KryptomonBoardController.sol';
 contract KryptomonBase is KryptomonBoardController {
   /*** START Event Definitions ***/
   // Event that's fired every time an egg is hatched.
-  event eggHatched(address ownerAddress, uint32 eggId);
+  event eggHatched(address ownerAddress, uint256 eggId);
 
   // Event that's fired every time a Kryptomon is assigned a new owner.
   // This includes when a new Kryptomon is hatched from an egg.
-  event kryptomonAssigned(address ownerAddress, uint32 kryptomonId);
+  event kryptomonAssigned(address ownerAddress, uint256 kryptomonId);
 
   // Event that's fired every time a Kryptomon successfully evolves.
-  event kryptomonEvolved(address ownerAddress, uint32 kryptomonId);
+  event kryptomonEvolved(address ownerAddress, uint256 kryptomonId);
   /*** END Event Definitions ***/
 
   /*** START Structs Definitions ***/
@@ -135,15 +135,15 @@ contract KryptomonBase is KryptomonBoardController {
 
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
   // owner at all times.
-  mapping (uint32 => address) public kryptomonIndexToOwner;
+  mapping (uint256 => address) public kryptomonIndexToOwner;
 
   // Maps all egg IDs to an owner. All eggs should have an owner at all
   // times.
-  mapping (uint32 => address) public eggIndexToOwner;
+  mapping (uint256 => address) public eggIndexToOwner;
 
   // Function used to return a deterministic int used to identy a
   // new Kryptomon's species.
-  function random(uint id) internal view returns(uint256) {
+  function random(uint256 id) internal view returns(uint256) {
     return uint256(keccak256(
       id,
       msg.gas,
@@ -154,7 +154,7 @@ contract KryptomonBase is KryptomonBoardController {
 
   // Function used to return a deterministic int between 1 and
   // 1,000,000 for use in generating a species ID.
-  function randomSpecies(uint id) internal view returns(uint256) {
+  function randomSpecies(uint256 id) internal view returns(uint256) {
     return random(id + 1000000) % 1000000 + 1;
   }
 
@@ -162,9 +162,9 @@ contract KryptomonBase is KryptomonBoardController {
   // the egg, removes the egg ID from the ownership mapping, creates
   // a new Kryptomon, and assigns ownership of the new Kryptomon to
   // the egg's owner.
-  function hatchEgg(uint32 _eggId) external {
+  function hatchEgg(uint256 _eggId) external {
     require(eggIndexToOwner[_eggId] == msg.sender);
-    uint32 kryptomonId = createKryptomon(_eggId);
+    uint256 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
     eggHatched(msg.sender, _eggId);
@@ -176,40 +176,40 @@ contract KryptomonBase is KryptomonBoardController {
   // have a higher probability of having one of its parents' species
   // and a higher probability of inheriting the average of their
   // gene value.
-  function createKryptomon(uint32 _eggId) internal returns(uint32) {
+  function createKryptomon(uint256 _eggId) internal returns(uint256) {
     Egg memory egg = eggList[_eggId];
-    uint16 speciesId = determineSpeciesId(
+    uint256 speciesId = determineSpeciesId(
       egg.matronSpeciesId,
       egg.sireSpeciesId,
       _eggId
     );
-    uint8 geneticValue = determineGeneticValue(
+    uint256 geneticValue = determineGeneticValue(
       egg.geneticPredisposition,
       _eggId
     );
     kryptomonList.push(
       Kryptomon({
-        speciesId: speciesId,
-        geneticValue: geneticValue,
+        speciesId: uint16(speciesId),
+        geneticValue: uint8(geneticValue),
         generation: egg.generation,
         birthTimeStamp: uint32(now),
         breedingCooldown: uint32(now),
         numChildren: 0
       })
     );
-    return uint32(kryptomonList.length - 1);
+    return uint256(kryptomonList.length - 1);
   }
 
   // Function used to determine a new Kryptomon's species ID. There is
   // a 2% chance that the resulting Kryptomon will inherit one of its
   // parents' species.
   function determineSpeciesId(
-    uint16 _matronSpeciesId,
-    uint16 _sireSpeciesId,
-    uint32 _eggId
+    uint256 _matronSpeciesId,
+    uint256 _sireSpeciesId,
+    uint256 _eggId
   ) private
     view
-    returns(uint16)
+    returns(uint256)
   {
     uint256 randSpecies = randomSpecies(_eggId);
     if (randSpecies <= 1000) {
@@ -247,13 +247,13 @@ contract KryptomonBase is KryptomonBoardController {
   // resulting Kryptomon will have the same genetic value as its
   // genetic predisposition.
   function determineGeneticValue(
-    uint8 _geneticPredisposition,
-    uint32 _eggId
+    uint256 _geneticPredisposition,
+    uint256 _eggId
   ) private
     view
-    returns(uint8)
+    returns(uint256)
   {
-    uint8 genes = uint8(randomGenes(_eggId) % 400);
+    uint256 genes = randomGenes(_eggId) % 400;
     if (genes <= 200) {
       return genes;
     } else {
@@ -262,14 +262,14 @@ contract KryptomonBase is KryptomonBoardController {
   }
 
   // Produces a random genetic code for use in gen0 eggs.
-  function randomGenes(uint _eggId) internal view returns(uint256) {
+  function randomGenes(uint256 _eggId) internal view returns(uint256) {
     return random(_eggId + 1000000) % 400;
   }
 
   // External function called by users to evolve their Kryptomon.
   // Maintains the same Kryptomon struct and just changes the
   // Kryptomon's speciesId.
-  function evolve(uint32 _kryptomonId) external {
+  function evolve(uint256 _kryptomonId) external {
     require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
     Species memory species = speciesList[kryptomon.speciesId];
@@ -286,7 +286,7 @@ contract KryptomonBase is KryptomonBoardController {
 
   /*** START Species Definitions ***/
 
-  Species[] speciesList;
+  Species[] public speciesList;
 
   /*** END Species Definitions ***/
 

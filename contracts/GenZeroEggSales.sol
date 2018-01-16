@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
-import './Kryptomon.sol';
+import './KryptomonKore.sol';
 
-contract GenZeroEggSales is KryptomonBase {
+contract GenZeroEggSales is KryptomonKore {
   // The total number of "gen 0" eggs remaining. These eggs have no
   // parents or genetics, and hatch into a Kryptomon. These eggs are
   // stored as an int so that the Kryptomon creators don't have to pay

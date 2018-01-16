@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 import './KryptomonBoardController.sol';
 
-contract KryptomonBase is KryptomonBoardController {
+contract KryptomonKore is KryptomonBoardController {
   /*** START Event Definitions ***/
   // Event that's fired every time an egg is hatched.
   event eggHatched(address ownerAddress, uint256 eggId);

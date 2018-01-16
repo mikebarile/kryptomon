@@ -3,7 +3,15 @@ import './KryptomonBoardController.sol';
 
 contract KryptomonBase is KryptomonBoardController {
   /*** START Event Definitions ***/
+  // Event that's fired every time an egg is hatched.
+  event eggHatched(address ownerAddress, uint32 eggId);
 
+  // Event that's fired every time a Kryptomon is assigned a new owner.
+  // This includes when a new Kryptomon is hatched from an egg.
+  event kryptomonAssigned(address ownerAddress, uint32 kryptomonId);
+
+  // Event that's fired every time a Kryptomon successfully evolves.
+  event kryptomonEvolved(address ownerAddress, uint32 kryptomonId);
   /*** END Event Definitions ***/
 
   /*** START Structs Definitions ***/
@@ -56,7 +64,7 @@ contract KryptomonBase is KryptomonBoardController {
     // breeding activities again. Is based on a Kryptomon's species.
     uint32 breedingCooldown;
 
-    // The number of eggs that this kryptomon has produced. Different
+    // The number of eggs that this Kryptomon has produced. Different
     // species of Kryptomon have different restrictions on how many
     // children they can have.
     uint16 numChildren;
@@ -159,7 +167,9 @@ contract KryptomonBase is KryptomonBoardController {
     uint32 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
+    eggHatched(msg.sender, _eggId);
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
+    kryptomonAssigned(msg.sender, kryptomonId);
   }
 
   // Creates a new Kryptomon and returns its id. The new Kryptomon will
@@ -177,14 +187,16 @@ contract KryptomonBase is KryptomonBoardController {
       egg.geneticPredisposition,
       _eggId
     );
-    kryptomonList.push(Kryptomon({
-      speciesId: speciesId,
-      geneticValue: geneticValue,
-      generation: egg.generation,
-      birthTimeStamp: uint32(now),
-      breedingCooldown: uint32(now),
-      numChildren: 0
-    }));
+    kryptomonList.push(
+      Kryptomon({
+        speciesId: speciesId,
+        geneticValue: geneticValue,
+        generation: egg.generation,
+        birthTimeStamp: uint32(now),
+        breedingCooldown: uint32(now),
+        numChildren: 0
+      })
+    );
     return uint32(kryptomonList.length - 1);
   }
 
@@ -239,7 +251,7 @@ contract KryptomonBase is KryptomonBoardController {
     uint32 _eggId
   ) private
     view
-    returns(uint8) 
+    returns(uint8)
   {
     uint8 genes = uint8(randomGenes(_eggId) % 400);
     if (genes <= 200) {
@@ -254,7 +266,17 @@ contract KryptomonBase is KryptomonBoardController {
     return random(_eggId + 1000000) % 400;
   }
 
-  // function evolve(uint32 _kryptomonId) external {}
+  // External function called by users to evolve their Kryptomon.
+  // Maintains the same Kryptomon struct and just changes the
+  // Kryptomon's speciesId.
+  function evolve(uint32 _kryptomonId) external {
+    require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
+    Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
+    Species memory species = speciesList[kryptomon.speciesId];
+    require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
+    kryptomonList[_kryptomonId].speciesId = species.evolveToId;
+    kryptomonEvolved(msg.sender, _kryptomonId);
+  }
 
   // function transferEgg(uint32 eggId, address _toAddress) internal {}
 

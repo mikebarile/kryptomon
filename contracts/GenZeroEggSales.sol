@@ -19,7 +19,7 @@ contract GenZeroEggSales is KryptomonBase {
   uint genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
-  event genZeroEggHatched(address buyerId, uint kryptomonId);
+  event genZeroEggHatched(address buyerId);
 
   // Function that allows the Manager to change the gen0 egg price.
   function setGenZeroEggPrice(uint price) external managerOnly {
@@ -37,7 +37,8 @@ contract GenZeroEggSales is KryptomonBase {
     for(uint i = 0; i < _numEggs; i++) {
       uint32 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = _sendTo;
-      genZeroEggHatched(_sendTo, kryptomonId);
+      genZeroEggHatched(_sendTo);
+      kryptomonAssigned(_sendTo, kryptomonId);
     }
   }
 
@@ -56,7 +57,8 @@ contract GenZeroEggSales is KryptomonBase {
     for(uint i = 0; i < _numEggs; i++) {
       uint32 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
-      genZeroEggHatched(msg.sender, kryptomonId);
+      genZeroEggHatched(msg.sender);
+      kryptomonAssigned(msg.sender, kryptomonId);
     }
   }
 

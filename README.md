@@ -1,14 +1,9 @@
 # KRYPTOMON!
 
-## Dependencies
-truffle
-
-## Commands
-` $ yarn truffle run contracts/Kryptomon.sol`
-
 ## Start front end
-1. Run "npm install"
-2. Run "bundle install"
-3. In a separate tab run "npm run webpack --watch"
-4. In a separate tab run "rails server"
-5. Open localhost:3000 and bask in your beautiful kryptomon
+1. Run npm install to install all dependencies
+2. Run "npm install -g ethereumjs-testrpc"
+3. Run "testrpc" to create a Ethereum test network. This should create 10 fake accounts on the network.
+4. Run "node server/app" to start the NodeJS app.
+5. Run "npm build" to build the React script.
+6. Visit localhost:8080!

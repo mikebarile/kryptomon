@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
-import './KryptomonTokenization.sol';
+import './KryptomonEggTokenization.sol';
 
-contract KryptomonBreeding is KryptomonTokenization {
-
+contract KryptomonBreeding is KryptomonEggTokenization {
+  
 }

@@ -145,6 +145,10 @@ contract KryptomonDefinitions is KryptomonBoardController {
   // unique attributes.
   mapping (uint256 => Species) public speciesMapping;
 
+  // Maps each user's address to the total number of Kryptomon they
+  // own. We use this mapping to comply with ERC721.
+  mapping (address => uint256) public ownerToTotalKryptomon;
+
   // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.
   function random(uint256 id) internal view returns(uint256) {
@@ -173,6 +177,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
     delete eggIndexToOwner[_eggId];
     eggHatched(msg.sender, _eggId);
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
+    ownerToTotalKryptomon[msg.sender] += 1;
     kryptomonAssigned(msg.sender, kryptomonId);
   }
 
@@ -282,6 +287,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
     Species memory species = speciesMapping[kryptomon.speciesId];
     require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
+    kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
     kryptomonEvolved(msg.sender, _kryptomonId);
   }
   /*** END Storage ***/

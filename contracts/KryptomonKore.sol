@@ -6,7 +6,7 @@ import './KryptomonMarketplace.sol';
 // includes:
 // 1. KryptomonBoardController
 // 2. KryptomonKore
-// 3. GenZeroEggSales
+// 3. KryptomonGenZeroEggSales
 // 4. KryptomonTokenization
 // 5. KryptomonBreeding
 // 6. KryptomonMarketplace

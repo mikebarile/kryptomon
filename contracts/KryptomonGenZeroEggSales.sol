@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 import './KryptomonDefinitions.sol';
 
-contract GenZeroEggSales is KryptomonDefinitions {
+contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   // The total number of "gen 0" eggs remaining. These eggs have no
   // parents or genetics, and hatch into a Kryptomon. These eggs are
   // stored as an int so that the Kryptomon creators don't have to pay
@@ -9,6 +9,10 @@ contract GenZeroEggSales is KryptomonDefinitions {
   // eggs are effecitvely owned by the Kryptomon board and are non
   // transferable.
   uint256 genZeroEggs = 1000000;
+
+  // TODO(mikebarile): Tier the genZeroEggs into multiple batches so
+  // that we can release different creatures as the artwork becomes
+  // available.
 
   // A reserve of gen0 eggs that is controlled by the Manager. For use
   // with beta testing, bug bounties, etc.
@@ -37,6 +41,7 @@ contract GenZeroEggSales is KryptomonDefinitions {
     for(uint256 i = 0; i < _numEggs; i++) {
       uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = _sendTo;
+      ownerToTotalKryptomon[_sendTo] += 1;
       genZeroEggHatched(_sendTo);
       kryptomonAssigned(_sendTo, kryptomonId);
     }
@@ -57,6 +62,7 @@ contract GenZeroEggSales is KryptomonDefinitions {
     for(uint256 i = 0; i < _numEggs; i++) {
       uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
+      ownerToTotalKryptomon[msg.sender] += 1;
       genZeroEggHatched(msg.sender);
       kryptomonAssigned(msg.sender, kryptomonId);
     }
@@ -86,7 +92,10 @@ contract GenZeroEggSales is KryptomonDefinitions {
   // Function that pseudo-randomly determines a species ID for a new
   // gen 0 Kryptomon.
   // TODO(mikebarile): Create lookup table and assign Kryptomon once
-  // we've finished designing them.
+  // we've finished designing them. Will likely need to pass in the
+  // "tier" as an argument based on which batch of gen 0 eggs is being
+  // hatched (aka batch 1 will include 1-150, batch 2 will include
+  // 151 - 300, etc.)
   function determineGenZeroSpeciesId(uint256 id)
     private
     view

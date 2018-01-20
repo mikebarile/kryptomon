@@ -46,30 +46,42 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
   function approve(address _to, uint _tokenId) public {
     require(msg.sender == ownerOf(_tokenId));
     kryptomonIndexToApproved[_tokenId] = _to;
+    Approval(msg.sender, _to, _tokenId);
   }
 
-  /* // Allows a Kryptomon's custodian to transfer ownership from the
+  // Allows a Kryptomon's custodian to transfer ownership from the
   // current owner to a different address.
   function transferFrom(address _from, address _to, uint _tokenId)
     public
   {
+    require(kryptomonIndexToApproved[_tokenId] == msg.sender);
+    require(ownerOf(_tokenId) == _from);
+    kryptomonIndexToOwner[_tokenId] = _to;
+    ownerToTotalKryptomon[_from] -= 1;
+    ownerToTotalKryptomon[_to] += 1;
+    Transfer(_from, _to, _tokenId);
+  }
 
-  } */
-
-  /* function transfer(address _to, uint _tokenId) public {
-
+  // Allows a Kryptomon's owner to transfer the Kryptomon to another
+  // user.
+  function transfer(address _to, uint _tokenId) public {
+    require(ownerOf(_tokenId) == msg.sender);
+    kryptomonIndexToOwner[_tokenId] = _to;
+    ownerToTotalKryptomon[msg.sender] -= 1;
+    ownerToTotalKryptomon[_to] += 1;
+    Transfer(msg.sender, _to, _tokenId);
   }
 
   // Optional functions
   function name() public view returns (string _name) {
-
+    return "Kryptomon";
   }
 
   function symbol() public view returns (string _symbol) {
-
+    return "KRMN";
   }
 
-  function tokenOfOwnerByIndex(address _owner, uint _index) external view returns (uint256) {
+  /* function tokenOfOwnerByIndex(address _owner, uint _index) external view returns (uint256) {
 
   }
 

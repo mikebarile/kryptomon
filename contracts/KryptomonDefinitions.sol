@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
-import './KryptomonBoardController.sol';
+import './KryptoGodController.sol';
 
-contract KryptomonDefinitions is KryptomonBoardController {
+contract KryptomonDefinitions is KryptoGodController {
   /*** START Event Definitions ***/
   // Event that's fired every time an egg is hatched.
   event eggHatched(address ownerAddress, uint256 eggId);
@@ -128,9 +128,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
 
   // An array containing the Kryptomon struct for all Kryptomon in
   // existence. The ID of each Kryptomon is actually an index in this
-  // array. Note that the ID 0 is the Kryptogod, the creator of all
-  // Kryptomon who produced all gen1 Kryptomon through a divine act of
-  // parthogenesis. Kryptomon ID 0 should be considered invalid.
+  // array.
   Kryptomon[] kryptomonList;
 
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
@@ -150,7 +148,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
   mapping (address => uint256) public ownerToTotalKryptomon;
 
   // Maps each Kryptomon to an address that has been approved to call
-  // the "transferFrom" method. Used to comply with ERC721. 
+  // the "transferFrom" method. Used to comply with ERC721.
   mapping (uint256 => address) public kryptomonIndexToApproved;
 
   // Function used to return a pseudo-random int used to identy a

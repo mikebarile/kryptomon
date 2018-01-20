@@ -26,7 +26,7 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   event genZeroEggHatched(address buyerId);
 
   // Function that allows the Manager to change the gen0 egg price.
-  function setGenZeroEggPrice(uint256 price) external managerOnly {
+  function setGenZeroEggPrice(uint256 price) external kryptoGodOnly {
     genZeroEggPrice = price;
   }
 
@@ -34,7 +34,7 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   // To be used for beta testing, bug bounty rewards, etc.
   function assignReserveEggs(address _sendTo, uint256 _numEggs)
     external
-    managerOnly
+    kryptoGodOnly
   {
     require(_numEggs <= genZeroEggsReserve);
     genZeroEggsReserve -= _numEggs;

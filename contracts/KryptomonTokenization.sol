@@ -25,27 +25,38 @@ contract ERC721 {
 }
 
 contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
+  // Returns the total number of Kryptomon in existence.
   function totalSupply() public view returns(uint256) {
     return kryptomonList.length;
   }
 
+  // Returns the total number of Kryptomon owned by a given address.
   function balanceOf(address _owner) public view returns(uint256) {
     return ownerToTotalKryptomon[_owner];
   }
 
-  /* function ownerOf(uint _tokenId) public view returns(address) {
-
+  // Returns the address of the owner of a given Kryptomon id.
+  function ownerOf(uint _tokenId) public view returns(address) {
+    require(_tokenId < totalSupply() - 1);
+    return kryptomonIndexToOwner[_tokenId];
   }
 
+  // Approves an address to call the "transferFrom" method and take
+  // ownership of a Kryptomon.
   function approve(address _to, uint _tokenId) public {
-
+    require(msg.sender == ownerOf(_tokenId));
+    kryptomonIndexToApproved[_tokenId] = _to;
   }
 
-  function transferFrom(address _from, address _to, uint _tokenId) public {
+  /* // Allows a Kryptomon's custodian to transfer ownership from the
+  // current owner to a different address.
+  function transferFrom(address _from, address _to, uint _tokenId)
+    public
+  {
 
-  }
+  } */
 
-  function transfer(address _to, uint _tokenId) public {
+  /* function transfer(address _to, uint _tokenId) public {
 
   }
 

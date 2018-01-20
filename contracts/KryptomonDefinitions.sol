@@ -149,6 +149,10 @@ contract KryptomonDefinitions is KryptomonBoardController {
   // own. We use this mapping to comply with ERC721.
   mapping (address => uint256) public ownerToTotalKryptomon;
 
+  // Maps each Kryptomon to an address that has been approved to call
+  // the "transferFrom" method. Used to comply with ERC721. 
+  mapping (uint256 => address) public kryptomonIndexToApproved;
+
   // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.
   function random(uint256 id) internal view returns(uint256) {

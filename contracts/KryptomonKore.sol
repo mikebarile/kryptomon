@@ -14,5 +14,8 @@ import './KryptomonMarketplace.sol';
 contract KryptomonKore is KryptomonMarketplace {
   function KryptomonKore() public {
     intializeSpecies();
+    presidentAddress = msg.sender;
+    treasurerAddress = msg.sender;
+    managerAddress = msg.sender;
   }
 }

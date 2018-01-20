@@ -44,6 +44,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
   // Approves an address to call the "transferFrom" method and take
   // ownership of a Kryptomon.
   function approve(address _to, uint _tokenId) public {
+    require(_to != address(0));
     require(msg.sender == ownerOf(_tokenId));
     kryptomonIndexToApproved[_tokenId] = _to;
     Approval(msg.sender, _to, _tokenId);
@@ -56,6 +57,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
   {
     require(kryptomonIndexToApproved[_tokenId] == msg.sender);
     require(ownerOf(_tokenId) == _from);
+    require(_to != address(0));
     kryptomonIndexToOwner[_tokenId] = _to;
     ownerToTotalKryptomon[_from] -= 1;
     ownerToTotalKryptomon[_to] += 1;
@@ -66,6 +68,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
   // user.
   function transfer(address _to, uint _tokenId) public {
     require(ownerOf(_tokenId) == msg.sender);
+    require(_to != address(0));
     kryptomonIndexToOwner[_tokenId] = _to;
     ownerToTotalKryptomon[msg.sender] -= 1;
     ownerToTotalKryptomon[_to] += 1;
@@ -81,11 +84,15 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     return "KRMN";
   }
 
-  /* function tokenOfOwnerByIndex(address _owner, uint _index) external view returns (uint256) {
+  /* We've chosen to leave tokenOfOwnerByIndex unimplemented because
+     it doesn't add any value and would be very costly to implement.
+   function tokenOfOwnerByIndex(address _owner, uint _index)
+    external
+    view
+    returns (uint256) {}
+  */
 
-  }
-
-  function tokenMetadata(uint _tokenId) public view returns (string) {
+  /* function tokenMetadata(uint _tokenId) public view returns (string) {
 
   } */
 

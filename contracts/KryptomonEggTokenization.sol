@@ -43,6 +43,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
     ownerToTotalEggs[_from] -= 1;
     ownerToTotalEggs[_to] += 1;
     EggTransfer(_from, _to, _tokenId);
+    EggAssigned(_to, _tokenId);
   }
 
   // Allows a Kryptomon egg's owner to transfer the Kryptomon to another
@@ -54,6 +55,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
     ownerToTotalEggs[msg.sender] -= 1;
     ownerToTotalEggs[_to] += 1;
     EggTransfer(msg.sender, _to, _tokenId);
+    EggAssigned(_to, _tokenId);
   }
 
   // Events

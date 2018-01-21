@@ -151,6 +151,14 @@ contract KryptomonDefinitions is KryptoGodController {
   // the "transferFrom" method. Used to comply with ERC721.
   mapping (uint256 => address) public kryptomonIndexToApproved;
 
+  // Maps each user's address to the total number of Kryptomon eggs
+  // they own. We use this mapping to comply loosely with ERC721.
+  mapping (address => uint256) public ownerToTotalEggs;
+
+  // Maps each Kryptomon egg to an address that has been approved to
+  // call the "transferFrom" method. Used to comply loosely with ERC721.
+  mapping (uint256 => address) public eggIndexToApproved;
+
   // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.
   function random(uint256 id) internal view returns(uint256) {

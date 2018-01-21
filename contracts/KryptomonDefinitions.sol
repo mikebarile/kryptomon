@@ -12,7 +12,7 @@ contract KryptomonDefinitions is KryptoGodController {
 
   // Event that's fired every time an egg is assigned to a new owner.
   // This includes when a new egg is created from breeding two
-  // Kryptomon. 
+  // Kryptomon.
   event EggAssigned(address ownerAddress, uint256 eggId);
 
   // Event that's fired every time a Kryptomon successfully evolves.
@@ -224,6 +224,8 @@ contract KryptomonDefinitions is KryptoGodController {
     return uint256(kryptomonList.length - 1);
   }
 
+  // TODO(mikebarile): Create lookup tables for the different Kryptomon
+  // rarities and finish this function. 
   // Function used to determine a new Kryptomon's species ID. There is
   // a 2% chance that the resulting Kryptomon will inherit one of its
   // parents' species.

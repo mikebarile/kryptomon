@@ -59,6 +59,7 @@ contract KryptomonKore is KryptomonBreeding {
 
   } */
 
+  // TODO(mikebarile): Write this function.
   // Function that calculates a Kryptomon's actual stats which are
   // calculated as: base stats +/- geneticValue - generation.
   /* function calculateStats(uint256 _kryptomonId)
@@ -76,6 +77,7 @@ contract KryptomonKore is KryptomonBreeding {
 
   } */
 
+  // TODO(mikebarile): Write this function.
   // Function that calculates the time at which a Kryptomon will be
   // ready to evolve.
   /* function calculateEvolutionTime(uint256 _kryptomonId)
@@ -86,6 +88,7 @@ contract KryptomonKore is KryptomonBreeding {
 
   } */
 
+  // TODO(mikebarile): Write this function. 
   // Function that calculates the time at which a Kryptomon will be
   // ready to breed again. Returns 0 if the Kryptomon will never breed
   // again!

@@ -25,4 +25,38 @@ contract KryptomonKore is KryptomonBreeding {
 
   // Tips are very much appreciated :D
   function() external payable {}
+
+  function getEgg(uint256 _eggId)
+    external
+    view
+    returns (
+      uint256 generation,
+      uint256 geneticPredisposition,
+      uint256 matronSpeciesId,
+      uint256 sireSpeciesId
+    )
+  {
+    Egg storage egg = eggList[_eggId];
+    return (
+      uint256(egg.generation),
+      uint256(egg.geneticPredisposition),
+      uint256(egg.matronSpeciesId),
+      uint256(egg.sireSpeciesId)
+    );
+  }
+
+  // TODO(mikebarile): Write a "getKryptomon" function. Will require
+  // some thought on what we'll actually want on the front end (for
+  // example, we'll probably want "evolveTime" rather than
+  // "timeToEvolve").
+  /* function getKryptomon(uint256 _kryptomonId)
+    external
+    view
+    returns (
+
+    )
+  {
+  
+  } */
+
 }

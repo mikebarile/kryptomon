@@ -102,7 +102,7 @@ contract KryptomonDefinitions is KryptoGodController {
 
     // The ID for the species this type of Kryptomon will evolve into.
     // A non-zero value indicates this type of Kryptomon can evolve.
-    uint8 evolveToId;
+    uint16 evolveToId;
 
     // Base amount time it takes for this Kryptomon to evolve. Actual
     // evolution time is also based on Kryptomon's generation.

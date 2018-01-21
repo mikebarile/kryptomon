@@ -16,8 +16,6 @@ contract ERC721 {
   // Optional functions
   function name() public view returns (string _name);
   function symbol() public view returns (string _symbol);
-  /* function tokenOfOwnerByIndex(address _owner, uint _index) external view returns (uint _tokenId); */
-  /* function tokenMetadata(uint _tokenId) public view returns (string _infoUrl); */
 
   // Events
   event Transfer(address _from, address _to, uint256 _tokenId);
@@ -62,6 +60,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     ownerToTotalKryptomon[_from] -= 1;
     ownerToTotalKryptomon[_to] += 1;
     Transfer(_from, _to, _tokenId);
+    KryptomonAssigned(_to, _tokenId);
   }
 
   // Allows a Kryptomon's owner to transfer the Kryptomon to another
@@ -73,6 +72,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     ownerToTotalKryptomon[msg.sender] -= 1;
     ownerToTotalKryptomon[_to] += 1;
     Transfer(msg.sender, _to, _tokenId);
+    KryptomonAssigned(_to, _tokenId);
   }
 
   // Optional functions
@@ -81,20 +81,8 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
   }
 
   function symbol() public view returns (string _symbol) {
-    return "KRMN";
+    return "KMN";
   }
-
-  /* We've chosen to leave tokenOfOwnerByIndex unimplemented because
-     it doesn't add any value and would be very costly to implement.
-   function tokenOfOwnerByIndex(address _owner, uint _index)
-    external
-    view
-    returns (uint256) {}
-  */
-
-  /* function tokenMetadata(uint _tokenId) public view returns (string) {
-
-  } */
 
   // Events
   event Transfer(address _from, address _to, uint256 _tokenId);

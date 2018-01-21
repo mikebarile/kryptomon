@@ -14,27 +14,27 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   // that we can release different creatures as the artwork becomes
   // available.
 
-  // A reserve of gen0 eggs that is controlled by the Manager. For use
-  // with beta testing, bug bounties, etc.
+  // A reserve of gen0 eggs that is controlled by the KryptoGod. For
+  // use with beta testing, bug bounties, etc.
   uint256 genZeroEggsReserve = 50000;
 
-  // The price per gen0 egg. Can be reassigned by the Manager based on
+  // The price per gen0 egg. Can be reassigned by the KryptoGod based on
   // ether <-> fiat price movements.
   uint256 genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
-  event genZeroEggHatched(address buyerId);
+  event GenZeroEggHatched(address buyerId);
 
-  // Function that allows the Manager to change the gen0 egg price.
-  function setGenZeroEggPrice(uint256 price) external managerOnly {
+  // Function that allows the KryptoGod to change the gen0 egg price.
+  function setGenZeroEggPrice(uint256 price) external kryptoGodOnly {
     genZeroEggPrice = price;
   }
 
-  // Function that allows the Manager to distribute gen0 reserve eggs.
+  // Function that allows the KryptoGod to distribute gen0 reserve eggs.
   // To be used for beta testing, bug bounty rewards, etc.
   function assignReserveEggs(address _sendTo, uint256 _numEggs)
     external
-    managerOnly
+    kryptoGodOnly
   {
     require(_numEggs <= genZeroEggsReserve);
     genZeroEggsReserve -= _numEggs;
@@ -42,8 +42,8 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = _sendTo;
       ownerToTotalKryptomon[_sendTo] += 1;
-      genZeroEggHatched(_sendTo);
-      kryptomonAssigned(_sendTo, kryptomonId);
+      GenZeroEggHatched(_sendTo);
+      KryptomonAssigned(_sendTo, kryptomonId);
     }
   }
 
@@ -63,8 +63,8 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
       ownerToTotalKryptomon[msg.sender] += 1;
-      genZeroEggHatched(msg.sender);
-      kryptomonAssigned(msg.sender, kryptomonId);
+      GenZeroEggHatched(msg.sender);
+      KryptomonAssigned(msg.sender, kryptomonId);
     }
   }
 

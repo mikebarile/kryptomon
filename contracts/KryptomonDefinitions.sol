@@ -1,17 +1,17 @@
 pragma solidity ^0.4.11;
-import './KryptomonBoardController.sol';
+import './KryptoGodController.sol';
 
-contract KryptomonDefinitions is KryptomonBoardController {
+contract KryptomonDefinitions is KryptoGodController {
   /*** START Event Definitions ***/
   // Event that's fired every time an egg is hatched.
-  event eggHatched(address ownerAddress, uint256 eggId);
+  event EggHatched(address ownerAddress, uint256 eggId);
 
   // Event that's fired every time a Kryptomon is assigned a new owner.
   // This includes when a new Kryptomon is hatched from an egg.
-  event kryptomonAssigned(address ownerAddress, uint256 kryptomonId);
+  event KryptomonAssigned(address ownerAddress, uint256 kryptomonId);
 
   // Event that's fired every time a Kryptomon successfully evolves.
-  event kryptomonEvolved(address ownerAddress, uint256 kryptomonId);
+  event KryptomonEvolved(address ownerAddress, uint256 kryptomonId);
   /*** END Event Definitions ***/
 
   /*** START Structs Definitions ***/
@@ -102,7 +102,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
 
     // The ID for the species this type of Kryptomon will evolve into.
     // A non-zero value indicates this type of Kryptomon can evolve.
-    uint8 evolveToId;
+    uint16 evolveToId;
 
     // Base amount time it takes for this Kryptomon to evolve. Actual
     // evolution time is also based on Kryptomon's generation.
@@ -128,9 +128,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
 
   // An array containing the Kryptomon struct for all Kryptomon in
   // existence. The ID of each Kryptomon is actually an index in this
-  // array. Note that the ID 0 is the Kryptogod, the creator of all
-  // Kryptomon who produced all gen1 Kryptomon through a divine act of
-  // parthogenesis. Kryptomon ID 0 should be considered invalid.
+  // array.
   Kryptomon[] kryptomonList;
 
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
@@ -150,8 +148,16 @@ contract KryptomonDefinitions is KryptomonBoardController {
   mapping (address => uint256) public ownerToTotalKryptomon;
 
   // Maps each Kryptomon to an address that has been approved to call
-  // the "transferFrom" method. Used to comply with ERC721. 
+  // the "transferFrom" method. Used to comply with ERC721.
   mapping (uint256 => address) public kryptomonIndexToApproved;
+
+  // Maps each user's address to the total number of Kryptomon eggs
+  // they own. We use this mapping to comply loosely with ERC721.
+  mapping (address => uint256) public ownerToTotalEggs;
+
+  // Maps each Kryptomon egg to an address that has been approved to
+  // call the "transferFrom" method. Used to comply loosely with ERC721.
+  mapping (uint256 => address) public eggIndexToApproved;
 
   // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.
@@ -179,10 +185,10 @@ contract KryptomonDefinitions is KryptomonBoardController {
     uint256 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
-    eggHatched(msg.sender, _eggId);
+    EggHatched(msg.sender, _eggId);
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
     ownerToTotalKryptomon[msg.sender] += 1;
-    kryptomonAssigned(msg.sender, kryptomonId);
+    KryptomonAssigned(msg.sender, kryptomonId);
   }
 
   // Creates a new Kryptomon and returns its id. The new Kryptomon will
@@ -292,7 +298,7 @@ contract KryptomonDefinitions is KryptomonBoardController {
     require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
     kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
-    kryptomonEvolved(msg.sender, _kryptomonId);
+    KryptomonEvolved(msg.sender, _kryptomonId);
   }
   /*** END Storage ***/
 

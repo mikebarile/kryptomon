@@ -10,6 +10,11 @@ contract KryptomonDefinitions is KryptoGodController {
   // This includes when a new Kryptomon is hatched from an egg.
   event KryptomonAssigned(address ownerAddress, uint256 kryptomonId);
 
+  // Event that's fired every time an egg is assigned to a new owner.
+  // This includes when a new egg is created from breeding two
+  // Kryptomon. 
+  event EggAssigned(address ownerAddress, uint256 eggId);
+
   // Event that's fired every time a Kryptomon successfully evolves.
   event KryptomonEvolved(address ownerAddress, uint256 kryptomonId);
   /*** END Event Definitions ***/

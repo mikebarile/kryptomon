@@ -29,8 +29,23 @@ contract KryptoGodController {
   bool public completeFreeze =  false;
   bool public genZeroPaused = false;
   bool public hatchingPaused = false;
-  bool public marketplacePaused = false;
   bool public breedingPaused = false;
+
+  function setCompleteFreeze(bool _condition) external kryptoGodOnly {
+    completeFreeze = _condition;
+  }
+
+  function setGenZeroPaused(bool _condition) external kryptoGodOnly {
+    genZeroPaused = _condition;
+  }
+
+  function setHatchingPaused(bool _condition) external kryptoGodOnly {
+    hatchingPaused = _condition;
+  }
+
+  function setBreedingPaused(bool _condition) external kryptoGodOnly {
+    breedingPaused = _condition;
+  }
 
   modifier whenNotFrozen() {
     require(!completeFreeze);
@@ -46,12 +61,6 @@ contract KryptoGodController {
   modifier whenHatchingNotPaused() {
     require(!completeFreeze);
     require(!hatchingPaused);
-    _;
-  }
-
-  modifier whenMarketplaceNotPaused() {
-    require(!completeFreeze);
-    require(!marketplacePaused);
     _;
   }
 

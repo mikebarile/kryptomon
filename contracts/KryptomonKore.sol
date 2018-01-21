@@ -15,5 +15,6 @@ contract KryptomonKore is KryptomonBreeding {
   function KryptomonKore() public {
     intializeSpecies();
     kryptoGodAddress = msg.sender;
+    
   }
 }

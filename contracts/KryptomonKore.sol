@@ -15,6 +15,14 @@ contract KryptomonKore is KryptomonBreeding {
   function KryptomonKore() public {
     intializeSpecies();
     kryptoGodAddress = msg.sender;
-    
+    completeFreeze = true;
   }
+
+  // Send all the ethers to the KryptoGod.
+  function withdrawBalance() external kryptoGodOnly {
+    kryptoGodAddress.transfer(this.balance);
+  }
+
+  // Tips are very much appreciated :D
+  function() external payable {}
 }

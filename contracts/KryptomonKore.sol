@@ -26,6 +26,7 @@ contract KryptomonKore is KryptomonBreeding {
   // Tips are very much appreciated :D
   function() external payable {}
 
+  // Returns all data associated with an egg.
   function getEgg(uint256 _eggId)
     external
     view
@@ -45,58 +46,27 @@ contract KryptomonKore is KryptomonBreeding {
     );
   }
 
-  // TODO(mikebarile): Write a "getKryptomon" function. Will require
-  // some thought on what we'll actually want on the front end (for
-  // example, we'll probably want "evolveTime" rather than
-  // "timeToEvolve").
-  /* function getKryptomon(uint256 _kryptomonId)
+  // Returns all data associated with a Kryptomon.
+  function getKryptomon(uint256 _kryptomonId)
     external
     view
     returns (
-
+      uint256 speciesId,
+      uint256 geneticValue,
+      uint256 generation,
+      uint256 birthTimeStamp,
+      uint256 breedingCooldown,
+      uint256 numChildren
     )
   {
-
-  } */
-
-  // TODO(mikebarile): Write this function.
-  // Function that calculates a Kryptomon's actual stats which are
-  // calculated as: base stats +/- geneticValue - generation.
-  /* function calculateStats(uint256 _kryptomonId)
-    internal
-    view
-    returns (
-      uint256 attack,
-      uint256 defense,
-      uint256 specialAttack,
-      uint256 specialDefense,
-      uint256 hitPoints,
-      uint256 speed
-    )
-  {
-
-  } */
-
-  // TODO(mikebarile): Write this function.
-  // Function that calculates the time at which a Kryptomon will be
-  // ready to evolve.
-  /* function calculateEvolutionTime(uint256 _kryptomonId)
-    internal
-    view
-    returns(uint256)
-  {
-
-  } */
-
-  // TODO(mikebarile): Write this function. 
-  // Function that calculates the time at which a Kryptomon will be
-  // ready to breed again. Returns 0 if the Kryptomon will never breed
-  // again!
-  /* function calculateEvolutionTime(uint256 _kryptomonId)
-    internal
-    view
-    returns(uint256)
-  {
-
-  } */
+    Kryptomon storage kryptomon = kryptomonList[_kryptomonId];
+    return (
+      uint256(kryptomon.speciesId),
+      uint256(kryptomon.geneticValue),
+      uint256(kryptomon.generation),
+      uint256(kryptomon.birthTimeStamp),
+      uint256(kryptomon.breedingCooldown),
+      uint256(kryptomon.numChildren)
+    );
+  }
 }

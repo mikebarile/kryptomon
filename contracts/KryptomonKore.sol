@@ -9,7 +9,7 @@ import './KryptomonBreeding.sol';
 // 3. KryptomonGenZeroEggSales
 // 4. KryptomonTokenization
 // 5. KryptomonEggTokenization
-// 5. KryptomonBreeding
+// 6. KryptomonBreeding
 // 7. KryptomonKore
 contract KryptomonKore is KryptomonBreeding {
   function KryptomonKore() public {

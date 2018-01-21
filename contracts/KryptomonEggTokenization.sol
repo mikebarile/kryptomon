@@ -26,7 +26,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
   // ownership of a Kryptomon egg.
   function eggApprove(address _to, uint _tokenId) public {
     require(_to != address(0));
-    require(msg.sender == ownerOf(_tokenId));
+    require(msg.sender == eggOwnerOf(_tokenId));
     eggIndexToApproved[_tokenId] = _to;
     EggApproval(msg.sender, _to, _tokenId);
   }
@@ -37,7 +37,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
     public
   {
     require(eggIndexToApproved[_tokenId] == msg.sender);
-    require(ownerOf(_tokenId) == _from);
+    require(eggOwnerOf(_tokenId) == _from);
     require(_to != address(0));
     eggIndexToOwner[_tokenId] = _to;
     ownerToTotalEggs[_from] -= 1;
@@ -48,7 +48,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
   // Allows a Kryptomon egg's owner to transfer the Kryptomon to another
   // user.
   function eggTransfer(address _to, uint _tokenId) public {
-    require(ownerOf(_tokenId) == msg.sender);
+    require(eggOwnerOf(_tokenId) == msg.sender);
     require(_to != address(0));
     eggIndexToOwner[_tokenId] = _to;
     ownerToTotalEggs[msg.sender] -= 1;

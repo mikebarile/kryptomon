@@ -6,14 +6,14 @@ contract KryptoGodController {
   address public kryptoGodAddress;
 
   // Modifier for functions that can only be executed by the
-  // the kryptoGod.
+  // the KryptoGod.
   modifier kryptoGodOnly() {
     require(msg.sender == kryptoGodAddress);
     _;
   }
 
-  // Allows the president to reset the address associated with the
-  // president.
+  // Allows the KryptoGod to reset the address associated with the
+  // KryptoGod.
   function setNewKryptoGod(address _newKryptoGod)
     external
     kryptoGodOnly
@@ -24,7 +24,7 @@ contract KryptoGodController {
   /*** END KryptoGod definition ***/
 
   /*** BEGIN Contract freeze definitions ***/
-  // Various bools that allow board members to temporarily pause
+  // Various bools that allow the KryptoGod to temporarily freeze
   // various aspects of gameplay.
   bool public completeFreeze =  false;
   bool public genZeroPaused = false;

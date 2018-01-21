@@ -60,6 +60,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     ownerToTotalKryptomon[_from] -= 1;
     ownerToTotalKryptomon[_to] += 1;
     Transfer(_from, _to, _tokenId);
+    KryptomonAssigned(_to, _tokenId);
   }
 
   // Allows a Kryptomon's owner to transfer the Kryptomon to another
@@ -71,6 +72,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     ownerToTotalKryptomon[msg.sender] -= 1;
     ownerToTotalKryptomon[_to] += 1;
     Transfer(msg.sender, _to, _tokenId);
+    KryptomonAssigned(_to, _tokenId);
   }
 
   // Optional functions

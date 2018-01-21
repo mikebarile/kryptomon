@@ -4,14 +4,14 @@ import './KryptoGodController.sol';
 contract KryptomonDefinitions is KryptoGodController {
   /*** START Event Definitions ***/
   // Event that's fired every time an egg is hatched.
-  event eggHatched(address ownerAddress, uint256 eggId);
+  event EggHatched(address ownerAddress, uint256 eggId);
 
   // Event that's fired every time a Kryptomon is assigned a new owner.
   // This includes when a new Kryptomon is hatched from an egg.
-  event kryptomonAssigned(address ownerAddress, uint256 kryptomonId);
+  event KryptomonAssigned(address ownerAddress, uint256 kryptomonId);
 
   // Event that's fired every time a Kryptomon successfully evolves.
-  event kryptomonEvolved(address ownerAddress, uint256 kryptomonId);
+  event KryptomonEvolved(address ownerAddress, uint256 kryptomonId);
   /*** END Event Definitions ***/
 
   /*** START Structs Definitions ***/
@@ -185,10 +185,10 @@ contract KryptomonDefinitions is KryptoGodController {
     uint256 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
-    eggHatched(msg.sender, _eggId);
+    EggHatched(msg.sender, _eggId);
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
     ownerToTotalKryptomon[msg.sender] += 1;
-    kryptomonAssigned(msg.sender, kryptomonId);
+    KryptomonAssigned(msg.sender, kryptomonId);
   }
 
   // Creates a new Kryptomon and returns its id. The new Kryptomon will
@@ -298,7 +298,7 @@ contract KryptomonDefinitions is KryptoGodController {
     require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
     kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
-    kryptomonEvolved(msg.sender, _kryptomonId);
+    KryptomonEvolved(msg.sender, _kryptomonId);
   }
   /*** END Storage ***/
 

@@ -23,7 +23,7 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   uint256 genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
-  event genZeroEggHatched(address buyerId);
+  event GenZeroEggHatched(address buyerId);
 
   // Function that allows the KryptoGod to change the gen0 egg price.
   function setGenZeroEggPrice(uint256 price) external kryptoGodOnly {
@@ -42,8 +42,8 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = _sendTo;
       ownerToTotalKryptomon[_sendTo] += 1;
-      genZeroEggHatched(_sendTo);
-      kryptomonAssigned(_sendTo, kryptomonId);
+      GenZeroEggHatched(_sendTo);
+      KryptomonAssigned(_sendTo, kryptomonId);
     }
   }
 
@@ -63,8 +63,8 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       uint256 kryptomonId = createGenZeroKryptomon(i);
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
       ownerToTotalKryptomon[msg.sender] += 1;
-      genZeroEggHatched(msg.sender);
-      kryptomonAssigned(msg.sender, kryptomonId);
+      GenZeroEggHatched(msg.sender);
+      KryptomonAssigned(msg.sender, kryptomonId);
     }
   }
 

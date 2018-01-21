@@ -27,6 +27,12 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     require(matron.breedingCooldown <= now);
     uint256 eggIndex = createEgg(_sireIndex, _matronIndex);
     KryptomonBred(_sireIndex, _matronIndex, msg.sender);
+    kryptomonList[_sireIndex].numChildren += 1;
+    kryptomonList[_matronIndex].numChildren += 1;
+    kryptomonList[_sireIndex].breedingCooldown =
+      uint32(now + speciesMapping[sire.speciesId].breedingCooldown);
+    kryptomonList[_matronIndex].breedingCooldown =
+      uint32(now + speciesMapping[matron.speciesId].breedingCooldown);
     eggIndexToOwner[eggIndex] = msg.sender;
     EggAssigned(msg.sender, eggIndex);
   }

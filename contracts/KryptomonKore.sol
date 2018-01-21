@@ -56,7 +56,44 @@ contract KryptomonKore is KryptomonBreeding {
 
     )
   {
-  
+
   } */
 
+  // Function that calculates a Kryptomon's actual stats which are
+  // calculated as: base stats +/- geneticValue - generation.
+  /* function calculateStats(uint256 _kryptomonId)
+    internal
+    view
+    returns (
+      uint256 attack,
+      uint256 defense,
+      uint256 specialAttack,
+      uint256 specialDefense,
+      uint256 hitPoints,
+      uint256 speed
+    )
+  {
+
+  } */
+
+  // Function that calculates the time at which a Kryptomon will be
+  // ready to evolve.
+  /* function calculateEvolutionTime(uint256 _kryptomonId)
+    internal
+    view
+    returns(uint256)
+  {
+
+  } */
+
+  // Function that calculates the time at which a Kryptomon will be
+  // ready to breed again. Returns 0 if the Kryptomon will never breed
+  // again!
+  /* function calculateEvolutionTime(uint256 _kryptomonId)
+    internal
+    view
+    returns(uint256)
+  {
+
+  } */
 }

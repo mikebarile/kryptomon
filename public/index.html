@@ -10,14 +10,6 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <script>
-      if (typeof web3 !== 'undefined') {
-          web3 = new Web3(web3.currentProvider);
-      } else {
-          // set the provider you want from Web3.providers
-          web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-      }
-    </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.

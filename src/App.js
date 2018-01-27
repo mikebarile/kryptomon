@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Web3 from 'web3';
 
 import logo from './logo.svg';
 import './App.css';
 
 var web3;
-// TODO(mikebarile): Uncomment out below code and get this working
-// with metamask pointing at :8548
-web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-// if (typeof web3 !== 'undefined') {
-//     web3 = new Web3(web3.currentProvider);
-// } else {
-//     // set the provider you want from Web3.providers
-//     web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-// }
+if (typeof web3 !== 'undefined') {
+    web3 = new Web3(web3.currentProvider);
+} else {
+    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+}
 
 class App extends Component {
   constructor(props) {
@@ -33,11 +28,8 @@ class App extends Component {
   }
 
   getBalance() {
-    axios.get('/web3/accounts')
-      .then(res => {
-        const { data } = res;
-        this.setState({accounts: data});
-      });
+    var accounts = web3.eth.accounts.map(acc => ({name: acc, balance: parseInt(web3.eth.getBalance(acc))}));
+    this.setState({accounts: accounts});
   }
 
   updateAmount(e) {
@@ -47,17 +39,10 @@ class App extends Component {
 
   transferMoney(to) {
     const { sender, amount } = this.state;
-    const req = {
-      from: sender,
-      to,
-      amount
-    };
-
-    axios.post('/web3/transfer', req)
-      .then(() => {
-        this.getBalance();
-        this.closeModal();
-      })
+    var transaction = { from: sender, to: to, value: amount };
+    web3.eth.sendTransaction(transaction);
+    this.getBalance();
+    this.closeModal();
   }
 
   openModal(sender) {

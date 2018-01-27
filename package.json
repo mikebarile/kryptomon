@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-alpha.6",
     "ethereumjs-testrpc": "^6.0.3",

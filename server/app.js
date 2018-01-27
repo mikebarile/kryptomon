@@ -18,20 +18,4 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'))
 })
 
-app.get('/web3/accounts', (req, res) => {
-  var accounts = web3.eth.accounts.map(acc => ({name: acc, balance: parseInt(web3.eth.getBalance(acc))}));
-  res.json(accounts);
-})
-
-app.post('/web3/transfer', (req, res) => {
-  var from = req.body.from;
-  var to = req.body.to;
-  var value = req.body.amount;
-  
-  var transaction = { from: from, to: to, value: value }
-  transactionHash = web3.eth.sendTransaction(transaction)
-  
-  res.json(transactionHash)
-});
-
 app.listen(port, () => console.log('Example app listening on port ' + port + '!'))

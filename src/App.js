@@ -33,7 +33,6 @@ class App extends Component {
 
   componentWillMount() {
     this.getBalance();
-    console.log(kryptomon);
   }
 
   getBalance() {

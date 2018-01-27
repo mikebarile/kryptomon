@@ -9,3 +9,6 @@
 6. Run `node server/app` to start the NodeJS app. Leave it running.
 7. Run `npm run-script build` to build the React script.
 8. Visit [localhost:8080](http://localhost:8080)!
+
+NOTE: If npm install fails, try deleting the package-lock.json and
+trying again. 

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.css';
-import App from './templates/App';
+import Root from './templates/root.js';
 import registerServiceWorker from './registerServiceWorker';
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<App />, document.getElementById('root'));
+  ReactDOM.render(<Root />, document.getElementById('root'));
   registerServiceWorker();
 });

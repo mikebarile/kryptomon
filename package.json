@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.17.1",
     "body-parser": "^1.18.2",
+    "bootstrap": "^4.0.0-alpha.6",
     "debug": "^3.1.0",
     "ethereumjs-testrpc": "^6.0.3",
     "express": "^4.16.2",
@@ -12,6 +12,7 @@
     "path": "^0.12.7",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
     "react-scripts": "1.1.0",
     "truffle": "^4.0.5",
     "web3": "^0.20.1",

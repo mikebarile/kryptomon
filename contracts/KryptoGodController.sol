@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
 contract KryptoGodController {
-  /*** BEGIN KryptoGod definition ***/
+  //// BEGIN KryptoGod definition
   // Address associated with the KryptoGod, ruler of all Kryptomon.
   address public kryptoGodAddress;
 
@@ -21,9 +21,9 @@ contract KryptoGodController {
     require(_newKryptoGod != address(0));
     kryptoGodAddress = _newKryptoGod;
   }
-  /*** END KryptoGod definition ***/
+  //// END KryptoGod definition
 
-  /*** BEGIN Contract freeze definitions ***/
+  //// BEGIN Contract freeze definitions
   // Various bools that allow the KryptoGod to temporarily freeze
   // various aspects of gameplay.
   bool public completeFreeze =  false;
@@ -69,5 +69,5 @@ contract KryptoGodController {
     require(!breedingPaused);
     _;
   }
-  /*** END Contract freeze definitions ***/
+  //// END Contract freeze definitions
 }

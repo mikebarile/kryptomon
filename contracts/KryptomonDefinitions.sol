@@ -2,7 +2,7 @@ pragma solidity ^0.4.11;
 import './KryptoGodController.sol';
 
 contract KryptomonDefinitions is KryptoGodController {
-  /*** START Event Definitions ***/
+  //// START Event Definitions
   // Event that's fired every time an egg is hatched.
   event EggHatched(address ownerAddress, uint256 eggId);
 
@@ -17,9 +17,9 @@ contract KryptomonDefinitions is KryptoGodController {
 
   // Event that's fired every time a Kryptomon successfully evolves.
   event KryptomonEvolved(address ownerAddress, uint256 kryptomonId);
-  /*** END Event Definitions ***/
+  //// END Event Definitions
 
-  /*** START Structs Definitions ***/
+  //// START Structs Definitions
   // The main Egg struct.
   struct Egg {
     // The generation of the Kryptomon that will be hatched from this
@@ -124,9 +124,9 @@ contract KryptomonDefinitions is KryptoGodController {
     // 7: Legendary
     uint8 rarity;
   }
-  /*** END Struct Definitions ***/
+  //// END Struct Definitions
 
-  /*** START Storage ***/
+  //// START Storage
   // An array containing the egg struct for all eggs in existence. Each
   // egg's ID is actually an index in this array.
   Egg[] eggList;
@@ -307,9 +307,9 @@ contract KryptomonDefinitions is KryptoGodController {
     kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
     KryptomonEvolved(msg.sender, _kryptomonId);
   }
-  /*** END Storage ***/
+  //// END Storage
 
-  /*** START Species Definitions ***/
+  //// START Species Definitions
   // Function that intializes the species mapping. This function is
   // only called when KryptomonKore is being initialized.
   // TODO(mikebarile): Add all the Kryptomon!
@@ -330,6 +330,5 @@ contract KryptomonDefinitions is KryptoGodController {
     });
   }
 
-  /*** END Species Definitions ***/
-
+  //// END Species Definitions
 }

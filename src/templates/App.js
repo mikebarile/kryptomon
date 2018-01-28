@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 
-import logo from './logo.svg';
-import './App.css';
+import logo from '../logo.svg';
+import '../css/App.css';
 
 class App extends Component {
   constructor(props) {

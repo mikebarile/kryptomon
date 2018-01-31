@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route, Link } from 'react-router-dom';
-import App from './app.js';
+import "semantic-ui-css/semantic.css";
+
+import App from './App.js';
+import Home from './Home';
 
 const Root = () => {
   return (
     <HashRouter onUpdate={() => window.scrollTo(0, 0)}>
-      <Route path="/" component={App} />
+      <div>
+        <Route path="/" exact component={App}/>
+        <Route path='/home' component={Home}/>
+      </div>
     </HashRouter>
   );
 };

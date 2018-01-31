@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
-import Root from './templates/root.js';
 import Web3 from 'web3';
+
 import registerServiceWorker from './registerServiceWorker';
+import Root from './templates/root.js';
+import './css/index.css';
 
 document.addEventListener('DOMContentLoaded', () => {
   var web3;

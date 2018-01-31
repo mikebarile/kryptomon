@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import {Link} from 'react-router-dom';
 
 import logo from '../logo.svg';
 import '../css/App.css';
@@ -8,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { accounts: [], amount: 0, sender: null, openModal: false }
+    this.state = { accounts: [], amount: 0, sender: null, openModal: false };
     this.updateAmount = this.updateAmount.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -59,11 +60,11 @@ class App extends Component {
   }
 
   openModal(sender) {
-    this.setState({sender, openModal: true})
+    this.setState({sender, openModal: true});
   }
 
   closeModal() {
-    this.setState({sender: null, openModal: false, amount: 0})
+    this.setState({sender: null, openModal: false, amount: 0});
   }
 
   renderModal() {
@@ -93,7 +94,7 @@ class App extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   renderTable() {
@@ -112,7 +113,7 @@ class App extends Component {
             <button onClick={() => this.openModal(acc.name)}>Transfer</button>
           </div>
         </li>
-      )
+      );
     });
   }
 
@@ -126,6 +127,12 @@ class App extends Component {
         <div className="App-intro">
           {this.state.openModal ? this.renderModal() : null}
           {this.renderTable()}
+        </div>
+        <div>
+          Check out the new home page!!
+          <br/>
+          <br/>
+          <Link to='/home'>Home</Link>
         </div>
       </div>
     );

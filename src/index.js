@@ -8,7 +8,8 @@ import './css/index.css';
 
 document.addEventListener('DOMContentLoaded', () => {
   var web3;
-  if (typeof window.web3 === 'undefined') {
+  var userLoggedIn;
+  if (typeof window.web3 !== 'undefined') {
       web3 = new Web3(window.web3.currentProvider);
   } else {
       web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.kryptomonABI = kryptomonABI;
   window.kryptomonAddress = kryptomonAddress;
   window.kryptomon = kryptomon;
+  window.userLoggedIn = web3.eth.accounts.length >= 1;
 
   ReactDOM.render(<Root />, document.getElementById('root'));
   registerServiceWorker();

@@ -18,10 +18,10 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     Kryptomon memory sire = kryptomonList[_sireIndex];
     Kryptomon memory matron = kryptomonList[_matronIndex];
     require(
-      sire.numChildren < speciesMapping[sire.speciesId].maxChildren
+      sire.numChildren < speciesList[sire.speciesId].maxChildren
     );
     require(
-      matron.numChildren < speciesMapping[matron.speciesId].maxChildren
+      matron.numChildren < speciesList[matron.speciesId].maxChildren
     );
     require(sire.breedingCooldown <= now);
     require(matron.breedingCooldown <= now);
@@ -30,9 +30,9 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     kryptomonList[_sireIndex].numChildren += 1;
     kryptomonList[_matronIndex].numChildren += 1;
     kryptomonList[_sireIndex].breedingCooldown =
-      uint32(now + speciesMapping[sire.speciesId].breedingCooldown);
+      uint32(now + speciesList[sire.speciesId].breedingCooldown);
     kryptomonList[_matronIndex].breedingCooldown =
-      uint32(now + speciesMapping[matron.speciesId].breedingCooldown);
+      uint32(now + speciesList[matron.speciesId].breedingCooldown);
     eggIndexToOwner[eggIndex] = msg.sender;
     EggAssigned(msg.sender, eggIndex);
   }

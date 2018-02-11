@@ -114,7 +114,7 @@ contract KryptomonDefinitions is KryptoGodController {
     uint32 timeToEvolve;
 
     // Number representing the creature's rarity. Values can be between
-    // 1 - 8 which translate into the following:
+    // 1 - 7 which translate into the following:
     // 1: Common
     // 2: Uncommon
     // 3: Rare
@@ -136,6 +136,10 @@ contract KryptomonDefinitions is KryptoGodController {
   // array.
   Kryptomon[] kryptomonList;
 
+  // An array containing all of the Kryptomon species structs. Each
+  // species' ID is its index in the array.
+  Species[] speciesList;
+
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
   // owner at all times.
   mapping (uint256 => address) public kryptomonIndexToOwner;
@@ -143,10 +147,6 @@ contract KryptomonDefinitions is KryptoGodController {
   // Maps all egg IDs to an owner. All eggs should have an owner at all
   // times.
   mapping (uint256 => address) public eggIndexToOwner;
-
-  // A mapping of speciesIds to Species structs that house each species'
-  // unique attributes.
-  mapping (uint256 => Species) public speciesMapping;
 
   // Maps each user's address to the total number of Kryptomon they
   // own. We use this mapping to comply with ERC721.
@@ -225,7 +225,7 @@ contract KryptomonDefinitions is KryptoGodController {
   }
 
   // TODO(mikebarile): Create lookup tables for the different Kryptomon
-  // rarities and finish this function. 
+  // rarities and finish this function.
   // Function used to determine a new Kryptomon's species ID. There is
   // a 2% chance that the resulting Kryptomon will inherit one of its
   // parents' species.
@@ -301,7 +301,7 @@ contract KryptomonDefinitions is KryptoGodController {
   function evolve(uint256 _kryptomonId) external {
     require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
-    Species memory species = speciesMapping[kryptomon.speciesId];
+    Species memory species = speciesList[kryptomon.speciesId];
     require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
     kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
@@ -310,12 +310,77 @@ contract KryptomonDefinitions is KryptoGodController {
   //// END Storage
 
   //// START Species Definitions
+
+  // Event that's fired every time a species ID is added.
+  event SpeciesIdAdded(uint256 speciesId);
+
+  // Event that's fired every time a species is set to extinct.
+  event SpeciesSetExtinct(uint256 speciesId);
+
+  // Event that's fired every time a species is set to not extinct.
+  event SpeciesSetNotExtinct(uint256 speciesId);
+
+  // TODO(mikebarile): Add an "addspecies" function.
+  function addSpeciesId(
+    uint256 attack,
+    uint256 defense,
+    uint256 specialAttack,
+    uint256 specialDefense,
+    uint256 hitPoints,
+    uint256 speed,
+    uint256 maxChildren,
+    uint256 breedingCooldown,
+    uint256 evolveToId,
+    uint256 timeToEvolve,
+    uint256 rarity
+  ) external
+    kryptoGodOnly
+  {
+    require(attack <= 250);
+    require (defense <= 250);
+    require (specialAttack <= 250);
+    require (specialDefense <= 250);
+    require (hitPoints <= 250);
+    require (speed <= 250);
+    require (maxChildren <= 100);
+    require (breedingCooldown <= 2147483646);
+    require (evolveToId <= 10000 && speciesList[evolveToId].rarity != 0);
+    require (timeToEvolve <= 2147483646);
+    require (rarity > 0 && rarity <= 7);
+
+    speciesList.push(Species({
+      attack: uint8(attack),
+      defense: uint8(defense),
+      specialAttack: uint8(specialAttack),
+      specialDefense: uint8(specialDefense),
+      hitPoints: uint8(hitPoints),
+      speed: uint8(speed),
+      maxChildren: uint8(maxChildren),
+      breedingCooldown: uint32(breedingCooldown),
+      evolveToId: uint16(evolveToId),
+      timeToEvolve: uint32(timeToEvolve),
+      rarity: uint8(rarity)
+    }));
+  }
+
+  /* // TODO(mikebarile): Create function to set id as "extinct"
+  function setSpeciesExtinct() external kryptoGodOnly {
+
+  }
+
+  /* // TODO(mikebarile): Create function to set id as "extinct"
+  function setSpeciesNotExtinct() external kryptoGodOnly {
+
+  } */
+
+  // TODO(mikebarile): Ensure that "extinct" kryptomon can't be creaed.
+
   // Function that intializes the species mapping. This function is
   // only called when KryptomonKore is being initialized.
   // TODO(mikebarile): Add all the Kryptomon!
   function intializeSpecies() internal {
     // Example Kryptomon species
-    speciesMapping[1] = Species({
+    speciesList.push(Species({
       attack: 100,
       defense: 100,
       specialAttack: 100,
@@ -327,7 +392,7 @@ contract KryptomonDefinitions is KryptoGodController {
       evolveToId: 2,
       timeToEvolve: 10000000,
       rarity: 1
-    });
+    }));
   }
 
   //// END Species Definitions

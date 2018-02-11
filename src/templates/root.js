@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter, Route, Link } from 'react-router-dom';
+import {HashRouter, Route} from 'react-router-dom';
 import "semantic-ui-css/semantic.css";
 
 import App from './App.js';
 import Home from './Home';
+import EggStore from './EggStore';
 
 const Root = () => {
   return (
@@ -12,6 +12,8 @@ const Root = () => {
       <div>
         <Route path="/" exact component={App}/>
         <Route path='/home' component={Home}/>
+        {/* Below should require log in!! */}
+        <Route path='/store' component={EggStore}/>
       </div>
     </HashRouter>
   );

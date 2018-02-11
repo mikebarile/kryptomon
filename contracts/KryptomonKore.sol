@@ -46,6 +46,31 @@ contract KryptomonKore is KryptomonBreeding {
     );
   }
 
+  function getKryptomonIdsForAddress(address _address)
+    external
+    view
+    returns (uint256[] kryptomonIds)
+  {
+    uint256 numKryptomon = balanceOf(_address);
+    if (numKryptomon == 0) {
+      return new uint256[](0);
+    }
+
+    uint256 totalKryptomon = totalSupply();
+    uint256[] memory kryptomonIdsList = new uint256[](numKryptomon);
+    uint256 kryptomonId = 0;
+    uint256 nextKryptomonIdsListIdx = 0;
+
+    for (kryptomonId = 1; kryptomonId <= totalKryptomon; kryptomonId++) {
+      if (kryptomonIndexToOwner[kryptomonId] == _address) {
+        kryptomonIdsList[nextKryptomonIdsListIdx] = kryptomonId;
+        nextKryptomonIdsListIdx++;
+      }
+    }
+
+    return kryptomonIdsList;
+  }
+
   // Returns all data associated with a Kryptomon.
   function getKryptomon(uint256 _kryptomonId)
     external

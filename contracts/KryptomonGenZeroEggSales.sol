@@ -20,7 +20,7 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
 
   // The price per gen0 egg. Can be reassigned by the KryptoGod based on
   // ether <-> fiat price movements.
-  uint256 genZeroEggPrice = 10 finney;
+  uint256 genZeroEggPrice = .01;
 
   // Event triggered when a gen zero egg is successfully hatched.
   event GenZeroEggHatched(address buyerId);

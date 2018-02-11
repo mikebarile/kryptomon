@@ -123,6 +123,9 @@ contract KryptomonDefinitions is KryptoGodController {
     // 6: Mega Rare
     // 7: Legendary
     uint8 rarity;
+
+    // Indicates that this species can no longer be hatched or bred.
+    bool isExtinct;
   }
   //// END Struct Definitions
 
@@ -320,58 +323,70 @@ contract KryptomonDefinitions is KryptoGodController {
   // Event that's fired every time a species is set to not extinct.
   event SpeciesSetNotExtinct(uint256 speciesId);
 
-  // TODO(mikebarile): Add an "addspecies" function.
   function addSpeciesId(
-    uint256 attack,
-    uint256 defense,
-    uint256 specialAttack,
-    uint256 specialDefense,
-    uint256 hitPoints,
-    uint256 speed,
-    uint256 maxChildren,
-    uint256 breedingCooldown,
-    uint256 evolveToId,
-    uint256 timeToEvolve,
-    uint256 rarity
+    uint256 _attack,
+    uint256 _defense,
+    uint256 _specialAttack,
+    uint256 _specialDefense,
+    uint256 _hitPoints,
+    uint256 _speed,
+    uint256 _maxChildren,
+    uint256 _breedingCooldown,
+    uint256 _evolveToId,
+    uint256 _timeToEvolve,
+    uint256 _rarity
   ) external
     kryptoGodOnly
   {
-    require(attack <= 250);
-    require (defense <= 250);
-    require (specialAttack <= 250);
-    require (specialDefense <= 250);
-    require (hitPoints <= 250);
-    require (speed <= 250);
-    require (maxChildren <= 100);
-    require (breedingCooldown <= 2147483646);
-    require (evolveToId <= 10000 && speciesList[evolveToId].rarity != 0);
-    require (timeToEvolve <= 2147483646);
-    require (rarity > 0 && rarity <= 7);
+    require(_attack <= 250);
+    require (_defense <= 250);
+    require (_specialAttack <= 250);
+    require (_specialDefense <= 250);
+    require (_hitPoints <= 250);
+    require (_speed <= 250);
+    require (_maxChildren <= 100);
+    require (_breedingCooldown <= 2147483646);
+    require (_evolveToId <= 10000 && speciesList[_evolveToId].rarity != 0);
+    require (_timeToEvolve <= 2147483646);
+    require (_rarity > 0 && _rarity <= 7);
 
     speciesList.push(Species({
-      attack: uint8(attack),
-      defense: uint8(defense),
-      specialAttack: uint8(specialAttack),
-      specialDefense: uint8(specialDefense),
-      hitPoints: uint8(hitPoints),
-      speed: uint8(speed),
-      maxChildren: uint8(maxChildren),
-      breedingCooldown: uint32(breedingCooldown),
-      evolveToId: uint16(evolveToId),
-      timeToEvolve: uint32(timeToEvolve),
-      rarity: uint8(rarity)
+      attack: uint8(_attack),
+      defense: uint8(_defense),
+      specialAttack: uint8(_specialAttack),
+      specialDefense: uint8(_specialDefense),
+      hitPoints: uint8(_hitPoints),
+      speed: uint8(_speed),
+      maxChildren: uint8(_maxChildren),
+      breedingCooldown: uint32(_breedingCooldown),
+      evolveToId: uint16(_evolveToId),
+      timeToEvolve: uint32(_timeToEvolve),
+      rarity: uint8(_rarity),
+      isExtinct: false
     }));
+
+    SpeciesIdAdded(speciesList.length - 1);
   }
 
-  /* // TODO(mikebarile): Create function to set id as "extinct"
-  function setSpeciesExtinct() external kryptoGodOnly {
+  function setSpeciesExtinct(uint256 _speciesId)
+    external
+    kryptoGodOnly
+  {
+    require(_speciesId < speciesList.length);
+    speciesList[_speciesId].isExtinct = true;
 
+    SpeciesSetExtinct(_speciesId);
   }
 
-  /* // TODO(mikebarile): Create function to set id as "extinct"
-  function setSpeciesNotExtinct() external kryptoGodOnly {
+  function setSpeciesNotExtinct(uint256 _speciesId)
+    external
+    kryptoGodOnly
+  {
+    require(_speciesId < speciesList.length);
+    speciesList[_speciesId].isExtinct = false;
 
-  } */
+    SpeciesSetNotExtinct(_speciesId);
+  }
 
   // TODO(mikebarile): Ensure that "extinct" kryptomon can't be creaed.
 
@@ -391,7 +406,8 @@ contract KryptomonDefinitions is KryptoGodController {
       breedingCooldown: 20000,
       evolveToId: 2,
       timeToEvolve: 10000000,
-      rarity: 1
+      rarity: 1,
+      isExtinct: false
     }));
   }
 

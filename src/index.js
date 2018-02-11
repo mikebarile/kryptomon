@@ -27,7 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
   window.kryptomonABI = kryptomonABI;
   window.kryptomonAddress = kryptomonAddress;
   window.kryptomon = kryptomon;
-  window.userLoggedIn = web3.eth.accounts.length >= 1;
+
+  window.account = web3.eth.accounts[0];
+  setInterval(function() {
+    if (web3.eth.accounts[0] !== window.account) {
+      window.account = web3.eth.accounts[0];
+    }
+  }.bind(this), 500);
 
   ReactDOM.render(<Root />, document.getElementById('root'));
   registerServiceWorker();

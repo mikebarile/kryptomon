@@ -17,7 +17,7 @@ import LogoImg from '../images/logo2.png';
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {menuVisible: false};
+    this.state = {menuVisible: false, address: null};
   }
 
   renderFixedMenu() {

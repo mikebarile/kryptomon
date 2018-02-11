@@ -58,10 +58,10 @@ contract KryptomonKore is KryptomonBreeding {
 
     uint256 totalKryptomon = totalSupply();
     uint256[] memory kryptomonIdsList = new uint256[](numKryptomon);
-    uint256 kryptomonId = 0;
+    uint256 kryptomonId;
     uint256 nextKryptomonIdsListIdx = 0;
 
-    for (kryptomonId = 1; kryptomonId <= totalKryptomon; kryptomonId++) {
+    for (kryptomonId = 0; kryptomonId <= totalKryptomon; kryptomonId++) {
       if (kryptomonIndexToOwner[kryptomonId] == _address) {
         kryptomonIdsList[nextKryptomonIdsListIdx] = kryptomonId;
         nextKryptomonIdsListIdx++;

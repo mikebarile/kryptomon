@@ -22,7 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
   var kryptomonAddress = '0xcbf5eae588c5153e675c55176642e72d0318a359';
 
   var kryptomon = web3.eth.contract(kryptomonABI).at(kryptomonAddress);
-
+  window.processor = (err, resp) => {
+      console.log(err);
+      console.log(resp);
+  }
+  kryptomon.constructor(window.processor);
   window.web3 = web3;
   window.kryptomonABI = kryptomonABI;
   window.kryptomonAddress = kryptomonAddress;

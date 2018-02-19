@@ -122,9 +122,9 @@ contract("Kryptomon", function(accounts) {
                     {
                         event: 'KryptomonBred',
                         args: {
-                            _sireIndex: sire_id,
-                            _matronIndex: matron_id,
-                            _owner: user
+                            sireId: sire_id,
+                            matronId: matron_id,
+                            ownerAddress: user
                         }
                     },
                     {

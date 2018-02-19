@@ -3,9 +3,9 @@ import './KryptomonEggTokenization.sol';
 
 contract KryptomonBreeding is KryptomonEggTokenization {
   event KryptomonBred(
-    uint256 _sireIndex,
-    uint256 _matronIndex,
-    address _owner
+    uint256 sireId,
+    uint256 matronId,
+    address ownerAddress
   );
 
   function breedKryptomon(uint256 _sireIndex, uint256 _matronIndex)

@@ -35,7 +35,7 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
 
   // Returns the address of the owner of a given Kryptomon id.
   function ownerOf(uint _tokenId) public view returns(address) {
-    require(_tokenId < totalSupply() - 1);
+    require(_tokenId < totalSupply());
     return kryptomonIndexToOwner[_tokenId];
   }
 

@@ -26,7 +26,7 @@ contract KryptoGodController {
   //// BEGIN Contract freeze definitions
   // Various bools that allow the KryptoGod to temporarily freeze
   // various aspects of gameplay.
-  bool public completeFreeze =  false;
+  bool public completeFreeze = false;
   bool public genZeroPaused = false;
   bool public hatchingPaused = false;
   bool public breedingPaused = false;

@@ -193,9 +193,10 @@ contract KryptomonDefinitions is KryptoGodController {
     uint256 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
-    EggHatched(msg.sender, _eggId);
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
+    ownerToTotalEggs[msg.sender] -= 1;
     ownerToTotalKryptomon[msg.sender] += 1;
+    EggHatched(msg.sender, _eggId);
     KryptomonAssigned(msg.sender, kryptomonId);
   }
 

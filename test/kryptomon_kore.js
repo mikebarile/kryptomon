@@ -1,8 +1,9 @@
-const debug = require("debug")("kryptomon");
+const BigNumber = require('bignumber.js');
 const chai = require('chai'),
       expect = chai.expect,
       should = chai.should();
-const BigNumber = require('bignumber.js');
+const debug = require("debug")("kryptomon");
+
 const KryptomonKore = artifacts.require("KryptomonKore");
 
 chai.use(require('chai-subset'));
@@ -12,6 +13,7 @@ chai.use(require('chai-as-promised'));
 contract("Kryptomon", function(accounts) {
     const god = accounts[0];
     const user1 = accounts[1];
+    const user2 = accounts[2];
     let kore;
 
     beforeEach(async function() {
@@ -27,7 +29,6 @@ contract("Kryptomon", function(accounts) {
             });
 
             it("no one has eggs or kryptomon", function() {
-                BigNumber(0).should.deep.equal(BigNumber(0));
                 accounts.forEach(async function(account) {
                     (await kore.ownerToTotalKryptomon(account)).toNumber().should.equal(0);
                     (await kore.ownerToTotalEggs(account)).toNumber().should.equal(0);
@@ -45,8 +46,8 @@ contract("Kryptomon", function(accounts) {
          
     contract("GenZeroEggSales", function() {
         const testGenZeroEggsAssigned = async function(user, assign_eggs_fn) {
-            const starting_user_num_kryptomon = +(await kore.ownerToTotalKryptomon(user)).toNumber();
-            const starting_total_supply = +await kore.totalSupply();
+            const starting_user_num_kryptomon = await kore.ownerToTotalKryptomon(user);
+            const starting_total_supply = await kore.totalSupply();
             const num_eggs = 2;
             const result = await assign_eggs_fn(num_eggs);
             result.logs.should
@@ -66,8 +67,10 @@ contract("Kryptomon", function(accounts) {
                   .filter(log => log.event === 'KryptomonAssigned')
                   .map(log => log.args.kryptomonId.toNumber());
             kryptomon_ids.should.all.satisfy(await owner_is(user));
-            (await kore.ownerToTotalKryptomon(user)).toNumber().should.equal(starting_user_num_kryptomon + num_eggs);
-            (await kore.totalSupply()).toNumber().should.equal(starting_total_supply + num_eggs);
+            (await kore.ownerToTotalKryptomon(user))
+                .should.deep.equal(starting_user_num_kryptomon.plus(num_eggs));
+            (await kore.totalSupply())
+                .should.deep.equal(starting_total_supply.plus(num_eggs));
         };
 
         contract("#assignReserveEggs()", function() {
@@ -77,15 +80,16 @@ contract("Kryptomon", function(accounts) {
                 });
             });
         
-            it("only god can assign", function() {
+            it("only god can assign", async function() {
                 const num_eggs = 2;
-                kore.assignReserveEggs(user1, num_eggs, {from: user1}).should.be.rejectedWith(/revert/);
+                await kore.assignReserveEggs(user1, num_eggs, {from: user1})
+                    .should.be.rejectedWith(/revert/);
             });
         });
         
         contract("#buyGenZeroEggs()", function() {
+            const egg_price = web3.toWei(10, 'finney');
             it("emits events and assigns eggs", async function() {
-                const egg_price = web3.toWei(10, 'finney');
                 await testGenZeroEggsAssigned(user1, async function(num_eggs) {
                     return await kore.buyGenZeroEggs(num_eggs, {
                         value: egg_price * num_eggs,
@@ -93,37 +97,99 @@ contract("Kryptomon", function(accounts) {
                     });
                 });
             });            
+
+            it("requires sufficient funds", async function() {
+                const num_eggs = 2;
+                await kore.buyGenZeroEggs(num_eggs, {
+                    value: egg_price * num_eggs / 2,
+                    from: user1,
+                }).should.be.rejectedWith(/revert/);
+            });            
         });
     });
 
     contract("Breeding", function() {
-        contract("#breedKryptomon", function () {
+        const breed = async function(user) {
+            
+            const [matron_id, sire_id] =
+                  (await kore.assignReserveEggs(user, /* num eggs = */ 2)).logs
+                  .filter(log => log.event === 'KryptomonAssigned')
+                  .map(log => log.args.kryptomonId);
+            const breed_result = await kore.breedKryptomon(sire_id, matron_id, {from: user});
+            breed_result.logs.should
+                .have.lengthOf(2).and
+                .containSubset([
+                    {
+                        event: 'KryptomonBred',
+                        args: {
+                            _sireIndex: sire_id,
+                            _matronIndex: matron_id,
+                            _owner: user
+                        }
+                    },
+                    {
+                        event: 'EggAssigned',
+                        args: { ownerAddress: user }
+                    }
+                ]);
+            const egg_id = breed_result.logs
+                  .filter(log => log.event === 'EggAssigned')[0]
+                  .args.eggId;
+            return {sire_id, matron_id, egg_id};
+        };
+
+        contract("#breedKryptomon()", function () {
             it("creates an egg", async function() {
                 const user = user1;
-                const starting_user_num_eggs = (await kore.ownerToTotalEggs(user)).toNumber();
-                const result = await kore.assignReserveEggs(user, /* num eggs = */ 2);
-                const [matron_id, sire_id] = result.logs
-                      .filter(log => log.event === 'KryptomonAssigned')
-                      .map(log => log.args.kryptomonId);
-                const breed_result = await kore.breedKryptomon(sire_id, matron_id, {from: user});
-                breed_result.logs.should.have.lengthOf(2).and
+                const starting_user_num_eggs = await kore.ownerToTotalEggs(user);
+                const egg_id = (await breed(user)).egg_id;
+                (await kore.ownerToTotalEggs(user))
+                    .should.deep.equal(starting_user_num_eggs.plus(1));
+                (await kore.eggIndexToOwner(egg_id))
+                    .should.equal(user);
+            });
+        });
+
+        contract("#hatchEgg()", function() {
+            it("hatches an egg", async function() {
+                const user = user1;
+                const starting_user_num_eggs = await kore.ownerToTotalEggs(user);
+                const egg_id = (await breed(user)).egg_id;
+                // Set this after breeding to include the sire and maton used to breed.
+                const starting_user_num_kryptomon = await kore.ownerToTotalKryptomon(user);
+                const hatch_result = await kore.hatchEgg(egg_id, {from: user});
+                hatch_result.logs.should
+                    .have.lengthOf(2).and
                     .containSubset([
                         {
-                            event: 'KryptomonBred',
+                            event: 'EggHatched',
                             args: {
-                                _sireIndex: sire_id,
-                                _matronIndex: matron_id,
-                                _owner: user
+                                ownerAddress: user,
+                                eggId: egg_id
                             }
                         },
                         {
-                            event: 'EggAssigned',
+                            event: 'KryptomonAssigned',
                             args: { ownerAddress: user }
                         }
                     ]);
-                const egg_id = breed_result.logs.filter(log => log.event === 'EggAssigned')[0].args.eggId.toNumber();
-                (await kore.ownerToTotalEggs(user)).toNumber().should.equal(starting_user_num_eggs + 1);
-                (await kore.eggIndexToOwner(egg_id)).should.equal(user);
+                const kryptomon_id = hatch_result.logs
+                      .filter(log => log.event === 'KryptomonAssigned')[0]
+                      .args.kryptomonId;
+                (+await kore.eggIndexToOwner(egg_id)).should.equal(0);
+                (await kore.kryptomonIndexToOwner(kryptomon_id))
+                    .should.equal(user);
+                (await kore.ownerToTotalEggs(user))
+                    .should.deep.equal(starting_user_num_eggs);
+                (await kore.ownerToTotalKryptomon(user))
+                    .should.deep.equal(starting_user_num_kryptomon.plus(1));
+            });
+            
+            it("cannot hatch another user's egg", async function() {
+                const user = user1;
+                const other_user = user2;
+                const egg_id = (await breed(user)).egg_id;
+                await kore.hatchEgg(egg_id, {from: other_user}).should.be.rejectedWith(/revert/);
             });
         });
     });

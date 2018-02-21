@@ -3,9 +3,9 @@ import './KryptomonEggTokenization.sol';
 
 contract KryptomonBreeding is KryptomonEggTokenization {
   event KryptomonBred(
-    uint256 _sireIndex,
-    uint256 _matronIndex,
-    address _owner
+    uint256 sireId,
+    uint256 matronId,
+    address ownerAddress
   );
 
   function breedKryptomon(uint256 _sireIndex, uint256 _matronIndex)
@@ -17,12 +17,8 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     require(ownerOf(_matronIndex) == msg.sender);
     Kryptomon memory sire = kryptomonList[_sireIndex];
     Kryptomon memory matron = kryptomonList[_matronIndex];
-    require(
-      sire.numChildren < speciesList[sire.speciesId].maxChildren
-    );
-    require(
-      matron.numChildren < speciesList[matron.speciesId].maxChildren
-    );
+    require(sire.numChildren < speciesList[sire.speciesId].maxChildren);
+    require(matron.numChildren < speciesList[matron.speciesId].maxChildren);
     require(sire.breedingCooldown <= now);
     require(matron.breedingCooldown <= now);
     uint256 eggIndex = createEgg(_sireIndex, _matronIndex);
@@ -33,6 +29,7 @@ contract KryptomonBreeding is KryptomonEggTokenization {
       uint32(now + speciesList[sire.speciesId].breedingCooldown);
     kryptomonList[_matronIndex].breedingCooldown =
       uint32(now + speciesList[matron.speciesId].breedingCooldown);
+    ownerToTotalEggs[msg.sender] += 1;
     eggIndexToOwner[eggIndex] = msg.sender;
     EggAssigned(msg.sender, eggIndex);
   }

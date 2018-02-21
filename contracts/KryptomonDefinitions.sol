@@ -388,11 +388,11 @@ contract KryptomonDefinitions is KryptoGodController {
     SpeciesSetNotExtinct(_speciesId);
   }
 
-  // TODO(mikebarile): Ensure that "extinct" kryptomon can't be creaed.
+  // TODO(mikebarile): Ensure that "extinct" kryptomon can't be created.
 
   // Function that intializes the species mapping. This function is
   // only called when KryptomonKore is being initialized.
-  // TODO(mikebarile): Add all the Kryptomon!
+  // TODO(mikebarile): Add the first batch of Kryptomon!
   function intializeSpecies() internal {
     // Example Kryptomon species
     speciesList.push(Species({

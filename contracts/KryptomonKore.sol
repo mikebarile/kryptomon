@@ -37,7 +37,7 @@ contract KryptomonKore is KryptomonBreeding {
       uint256 sireSpeciesId
     )
   {
-    Egg storage egg = eggList[_eggId];
+    Egg memory egg = eggList[_eggId];
     return (
       uint256(egg.generation),
       uint256(egg.geneticPredisposition),
@@ -84,7 +84,7 @@ contract KryptomonKore is KryptomonBreeding {
       uint256 numChildren
     )
   {
-    Kryptomon storage kryptomon = kryptomonList[_kryptomonId];
+    Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
     return (
       uint256(kryptomon.speciesId),
       uint256(kryptomon.geneticValue),

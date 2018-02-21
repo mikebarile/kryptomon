@@ -145,27 +145,27 @@ contract KryptomonDefinitions is KryptoGodController {
 
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
   // owner at all times.
-  mapping (uint256 => address) public kryptomonIndexToOwner;
+  mapping (uint256 => address) internal kryptomonIndexToOwner;
 
   // Maps all egg IDs to an owner. All eggs should have an owner at all
   // times.
-  mapping (uint256 => address) public eggIndexToOwner;
+  mapping (uint256 => address) internal eggIndexToOwner;
 
   // Maps each user's address to the total number of Kryptomon they
   // own. We use this mapping to comply with ERC721.
-  mapping (address => uint256) public ownerToTotalKryptomon;
+  mapping (address => uint256) internal ownerToTotalKryptomon;
 
   // Maps each Kryptomon to an address that has been approved to call
   // the "transferFrom" method. Used to comply with ERC721.
-  mapping (uint256 => address) public kryptomonIndexToApproved;
+  mapping (uint256 => address) internal kryptomonIndexToApproved;
 
   // Maps each user's address to the total number of Kryptomon eggs
   // they own. We use this mapping to comply loosely with ERC721.
-  mapping (address => uint256) public ownerToTotalEggs;
+  mapping (address => uint256) internal ownerToTotalEggs;
 
   // Maps each Kryptomon egg to an address that has been approved to
   // call the "transferFrom" method. Used to comply loosely with ERC721.
-  mapping (uint256 => address) public eggIndexToApproved;
+  mapping (uint256 => address) internal eggIndexToApproved;
 
   // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.

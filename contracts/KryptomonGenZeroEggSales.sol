@@ -10,10 +10,6 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   // transferable.
   uint256 genZeroEggs = 1000000;
 
-  // TODO(mikebarile): Tier the genZeroEggs into multiple batches so
-  // that we can release different creatures as the artwork becomes
-  // available.
-
   // A reserve of gen0 eggs that is controlled by the KryptoGod. For
   // use with beta testing, bug bounties, etc.
   uint256 genZeroEggsReserve = 50000;

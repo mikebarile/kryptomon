@@ -18,7 +18,7 @@ class TestBed extends React.Component {
 
   render() {
     return (
-      <div>]
+      <div>
         <h2>Welcome to the Test Bed for Kryptomon!</h2>
         <br />
         <div>The current KryptoGod is: {this.state.kryptoGod}</div>

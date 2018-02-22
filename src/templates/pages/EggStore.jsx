@@ -36,27 +36,31 @@ class EggStore extends React.Component {
 
     return (
       <Grid container stackable relaxed columns='equal'>
-      {
-        this.state.eggs.map((egg, idx) => (<div key={idx} style={{
-            paddingTop: '14px'
-          }} onClick={handleSelect(egg)}>
-          <EggStub egg={egg}/>
-        </div>))
-      }
+        {this.state.eggs.map((egg, idx) => (
+          <div
+            key={idx}
+            style={{paddingTop: '14px'}}
+            onClick={handleSelect(egg)}
+          >
+            <EggStub egg={egg}/>
+          </div>
+        ))}
       </Grid>
     );
   }
 
   renderEgg() {
-    return (<div style={{
+    return (
+      <div style={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
       }}>
-      <Button onClick={this.handleItemReset}>Back to Eggs</Button>
-      <EggStub egg={this.state.activeItem}/>
-      <Button color='green'>Order Egg</Button>
-    </div>);
+        <Button onClick={this.handleItemReset}>Back to Eggs</Button>
+        <EggStub egg={this.state.activeItem}/>
+        <Button color='green'>Order Egg</Button>
+      </div>
+    );
   }
 
   render() {

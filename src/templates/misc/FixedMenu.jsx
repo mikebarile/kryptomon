@@ -8,7 +8,7 @@ import {
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
-import LogoImg from '../../images/logo2.png';
+import LogoImg from 'images/logo2.png';
 
 export default function FixedMenu() {
   return (

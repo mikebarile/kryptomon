@@ -2,12 +2,12 @@ import React from 'react';
 import {
   Card,
   Image,
-  Icon
+  Icon,
 } from 'semantic-ui-react';
 
-import EggImg from '../../images/logo2.png';
+import EggImg from 'images/logo2.png';
 
-export default function EggStub(props) {
+export default function EggStub() {
   return (
     <Card>
       <Image
@@ -20,7 +20,7 @@ export default function EggStub(props) {
         <Card.Meta><strong>Gen 0</strong></Card.Meta>
         <Card.Description>
           A rare Gen 0 egg! What could be inside?
-                  </Card.Description>
+        </Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Icon name='shop' />

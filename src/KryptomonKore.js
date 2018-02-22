@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import web3 from './web3';
 
 // TODO(mikebarile): Update this address once we've finalized the contract.

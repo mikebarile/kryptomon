@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Grid, Button } from 'semantic-ui-react';
 
-import EggStub from '../misc/EggStub';
-import FixedMenu from '../misc/FixedMenu';
+import EggStub from 'misc/EggStub';
+import FixedMenu from 'misc/FixedMenu';
 
 class EggStore extends React.Component {
   constructor(props) {

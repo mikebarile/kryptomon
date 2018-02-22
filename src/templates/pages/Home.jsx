@@ -13,8 +13,8 @@ import {
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
-import LogoImg from '../../images/logo2.png';
-import FixedMenu from '../misc/FixedMenu';
+import LogoImg from 'images/logo2.png';
+import FixedMenu from 'misc/FixedMenu';
 
 class Home extends React.Component {
   constructor(props) {
@@ -109,7 +109,7 @@ class Home extends React.Component {
                 <Header as='h3' style={{ fontSize: '2em' }}>
                   Blockchain
                 </Header>
-                <p>Super cool info about blockchain. Praise be to Satoshi. HODL!!! Don't worry about Tether.. everything is normal! Buy PoWHCoin today! Link to informative paper about blockchain technology.</p>
+                <p>Super cool info about blockchain. Praise be to Satoshi. HODL!!! Don&apos;t worry about Tether.. everything is normal! Buy PoWHCoin today! Link to informative paper about blockchain technology.</p>
               </Grid.Column>
               <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                 <Header as='h3' style={{ fontSize: '2em' }}>
@@ -142,7 +142,7 @@ class Home extends React.Component {
               Did We Tell You About Our White Paper?
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              Yes. Of course we have a white paper about the current state of IP law, the mess that is licensing and IP ownership in today's society. Our glorious founder, the KryptoGod (praise be!) revolutionizes the intellectual property paradigm in this (totally existent) white paper.
+              Yes. Of course we have a white paper about the current state of IP law, the mess that is licensing and IP ownership in today&apos;s society. Our glorious founder, the KryptoGod (praise be!) revolutionizes the intellectual property paradigm in this (totally existent) white paper.
             </p>
             <Button as='a' primary size='large'>Get the Paper</Button>
           </Container>

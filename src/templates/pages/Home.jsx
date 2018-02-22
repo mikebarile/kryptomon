@@ -9,7 +9,7 @@ import {
   Segment,
   Icon,
   Divider,
-  Grid
+  Grid,
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Grid, Button} from 'semantic-ui-react';
+import { Container, Grid, Button } from 'semantic-ui-react';
 
 import EggStub from '../misc/EggStub';
 import FixedMenu from '../misc/FixedMenu';
@@ -8,33 +8,31 @@ class EggStore extends React.Component {
   constructor(props) {
     super(props);
     const eggs = [];
-    for (var i = 0; i < 15; i++) {
+    for (let i = 0; i < 15; i += 1) {
       eggs.push(this.generateDefaultEgg());
     }
     this.state = {
       activeItem: null,
-      eggs
+      eggs,
     };
     this.handleItemReset = this.handleItemReset.bind(this);
     this.handleItemSelect = this.handleItemReset.bind(this);
   }
 
   generateDefaultEgg() {
-    return {price: Math.random()};
+    return { price: Math.random() };
   }
 
   handleItemSelect(activeItem) {
-    this.setState({activeItem});
+    this.setState({ activeItem });
   }
 
   handleItemReset() {
-    this.setState({activeItem: null});
+    this.setState({ activeItem: null });
   }
 
   renderAllEggs() {
-    const handleSelect = egg => {
-      return() => this.setState({activeItem: egg});
-    };
+    const handleSelect = egg => () => (this.setState({ activeItem: egg }));
 
     return (
       <Grid container stackable relaxed columns='equal'>
@@ -62,16 +60,18 @@ class EggStore extends React.Component {
   }
 
   render() {
-    return (<div>
-      <FixedMenu/>
-      <Container fluid text style={{marginTop: '8em'}}>
-        {
-          this.state.activeItem
-            ? this.renderEgg()
-            : this.renderAllEggs()
-        }
-      </Container>
-    </div>);
+    return (
+      <div>
+        <FixedMenu />
+        <Container fluid text style={{marginTop: '8em' }}>
+          {
+            this.state.activeItem
+              ? this.renderEgg()
+              : this.renderAllEggs()
+          }
+        </Container>
+      </div>
+    );
   }
 }
 

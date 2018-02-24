@@ -26,11 +26,12 @@ class TestBed extends React.Component {
     const kryptoGod = await KryptomonKore.methods.kryptoGodAddress().call();
     const completeFreeze = await KryptomonKore.methods.completeFreeze().call();
     const accounts = await web3.eth.getAccounts();
-    const ownedEggs = await KryptomonKore.methods.eggBalanceOf(this.state.userAccount).call();
-    const ownedKryptomon = await KryptomonKore.methods.balanceOf(this.state.userAccount).call();
+    window.account = accounts[0];
+    const ownedEggs = await KryptomonKore.methods.eggBalanceOf(window.account).call();
+    const ownedKryptomon = await KryptomonKore.methods.balanceOf(window.account).call();
     this.setState({
       kryptoGod,
-      userAccount: accounts[0],
+      userAccount: window.account,
       completeFreeze,
       ownedEggs,
       ownedKryptomon,
@@ -39,7 +40,11 @@ class TestBed extends React.Component {
 
   render() {
     const buyGen0Egg = () => {
-      KryptomonKore.methods.buyGenZeroEggs(1).call().then(console.log);
+      // Current genZeroEggPrice = 0.01 ETH
+      KryptomonKore.methods.buyGenZeroEggs(1).send({
+        from: this.state.userAccount,
+        value: web3.utils.toWei('0.01'),
+      });
     };
 
     return (

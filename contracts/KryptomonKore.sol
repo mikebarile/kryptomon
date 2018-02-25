@@ -46,6 +46,7 @@ contract KryptomonKore is KryptomonBreeding {
     );
   }
 
+  // Returns list of KryptomonIds belonging to an address
   function getKryptomonIdsForAddress(address _address)
     external
     view

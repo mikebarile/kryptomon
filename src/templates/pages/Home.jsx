@@ -9,10 +9,12 @@ import {
   Segment,
   Icon,
   Divider,
-  Grid
+  Grid,
 } from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 
-import LogoImg from '../images/logo2.png';
+import LogoImg from 'images/logo2.png';
+import FixedMenu from 'misc/FixedMenu';
 
 class Home extends React.Component {
   constructor(props) {
@@ -20,35 +22,11 @@ class Home extends React.Component {
     this.state = {menuVisible: false, address: null};
   }
 
-  renderFixedMenu() {
-    return (
-      <Menu fixed='top' size='large' borderless>
-        <Container>
-          <Menu.Item as='a' header>
-            <Image
-              size='mini'
-              style={{marginRight: '0.75em', width: '22px'}}
-              src={LogoImg}
-            />
-            <Header style={{marginTop: 0}} as='h2'>Kryptomon</Header>
-          </Menu.Item>
-          <Menu.Menu position='right'>
-            <Menu.Item as='a'>My Kryptomon</Menu.Item>
-            <Menu.Item as='a'>Beastiary</Menu.Item>
-            <Menu.Item>
-              <Button as='a' color='green'>Buy Eggs</Button>
-            </Menu.Item>
-          </Menu.Menu>
-        </Container>
-      </Menu>
-    );
-  }
-
   renderTopMenu() {
     return (
       <Container>
         <Menu inverted secondary size='large'>
-          <Menu.Item as='a' header>
+          <Menu.Item as={Link} to='/' header>
             <Image
               size='mini'
               style={{marginRight: '0.75em', width: '22px'}}
@@ -57,10 +35,17 @@ class Home extends React.Component {
             <Header inverted style={{marginTop: 0}} as='h2'>Kryptomon</Header>
           </Menu.Item>
           <Container>
-            <Menu.Item as='a'>My Kryptomon</Menu.Item>
-            <Menu.Item as='a'>Beastiary</Menu.Item>
+            <Menu.Item as={Link} to='/ranch'>My Kryptomon</Menu.Item>
+            <Menu.Item as={Link} to='/beastiary'>Bestiary</Menu.Item>
+            <Menu.Item as={Link} to='/faq'>How It Works</Menu.Item>
             <Menu.Item position='right'>
-              <Button as='a' color='purple' inverted style={{ marginLeft: '0.5em' }}>
+              <Button
+                as={Link}
+                to='/store'
+                color='green'
+                inverted
+                style={{ marginLeft: '0.5em' }}
+              >
                 Buy Eggs
               </Button>
             </Menu.Item>
@@ -76,7 +61,7 @@ class Home extends React.Component {
     const hideFixedMenu = () => this.setState({menuVisible: false});
     return (
       <div>
-        {menuVisible ? this.renderFixedMenu() : null}
+        {menuVisible ? <FixedMenu/> : null}
         <Visibility
           onBottomPassed={showFixedMenu}
           onBottomVisible={hideFixedMenu}
@@ -124,7 +109,7 @@ class Home extends React.Component {
                 <Header as='h3' style={{ fontSize: '2em' }}>
                   Blockchain
                 </Header>
-                <p>Super cool info about blockchain. Praise be to Satoshi. HODL!!! Don't worry about Tether.. everything is normal! Buy PoWHCoin today! Link to informative paper about blockchain technology.</p>
+                <p>Super cool info about blockchain. Praise be to Satoshi. HODL!!! Don&apos;t worry about Tether.. everything is normal! Buy PoWHCoin today! Link to informative paper about blockchain technology.</p>
               </Grid.Column>
               <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                 <Header as='h3' style={{ fontSize: '2em' }}>
@@ -151,13 +136,13 @@ class Home extends React.Component {
               horizontal
               style={{ margin: '3em 0em', textTransform: 'uppercase' }}
             >
-              <a href='#'>White Paper</a>
+              White Paper
             </Divider>
             <Header as='h3' style={{ fontSize: '2em' }}>
               Did We Tell You About Our White Paper?
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              Yes. Of course we have a white paper about the current state of IP law, the mess that is licensing and IP ownership in today's society. Our glorious founder, the KryptoGod (praise be!) revolutionizes the intellectual property paradigm in this (totally existent) white paper.
+              Yes. Of course we have a white paper about the current state of IP law, the mess that is licensing and IP ownership in today&apos;s society. Our glorious founder, the KryptoGod (praise be!) revolutionizes the intellectual property paradigm in this (totally existent) white paper.
             </p>
             <Button as='a' primary size='large'>Get the Paper</Button>
           </Container>

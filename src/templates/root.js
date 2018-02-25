@@ -1,20 +1,21 @@
+/* eslint react/jsx-filename-extension: 0 */
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter, Route, Link } from 'react-router-dom';
-import "semantic-ui-css/semantic.css";
+import { HashRouter, Route } from 'react-router-dom';
+import 'semantic-ui-css/semantic.css';
 
-import App from './App.js';
-import Home from './Home';
+import Home from './pages/Home';
+import EggStore from './pages/EggStore';
+import TestBed from './pages/TestBed';
 
-const Root = () => {
-  return (
-    <HashRouter onUpdate={() => window.scrollTo(0, 0)}>
-      <div>
-        <Route path="/" exact component={App}/>
-        <Route path='/home' component={Home}/>
-      </div>
-    </HashRouter>
-  );
-};
+const Root = () => (
+  <HashRouter onUpdate={() => window.scrollTo(0, 0)}>
+    <div>
+      <Route path="/" exact component={Home} />
+      {/* Below should require log in!! */}
+      <Route path="/store" component={EggStore} />
+      <Route path="/testbed" component={TestBed} />
+    </div>
+  </HashRouter>
+);
 
 export default Root;

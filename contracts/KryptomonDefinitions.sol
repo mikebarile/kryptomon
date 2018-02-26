@@ -179,9 +179,15 @@ contract KryptomonDefinitions is KryptoGodController {
   }
 
   // Function used to return a pseudo-random int between 1 and
-  // 1,000,000 for use in generating a species ID.
-  function randomSpecies(uint256 id) internal view returns(uint256) {
-    return random(id + 1000000) % 1000000 + 1;
+  // numProbs for use in generating a species ID.
+  function randomSpecies(uint256 _id, uint256 _numProbs)
+    internal
+    view
+    returns(uint256)
+  {
+    // Ensure we don't divide by zero or try to overflow the int.
+    require(_numProbs > 0 && _numProbs < 1000000000000);
+    return random(_id + _numProbs) % _numProbs + 1;
   }
 
   // Function called by Kryptomon users to hatch their eggs. Destroys
@@ -228,8 +234,6 @@ contract KryptomonDefinitions is KryptoGodController {
     return uint256(kryptomonList.length - 1);
   }
 
-  // TODO(mikebarile): Create lookup tables for the different Kryptomon
-  // rarities and finish this function.
   // Function used to determine a new Kryptomon's species ID. There is
   // a 2% chance that the resulting Kryptomon will inherit one of its
   // parents' species.
@@ -238,38 +242,110 @@ contract KryptomonDefinitions is KryptoGodController {
     uint256 _sireSpeciesId,
     uint256 _eggId
   ) private
+    returns(uint256)
+  {
+    uint256 randSpecies = randomSpecies(_eggId, 1000000);
+    if (randSpecies <= 1000) {
+      // Set species ID to matron's species ID unless it's' extinct.
+      if (speciesList[_matronSpeciesId].isExtinct) {
+        return getRarityBasedSpeciesId(
+          _eggId,
+          speciesList[_matronSpeciesId].rarity
+        );
+      } else {
+        return _matronSpeciesId;
+      }
+    } else if (randSpecies > 1000 && randSpecies <= 2000) {
+      // Set species ID to sire's species ID unless it's extinct.
+      if (speciesList[_sireSpeciesId].isExtinct) {
+        return getRarityBasedSpeciesId(
+          _eggId,
+          speciesList[_sireSpeciesId].rarity
+        );
+      } else {
+        return _sireSpeciesId;
+      }
+    } else if (randSpecies > 2000 && randSpecies <= 400000) {
+      // Set to a common creature (38% probability).
+      return getRarityBasedSpeciesId(_eggId, 1);
+    } else if (randSpecies > 400000 && randSpecies <= 650000) {
+      // Set to an uncommon creature (25% probability).
+      return getRarityBasedSpeciesId(_eggId, 2);
+    } else if (randSpecies > 650000 && randSpecies <= 850000) {
+      // Set to a rare creature (20% probability).
+      return getRarityBasedSpeciesId(_eggId, 3);
+    } else if (randSpecies > 850000 && randSpecies <= 950000) {
+      // Set to a super rare creature (10% probability).
+      return getRarityBasedSpeciesId(_eggId, 4);
+    } else if (randSpecies > 950000 && randSpecies <= 998000) {
+      // Set to an ultra rare creature (~5% probability).
+      return getRarityBasedSpeciesId(_eggId, 5);
+    } else if (randSpecies > 998000 && randSpecies <= 999995) {
+      // Set to a mega rare creature (~0.1% probability).
+      return getRarityBasedSpeciesId(_eggId, 6);
+    } else if (randSpecies > 999995 && randSpecies <= 1000000) {
+      // Set to a legendary creature (0.0005% probability).
+      // If there are 0 legendaries remaining, return a rarity 6
+      // Kryptomon species ID. Else, return a random legendary species
+      // ID and set it to extinct.
+      if (getCountOfSpeciesWithGivenRarity(7) == 0) {
+        return getRarityBasedSpeciesId(_eggId, 6);
+      } else {
+        uint256 speciesId = getRarityBasedSpeciesId(_eggId, 7);
+        setLegendarySpeciesExtinct(speciesId);
+        return speciesId;
+      }
+    }
+  }
+
+  // Returns a random species ID of the given rarity.
+  function getRarityBasedSpeciesId(uint256 _eggId, uint256 _rarity)
+    internal
     view
     returns(uint256)
   {
-    uint256 randSpecies = randomSpecies(_eggId);
-    if (randSpecies <= 1000) {
-      // Set species ID to matron's species ID.
-      return _matronSpeciesId;
-    } else if (randSpecies > 10000 && randSpecies <= 20000) {
-      // Set species ID to sire's species ID.
-      return _sireSpeciesId;
-    } else if (randSpecies > 20000 && randSpecies <= 400000) {
-      // Set to a common creature (38% probability).
-
-    } else if (randSpecies > 400000 && randSpecies <= 650000) {
-      // Set to an uncommon creature (25% probability).
-
-    } else if (randSpecies > 650000 && randSpecies <= 850000) {
-      // Set to a rare creature (20% probability).
-
-    } else if (randSpecies > 850000 && randSpecies <= 950000) {
-      // Set to a super rare creature (10% probability).
-
-    } else if (randSpecies > 950000 && randSpecies <= 998000) {
-      // Set to an ultra rare creature (~5% probability).
-
-    } else if (randSpecies > 998000 && randSpecies <= 999995) {
-      // Set to a mega rare creature (~0.1% probability).
-
-    } else if (randSpecies > 999995 && randSpecies <= 1000000) {
-      // Set to a legendary creature (0.0005% probability).
-
+    require(_rarity > 0 && _rarity <= 7);
+    uint256 speciesCount = getCountOfSpeciesWithGivenRarity(_rarity);
+    require(speciesCount > 0);
+    // Generates a random number between 1 and the total number
+    // "speciesCount" of Kryptomon species with the given rarity. Then
+    // crawls through the Kryptomon species list until we've reached
+    // the nth species of the given rarity and return it.
+    uint256 speciesNum = randomSpecies(_eggId, speciesCount);
+    require(speciesNum > 0 && speciesNum <= speciesCount);
+    uint256 counter = 0;
+    for (uint256 idx = 0; idx < speciesList.length; idx++) {
+      if (counter == speciesNum
+        && speciesList[idx].rarity == _rarity
+        && !speciesList[idx].isExtinct
+      ) {
+        return idx;
+      } else if (speciesList[idx].rarity == _rarity
+      && !speciesList[idx].isExtinct) {
+        counter += 1;
+      }
     }
+    return 1;
+  }
+
+  // TODO(mikebarile, ktkonrad): Consider refactoring this function
+  // so that we use a mapping to determine the number of species with
+  // a given rarity. This would require us to maintain a separate
+  // mapping and update it every time a species is removed or added.
+  function getCountOfSpeciesWithGivenRarity(uint256 _rarity)
+    internal
+    view
+    returns(uint256)
+  {
+    uint256 speciesCount = 0;
+    for (uint256 idx = 0; idx < speciesList.length; idx++) {
+      if (speciesList[idx].rarity == _rarity
+        && !speciesList[idx].isExtinct
+      ) {
+        speciesCount += 1;
+      }
+    }
+    return speciesCount;
   }
 
   // Determines the genetic value of the resulting Kryptomon. Produces
@@ -375,7 +451,13 @@ contract KryptomonDefinitions is KryptoGodController {
   {
     require(_speciesId < speciesList.length);
     speciesList[_speciesId].isExtinct = true;
+    SpeciesSetExtinct(_speciesId);
+  }
 
+  function setLegendarySpeciesExtinct(uint256 _speciesId) internal {
+    require(_speciesId < speciesList.length);
+    require(speciesList[_speciesId].rarity == 7);
+    speciesList[_speciesId].isExtinct = true;
     SpeciesSetExtinct(_speciesId);
   }
 
@@ -385,11 +467,8 @@ contract KryptomonDefinitions is KryptoGodController {
   {
     require(_speciesId < speciesList.length);
     speciesList[_speciesId].isExtinct = false;
-
     SpeciesSetNotExtinct(_speciesId);
   }
-
-  // TODO(mikebarile): Ensure that "extinct" kryptomon can't be created.
 
   // Function that intializes the species mapping. This function is
   // only called when KryptomonKore is being initialized.

@@ -66,12 +66,12 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
 
   // Function used to create a gen0 kryptomon. Employs similar logic to
   // createKryptomon except that there aren't any genetic effects.
-  function createGenZeroKryptomon(uint256 id)
+  function createGenZeroKryptomon(uint256 _id)
     internal
     returns(uint256)
   {
-    uint256 speciesId = determineGenZeroSpeciesId(id);
-    uint256 geneticValue = determineGenZeroGeneticValue(id);
+    uint256 speciesId = determineGenZeroSpeciesId(_id);
+    uint256 geneticValue = determineGenZeroGeneticValue(_id);
     kryptomonList.push(
       Kryptomon({
         speciesId: uint16(speciesId),
@@ -92,33 +92,41 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   // "tier" as an argument based on which batch of gen 0 eggs is being
   // hatched (aka batch 1 will include 1-150, batch 2 will include
   // 151 - 300, etc.)
-  function determineGenZeroSpeciesId(uint256 id)
+  function determineGenZeroSpeciesId(uint256 _id)
     private
-    view
     returns(uint256)
   {
-    uint256 randSpecies = randomSpecies(id);
+    uint256 randSpecies = randomSpecies(_id, 1000000);
     if (randSpecies <= 400000) {
       // Set to a common creature (40% probability).
-
+      return getRarityBasedSpeciesId(_id, 1);
     } else if (randSpecies > 400000 && randSpecies <= 650000) {
       // Set to an uncommon creature (25% probability).
-
+      return getRarityBasedSpeciesId(_id, 2);
     } else if (randSpecies > 650000 && randSpecies <= 850000) {
       // Set to a rare creature (20% probability).
-
+      return getRarityBasedSpeciesId(_id, 3);
     } else if (randSpecies > 850000 && randSpecies <= 950000) {
       // Set to a super rare creature (10% probability).
-
+      return getRarityBasedSpeciesId(_id, 4);
     } else if (randSpecies > 950000 && randSpecies <= 998000) {
       // Set to an ultra rare creature (~5% probability).
-
+      return getRarityBasedSpeciesId(_id, 5);
     } else if (randSpecies > 998000 && randSpecies <= 999995) {
       // Set to a mega rare creature (~0.1% probability).
-
+      return getRarityBasedSpeciesId(_id, 6);
     } else if (randSpecies > 999995 && randSpecies <= 1000000) {
       // Set to a legendary creature (0.0005% probability).
-
+      // If there are 0 legendaries remaining, return a rarity 6
+      // Kryptomon species ID. Else, return a random legendary species
+      // ID and set it to extinct.
+      if (getCountOfSpeciesWithGivenRarity(7) == 0) {
+        return getRarityBasedSpeciesId(_id, 6);
+      } else {
+        uint256 speciesId = getRarityBasedSpeciesId(_id, 7);
+        setLegendarySpeciesExtinct(speciesId);
+        return speciesId;
+      }
     }
   }
 

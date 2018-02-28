@@ -8,15 +8,15 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   // a crazy gas cost to initialize thousands of identical eggs. These
   // eggs are effecitvely owned by the Kryptomon board and are non
   // transferable.
-  uint256 genZeroEggs = 1000000;
+  uint256 public genZeroEggs = 1000000;
 
   // A reserve of gen0 eggs that is controlled by the KryptoGod. For
   // use with beta testing, bug bounties, etc.
-  uint256 genZeroEggsReserve = 50000;
+  uint256 public genZeroEggsReserve = 50000;
 
   // The price per gen0 egg. Can be reassigned by the KryptoGod based on
   // ether <-> fiat price movements.
-  uint256 genZeroEggPrice = 10 finney;
+  uint256 public genZeroEggPrice = 10 finney;
 
   // Event triggered when a gen zero egg is successfully hatched.
   event GenZeroEggHatched(address buyerId);

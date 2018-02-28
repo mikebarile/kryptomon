@@ -110,7 +110,8 @@ contract KryptomonDefinitions is KryptoGodController {
     uint16 evolveToId;
 
     // Base amount time it takes for this Kryptomon to evolve. Actual
-    // evolution time is also based on Kryptomon's generation.
+    // evolution time is also based on Kryptomon's generation. Time is
+    // in seconds.
     uint32 timeToEvolve;
 
     // Number representing the creature's rarity. Values can be between
@@ -374,15 +375,18 @@ contract KryptomonDefinitions is KryptoGodController {
 
   // External function called by users to evolve their Kryptomon.
   // Maintains the same Kryptomon struct and just changes the
-  // Kryptomon's speciesId.
-  // TODO(mikebarile): Update the logic to incorporate a penalty for
-  // generation. We should consider whether "evolutionDate" should just
-  // be stored in the species struct.
+  // Kryptomon's speciesId. Note: timeToEvolve is in seconds.
   function evolve(uint256 _kryptomonId) external {
     require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
     Species memory species = speciesList[kryptomon.speciesId];
-    require(now >= kryptomon.birthTimeStamp + species.timeToEvolve);
+    uint256 evolutionTimestamp
+      = species.timeToEvolve
+        * (uint256(150)**species.timeToEvolve)
+        / (uint256(100)**species.timeToEvolve);
+    require(
+      now >= uint256(kryptomon.birthTimeStamp) + evolutionTimestamp
+    );
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
     kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
     KryptomonEvolved(msg.sender, _kryptomonId);

@@ -5,6 +5,9 @@ import './KryptomonTokenization.sol';
 // we will implement similar functionality because we want eggs to also
 // be transferable.
 contract KryptomonEggTokenization is KryptomonTokenization {
+  string public constant genZeroEggName = "Kryptomon Egg";
+  string public constant genZeroEggSymbol = "EGG";
+
   // Returns the total number of Kryptomon eggs in existence.
   function totalEggSupply() public view returns(uint256) {
     return eggList.length;
@@ -18,7 +21,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
 
   // Returns the address of the owner of a given Kryptomon egg id.
   function eggOwnerOf(uint _tokenId) public view returns(address) {
-    require(_tokenId < totalSupply() - 1);
+    require(_tokenId < totalEggSupply());
     return eggIndexToOwner[_tokenId];
   }
 

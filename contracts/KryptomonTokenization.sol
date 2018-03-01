@@ -13,16 +13,15 @@ contract ERC721 {
   function transferFrom(address _from, address _to, uint _tokenId) public;
   function transfer(address _to, uint _tokenId) public;
 
-  // Optional functions
-  function name() public view returns (string _name);
-  function symbol() public view returns (string _symbol);
-
   // Events
   event Transfer(address _from, address _to, uint256 _tokenId);
   event Approval(address _owner, address _approved, uint256 _tokenId);
 }
 
 contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
+  string public constant name = "Kryptomon";
+  string public constant symbol = "KMN";
+
   // Returns the total number of Kryptomon in existence.
   function totalSupply() public view returns(uint256) {
     return kryptomonList.length;
@@ -74,17 +73,4 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     Transfer(msg.sender, _to, _tokenId);
     KryptomonAssigned(_to, _tokenId);
   }
-
-  // Optional functions
-  function name() public view returns (string _name) {
-    return "Kryptomon";
-  }
-
-  function symbol() public view returns (string _symbol) {
-    return "KMN";
-  }
-
-  // Events
-  event Transfer(address _from, address _to, uint256 _tokenId);
-  event Approval(address _owner, address _approved, uint256 _tokenId);
 }

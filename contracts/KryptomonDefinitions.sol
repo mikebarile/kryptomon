@@ -1,7 +1,10 @@
 pragma solidity ^0.4.11;
 import './KryptoGodController.sol';
+import './SafeMath.sol';
 
 contract KryptomonDefinitions is KryptoGodController {
+  using SafeMath for uint256;
+
   //// START Event Definitions
   // Event that's fired every time an egg is hatched.
   event EggHatched(address ownerAddress, uint256 eggId);
@@ -67,7 +70,7 @@ contract KryptomonDefinitions is KryptoGodController {
 
     // The minimum timestamp after which this Kryptomon can engage in
     // breeding activities again. Is based on a Kryptomon's species.
-    uint32 breedingCooldown;
+    uint32 lastBred;
 
     // The number of eggs that this Kryptomon has produced. Different
     // species of Kryptomon have different restrictions on how many
@@ -188,14 +191,14 @@ contract KryptomonDefinitions is KryptoGodController {
   {
     // Ensure we don't divide by zero or try to overflow the int.
     require(_numProbs > 0 && _numProbs < 1000000000000);
-    return random(_id + _numProbs) % _numProbs + 1;
+    return random(_id.add(_numProbs)) % _numProbs.add(1);
   }
 
   // Function called by Kryptomon users to hatch their eggs. Destroys
   // the egg, removes the egg ID from the ownership mapping, creates
   // a new Kryptomon, and assigns ownership of the new Kryptomon to
   // the egg's owner.
-  function hatchEgg(uint256 _eggId) external {
+  function hatchEgg(uint256 _eggId) external whenHatchingNotPaused {
     require(eggIndexToOwner[_eggId] == msg.sender);
     uint256 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
@@ -228,11 +231,11 @@ contract KryptomonDefinitions is KryptoGodController {
         geneticValue: uint8(geneticValue),
         generation: egg.generation,
         birthTimeStamp: uint32(now),
-        breedingCooldown: uint32(now),
+        lastBred: uint32(now),
         numChildren: 0
       })
     );
-    return uint256(kryptomonList.length - 1);
+    return uint256(kryptomonList.length.sub(1));
   }
 
   // Function used to determine a new Kryptomon's species ID. There is
@@ -370,7 +373,7 @@ contract KryptomonDefinitions is KryptoGodController {
 
   // Produces a random genetic code for use in gen0 eggs.
   function randomGenes(uint256 _eggId) internal view returns(uint256) {
-    return random(_eggId + 1000000) % 400;
+    return random(_eggId.add(1000000)) % 400;
   }
 
   // External function called by users to evolve their Kryptomon.
@@ -381,11 +384,11 @@ contract KryptomonDefinitions is KryptoGodController {
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
     Species memory species = speciesList[kryptomon.speciesId];
     uint256 evolutionTimestamp
-      = species.timeToEvolve
-        * (uint256(150)**species.timeToEvolve)
-        / (uint256(100)**species.timeToEvolve);
+      = uint256(species.timeToEvolve)
+        .mul(uint256(3)**uint256(species.timeToEvolve))
+        .div(uint256(2)**uint256(species.timeToEvolve));
     require(
-      now >= uint256(kryptomon.birthTimeStamp) + evolutionTimestamp
+      now >= uint256(kryptomon.birthTimeStamp).add(evolutionTimestamp)
     );
     kryptomonList[_kryptomonId].speciesId = species.evolveToId;
     kryptomonList[_kryptomonId].birthTimeStamp = uint32(now);
@@ -426,7 +429,7 @@ contract KryptomonDefinitions is KryptoGodController {
     require (_hitPoints <= 250);
     require (_speed <= 250);
     require (_maxChildren <= 100);
-    require (_breedingCooldown <= 2147483646);
+    require (_breedingCooldown < 4294967295);
     require (_evolveToId <= 10000 && speciesList[_evolveToId].rarity != 0);
     require (_timeToEvolve <= 2147483646);
     require (_rarity > 0 && _rarity <= 7);
@@ -446,7 +449,7 @@ contract KryptomonDefinitions is KryptoGodController {
       isExtinct: false
     }));
 
-    SpeciesIdAdded(speciesList.length - 1);
+    SpeciesIdAdded(speciesList.length.sub(1));
   }
 
   function setSpeciesExtinct(uint256 _speciesId)

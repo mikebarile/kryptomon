@@ -16,6 +16,7 @@ contract KryptomonKore is KryptomonBreeding {
     intializeSpecies();
     kryptoGodAddress = msg.sender;
     completeFreeze = true;
+    totalGenZeroEggs = unassignedGenZeroEggs.add(genZeroEggsReserve);
   }
 
   // Send all the ethers to the KryptoGod.
@@ -81,7 +82,7 @@ contract KryptomonKore is KryptomonBreeding {
       uint256 geneticValue,
       uint256 generation,
       uint256 birthTimeStamp,
-      uint256 breedingCooldown,
+      uint256 lastBred,
       uint256 numChildren
     )
   {
@@ -91,7 +92,7 @@ contract KryptomonKore is KryptomonBreeding {
       uint256(kryptomon.geneticValue),
       uint256(kryptomon.generation),
       uint256(kryptomon.birthTimeStamp),
-      uint256(kryptomon.breedingCooldown),
+      uint256(kryptomon.lastBred),
       uint256(kryptomon.numChildren)
     );
   }

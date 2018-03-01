@@ -1,3 +1,4 @@
+var SafeMath = artifacts.require("SafeMath");
 var KryptoGodController = artifacts.require("KryptoGodController");
 var KryptomonDefinitions = artifacts.require("KryptomonDefinitions");
 var KryptomonGenZeroEggSales = artifacts.require("KryptomonGenZeroEggSales");
@@ -7,6 +8,7 @@ var KryptomonBreeding = artifacts.require("KryptomonBreeding");
 var KryptomonKore = artifacts.require("KryptomonKore");
 
 module.exports = function(deployer) {
+    deployer.deploy(SafeMath);
     deployer.deploy(KryptoGodController);
     deployer.deploy(KryptomonDefinitions);
     deployer.deploy(KryptomonGenZeroEggSales);

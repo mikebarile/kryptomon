@@ -1,78 +1,81 @@
 import React from 'react';
-import { Container, Grid, Button } from 'semantic-ui-react';
+import {
+  Container,
+  Segment,
+  Image,
+  Button,
+} from 'semantic-ui-react';
 
-import EggStub from 'misc/EggStub';
+import web3 from 'src/web3';
+import KryptomonKore from 'src/KryptomonKore';
+
+import EggImg from 'images/logo2.png';
 import FixedMenu from 'misc/FixedMenu';
 
 class EggStore extends React.Component {
   constructor(props) {
     super(props);
-    const eggs = [];
-    for (let i = 0; i < 15; i += 1) {
-      eggs.push(this.generateDefaultEgg());
-    }
     this.state = {
-      activeItem: null,
-      eggs,
+      genZeroEggSupply: '',
+      genZeroEggPrice: '',
+      loading: true,
     };
-    this.handleItemReset = this.handleItemReset.bind(this);
-    this.handleItemSelect = this.handleItemReset.bind(this);
+    this.buyGenZeroEgg = this.buyGenZeroEgg.bind(this);
   }
 
-  generateDefaultEgg() {
-    return { price: Math.random() };
+  async componentDidMount() {
+    const genZeroEggPrice = await KryptomonKore.methods
+      .genZeroEggPrice().call();
+    const genZeroEggSupply = await KryptomonKore.methods
+      .genZeroEggTotalSupply().call();
+
+    this.setState({genZeroEggPrice, genZeroEggSupply, loading: false});
   }
 
-  handleItemSelect(activeItem) {
-    this.setState({ activeItem });
-  }
-
-  handleItemReset() {
-    this.setState({ activeItem: null });
-  }
-
-  renderAllEggs() {
-    const handleSelect = egg => () => (this.setState({ activeItem: egg }));
-
-    return (
-      <Grid container stackable relaxed columns='equal'>
-        {this.state.eggs.map((egg, idx) => (
-          <div
-            key={idx}
-            style={{paddingTop: '14px'}}
-            onClick={handleSelect(egg)}
-          >
-            <EggStub egg={egg}/>
-          </div>
-        ))}
-      </Grid>
-    );
-  }
-
-  renderEgg() {
-    return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <Button onClick={this.handleItemReset}>Back to Eggs</Button>
-        <EggStub egg={this.state.activeItem}/>
-        <Button color='green'>Order Egg</Button>
-      </div>
-    );
+  async buyGenZeroEgg() {
+    this.setState({loading: true});
+    const accounts = await web3.eth.getAccounts();
+    if (accounts[0]) {
+      KryptomonKore.methods.buyGenZeroEggs(1).send({
+        from: accounts[0],
+        value: this.state.genZeroEggPrice,
+      }).then(() => {
+        this.setState({loading: false});
+      });
+    } else {
+      console.log('NO ACCOUNT FOUND...');
+      this.setState({loading: false});
+    }
   }
 
   render() {
+    const displayPrice = web3.utils.fromWei(
+      this.state.genZeroEggPrice.toString(),
+      'ether'
+    );
     return (
       <div>
         <FixedMenu />
-        <Container fluid text style={{marginTop: '8em' }}>
-          {
-            this.state.activeItem
-              ? this.renderEgg()
-              : this.renderAllEggs()
-          }
+        <Container fluid text style={{marginTop: '84px' }}>
+          <Segment clearing loading={this.state.loading}>
+            <div>
+              <div>
+                Current Egg Price: {displayPrice} ETH
+              </div>
+              <Button
+                onClick={this.buyGenZeroEgg}
+                color='green'
+              >
+                Buy One Egg
+              </Button>
+            </div>
+            <Image
+              src={EggImg}
+              size='medium'
+              style={{ padding: '34px' }}
+              floated='right'
+            />
+          </Segment>
         </Container>
       </div>
     );

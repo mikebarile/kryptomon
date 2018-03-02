@@ -480,7 +480,7 @@ contract KryptomonDefinitions is KryptoGodController {
   // Function that intializes the species mapping. This function is
   // only called when KryptomonKore is being initialized.
   // TODO(mikebarile): Add the first batch of Kryptomon!
-  function intializeSpecies() internal {
+  function initializeSpecies() internal {
     // Example Kryptomon species
     speciesList.push(Species({
       attack: 100,

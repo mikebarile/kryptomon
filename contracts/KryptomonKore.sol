@@ -13,10 +13,21 @@ import './KryptomonBreeding.sol';
 // 7. KryptomonKore
 contract KryptomonKore is KryptomonBreeding {
   function KryptomonKore() public {
-    /* intializeSpecies(); */
+    /* initializeSpecies(); */
     kryptoGodAddress = msg.sender;
     completeFreeze = true;
     totalGenZeroEggs = unassignedGenZeroEggs.add(genZeroEggsReserve);
+  }
+
+  // If this field is set, the Kryptomon contract address has been
+  // migrated to this address.
+  address public newContractAddress;
+
+  function setNewContractAddress(address _newContractAddress)
+    external
+    kryptoGodOnly
+  {
+    newContractAddress = _newContractAddress;
   }
 
   // Send all the ethers to the KryptoGod.

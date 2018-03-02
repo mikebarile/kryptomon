@@ -4,17 +4,31 @@ import web3 from './web3';
 
 // TODO(mikebarile): Update this address once we've finalized the contract.
 // Update this when running truffle migrate
-const kryptomonAddress = '0x1036bf5913263819310401b97180c7dcec19859c';
+const kryptomonAddress = '0xe93e64e9bbbd449b4718705567368714fbbbe001';
 
 // TODO(mikebarile): Update this ABI once we've finalized the contract.
 const kryptomonABI = [
   {
     "constant": true,
     "inputs": [],
+    "name": "totalGenZeroEggs",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "name",
     "outputs": [
       {
-        "name": "_name",
+        "name": "",
         "type": "string"
       }
     ],
@@ -75,6 +89,20 @@ const kryptomonABI = [
   {
     "constant": true,
     "inputs": [],
+    "name": "genZeroEggPrice",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "totalSupply",
     "outputs": [
       {
@@ -126,7 +154,7 @@ const kryptomonABI = [
     "constant": false,
     "inputs": [
       {
-        "name": "price",
+        "name": "_price",
         "type": "uint256"
       }
     ],
@@ -134,6 +162,20 @@ const kryptomonABI = [
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "genZeroEggName",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -300,6 +342,20 @@ const kryptomonABI = [
   },
   {
     "constant": true,
+    "inputs": [],
+    "name": "genZeroEggTotalSupply",
+    "outputs": [
+      {
+        "name": "_totalSupply",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "name": "_owner",
@@ -368,6 +424,20 @@ const kryptomonABI = [
     "constant": false,
     "inputs": [
       {
+        "name": "_numEggs",
+        "type": "uint256"
+      }
+    ],
+    "name": "hatchGenZeroEgg",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "name": "_attack",
         "type": "uint256"
       },
@@ -424,8 +494,27 @@ const kryptomonABI = [
     "name": "symbol",
     "outputs": [
       {
-        "name": "_symbol",
+        "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_eggOwner",
+        "type": "address"
+      }
+    ],
+    "name": "genZeroEggBalanceOf",
+    "outputs": [
+      {
+        "name": "balance",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -465,6 +554,43 @@ const kryptomonABI = [
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "genZeroEggsReserve",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_spender",
+        "type": "address"
+      },
+      {
+        "name": "_eggs",
+        "type": "uint256"
+      }
+    ],
+    "name": "genZeroEggApprove",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -479,6 +605,75 @@ const kryptomonABI = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "name": "_eggs",
+        "type": "uint256"
+      }
+    ],
+    "name": "genZeroEggTransferFrom",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "genZeroEggDecimals",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "unassignedGenZeroEggs",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "genZeroEggSymbol",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "kryptoGodAddress",
@@ -490,6 +685,29 @@ const kryptomonABI = [
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "name": "_eggs",
+        "type": "uint256"
+      }
+    ],
+    "name": "genZeroEggTransfer",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -696,6 +914,50 @@ const kryptomonABI = [
     "inputs": [
       {
         "indexed": false,
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_eggs",
+        "type": "uint256"
+      }
+    ],
+    "name": "GenZeroEggTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_eggOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_spender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_eggs",
+        "type": "uint256"
+      }
+    ],
+    "name": "GenZeroEggApproval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "name": "buyerId",
         "type": "address"
       }
@@ -893,7 +1155,7 @@ const kryptomonABI = [
         "type": "uint256"
       },
       {
-        "name": "breedingCooldown",
+        "name": "lastBred",
         "type": "uint256"
       },
       {

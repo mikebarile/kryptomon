@@ -407,7 +407,7 @@ contract KryptomonDefinitions is KryptoGodController {
   // Event that's fired every time a species is set to not extinct.
   event SpeciesSetNotExtinct(uint256 speciesId);
 
-  function addSpeciesId(
+  function addSpecies(
     uint256 _attack,
     uint256 _defense,
     uint256 _specialAttack,

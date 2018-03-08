@@ -58,6 +58,56 @@ contract KryptomonKore is KryptomonBreeding {
     );
   }
 
+  // Returns all data associated with a Kryptomon.
+  function getKryptomon(uint256 _kryptomonId)
+    external
+    view
+    returns (
+      uint256 speciesId,
+      uint256 geneticValue,
+      uint256 generation,
+      uint256 birthTimeStamp,
+      uint256 lastBred,
+      uint256 numChildren
+    )
+  {
+    Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
+    return (
+      uint256(kryptomon.speciesId),
+      uint256(kryptomon.geneticValue),
+      uint256(kryptomon.generation),
+      uint256(kryptomon.birthTimeStamp),
+      uint256(kryptomon.lastBred),
+      uint256(kryptomon.numChildren)
+    );
+  }
+
+  // Returns list of KryptomonIds belonging to an address
+  function getEggIdsForAddress(address _address)
+    external
+    view
+    returns (uint256[] eggIds)
+  {
+    uint256 numEggs = eggBalanceOf(_address);
+    if (numEggs == 0) {
+      return new uint256[](0);
+    }
+
+    uint256 totalEggs = totalEggSupply();
+    uint256[] memory eggIdsList = new uint256[](numEggs);
+    uint256 eggId;
+    uint256 nextEggIdsListIdx = 0;
+
+    for (eggId = 0; eggId <= totalEggs; eggId++) {
+      if (eggIndexToOwner[eggId] == _address) {
+        eggIdsList[nextEggIdsListIdx] = eggId;
+        nextEggIdsListIdx++;
+      }
+    }
+
+    return eggIdsList;
+  }
+
   // Returns list of KryptomonIds belonging to an address
   function getKryptomonIdsForAddress(address _address)
     external
@@ -84,27 +134,39 @@ contract KryptomonKore is KryptomonBreeding {
     return kryptomonIdsList;
   }
 
-  // Returns all data associated with a Kryptomon.
-  function getKryptomon(uint256 _kryptomonId)
+  // Returns all data associated with a species.
+  function getSpeciesDetails(uint256 _speciesId)
     external
     view
     returns (
-      uint256 speciesId,
-      uint256 geneticValue,
-      uint256 generation,
-      uint256 birthTimeStamp,
-      uint256 lastBred,
-      uint256 numChildren
+      uint256 _attack,
+      uint256 _defense,
+      uint256 _specialAttack,
+      uint256 _specialDefense,
+      uint256 _hitPoints,
+      uint256 _speed,
+      uint256 _maxChildren,
+      uint256 _breedingCooldown,
+      uint256 _evolveToId,
+      uint256 _timeToEvolve,
+      uint256 _rarity,
+      bool isExtinct
     )
   {
-    Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
+    Species memory species = speciesList[_speciesId];
     return (
-      uint256(kryptomon.speciesId),
-      uint256(kryptomon.geneticValue),
-      uint256(kryptomon.generation),
-      uint256(kryptomon.birthTimeStamp),
-      uint256(kryptomon.lastBred),
-      uint256(kryptomon.numChildren)
+      uint256(species.attack),
+      uint256(species.defense),
+      uint256(species.specialAttack),
+      uint256(species.specialDefense),
+      uint256(species.hitPoints),
+      uint256(species.speed),
+      uint256(species.maxChildren),
+      uint256(species.breedingCooldown),
+      uint256(species.evolveToId),
+      uint256(species.timeToEvolve),
+      uint256(species.rarity),
+      species.isExtinct
     );
   }
 }

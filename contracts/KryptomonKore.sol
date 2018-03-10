@@ -13,7 +13,6 @@ import './KryptomonBreeding.sol';
 // 7. KryptomonKore
 contract KryptomonKore is KryptomonBreeding {
   function KryptomonKore() public {
-    initializeSpecies();
     kryptoGodAddress = msg.sender;
     completeFreeze = true;
     totalGenZeroEggs = unassignedGenZeroEggs.add(genZeroEggsReserve);

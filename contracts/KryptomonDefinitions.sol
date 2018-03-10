@@ -506,26 +506,5 @@ contract KryptomonDefinitions is KryptoGodController {
     SpeciesSetNotExtinct(_speciesId);
   }
 
-  // Function that intializes the species mapping. This function is
-  // only called when KryptomonKore is being initialized.
-  // TODO(mikebarile): Add the first batch of Kryptomon!
-  function initializeSpecies() internal {
-    // Example Kryptomon species
-    speciesList.push(Species({
-      attack: 100,
-      defense: 100,
-      specialAttack: 100,
-      specialDefense: 100,
-      hitPoints: 100,
-      speed: 100,
-      maxChildren: 2,
-      breedingCooldown: 20000,
-      evolveToId: 2,
-      timeToEvolve: 10000000,
-      rarity: 1,
-      isExtinct: false
-    }));
-  }
-
   //// END Species Definitions
 }

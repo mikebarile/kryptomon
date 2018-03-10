@@ -376,6 +376,34 @@ contract KryptomonDefinitions is KryptoGodController {
     return random(_eggId.add(1000000)) % 400;
   }
 
+  // Function that enforces generation penalty using the formula
+  // y = 1x + (1 + .05)^x
+  function enforceGenerationPenalty(
+    uint256 initialTimestamp,
+    uint256 basePeriod,
+    uint256 generation
+  )
+    internal
+    pure
+    returns(uint256)
+  {
+    return (
+      initialTimestamp
+      .add(
+        basePeriod
+        .mul(generation)
+      )
+      .add(
+        (
+          (basePeriod
+            .mul(100)
+            .add(5)
+          ) ** generation
+        ).div(100 ** generation)
+      )
+    );
+  }
+
   // External function called by users to evolve their Kryptomon.
   // Maintains the same Kryptomon struct and just changes the
   // Kryptomon's speciesId. Note: timeToEvolve is in seconds.
@@ -383,10 +411,11 @@ contract KryptomonDefinitions is KryptoGodController {
     require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
     Species memory species = speciesList[kryptomon.speciesId];
-    uint256 evolutionTimestamp
-      = uint256(species.timeToEvolve)
-        .mul(uint256(3)**uint256(species.timeToEvolve))
-        .div(uint256(2)**uint256(species.timeToEvolve));
+    uint256 evolutionTimestamp  = enforceGenerationPenalty(
+      uint256(kryptomon.birthTimeStamp),
+      species.timeToEvolve,
+      kryptomon.generation
+    );
     require(
       now >= uint256(kryptomon.birthTimeStamp).add(evolutionTimestamp)
     );

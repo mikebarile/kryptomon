@@ -24,14 +24,18 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     require(sire.numChildren < speciesList[sire.speciesId].maxChildren);
     require(matron.numChildren < speciesList[matron.speciesId].maxChildren);
     require(
-      uint256(sire.lastBred)
-        .add(speciesList[sire.speciesId].breedingCooldown)
-      <= now
+      enforceGenerationPenalty(
+        sire.lastBred,
+        speciesList[sire.speciesId].breedingCooldown,
+        sire.generation
+      ) <= now
     );
     require(
-      uint256(matron.lastBred)
-        .add(speciesList[matron.speciesId].breedingCooldown)
-      <= now
+      enforceGenerationPenalty(
+        matron.lastBred,
+        speciesList[matron.speciesId].breedingCooldown,
+        matron.generation
+      ) <= now
     );
     uint256 eggIndex = createEgg(_sireIndex, _matronIndex);
     KryptomonBred(_sireIndex, _matronIndex, msg.sender);

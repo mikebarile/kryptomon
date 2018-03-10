@@ -16,7 +16,17 @@ contract KryptomonEggTokenization is KryptomonTokenization {
   // Returns the total number of Kryptomon eggs owned by a given
   // address.
   function eggBalanceOf(address _owner) public view returns(uint256) {
-    return ownerToTotalEggs[_owner];
+    uint256 numEggs;
+    uint256 eggId;
+    uint256 totalEggs = totalEggSupply();
+
+    for (eggId = 0; eggId <= totalEggs; eggId++) {
+      if (eggIndexToOwner[eggId] == _owner) {
+        numEggs = numEggs.add(1);
+      }
+    }
+
+    return numEggs;
   }
 
   // Returns the address of the owner of a given Kryptomon egg id.
@@ -43,8 +53,6 @@ contract KryptomonEggTokenization is KryptomonTokenization {
     require(eggOwnerOf(_tokenId) == _from);
     require(_to != address(0));
     eggIndexToOwner[_tokenId] = _to;
-    ownerToTotalEggs[_from] -= 1;
-    ownerToTotalEggs[_to] += 1;
     EggTransfer(_from, _to, _tokenId);
     EggAssigned(_to, _tokenId);
   }
@@ -55,8 +63,6 @@ contract KryptomonEggTokenization is KryptomonTokenization {
     require(eggOwnerOf(_tokenId) == msg.sender);
     require(_to != address(0));
     eggIndexToOwner[_tokenId] = _to;
-    ownerToTotalEggs[msg.sender] -= 1;
-    ownerToTotalEggs[_to] += 1;
     EggTransfer(msg.sender, _to, _tokenId);
     EggAssigned(_to, _tokenId);
   }

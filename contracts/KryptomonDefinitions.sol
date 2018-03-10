@@ -163,10 +163,6 @@ contract KryptomonDefinitions is KryptoGodController {
   // the "transferFrom" method. Used to comply with ERC721.
   mapping (uint256 => address) internal kryptomonIndexToApproved;
 
-  // Maps each user's address to the total number of Kryptomon eggs
-  // they own. We use this mapping to comply loosely with ERC721.
-  mapping (address => uint256) internal ownerToTotalEggs;
-
   // Maps each Kryptomon egg to an address that has been approved to
   // call the "transferFrom" method. Used to comply loosely with ERC721.
   mapping (uint256 => address) internal eggIndexToApproved;
@@ -204,7 +200,6 @@ contract KryptomonDefinitions is KryptoGodController {
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
-    ownerToTotalEggs[msg.sender] -= 1;
     ownerToTotalKryptomon[msg.sender] += 1;
     EggHatched(msg.sender, _eggId);
     KryptomonAssigned(msg.sender, kryptomonId);

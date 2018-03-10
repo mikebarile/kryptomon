@@ -88,12 +88,12 @@ contract KryptomonKore is KryptomonBreeding {
     view
     returns (uint256[] eggIds)
   {
+    uint256 totalEggs = totalEggSupply();
     uint256 numEggs = eggBalanceOf(_address);
     if (numEggs == 0) {
       return new uint256[](0);
     }
 
-    uint256 totalEggs = totalEggSupply();
     uint256[] memory eggIdsList = new uint256[](numEggs);
     uint256 eggId;
     uint256 nextEggIdsListIdx = 0;

@@ -29,7 +29,17 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
 
   // Returns the total number of Kryptomon owned by a given address.
   function balanceOf(address _owner) public view returns(uint256) {
-    return ownerToTotalKryptomon[_owner];
+    uint256 numKryptomon;
+    uint256 kryptomonId;
+    uint256 totalKryptomon = totalSupply();
+
+    for (kryptomonId = 0; kryptomonId <= totalKryptomon; kryptomonId++) {
+      if (kryptomonIndexToOwner[kryptomonId] == _owner) {
+        numKryptomon = numKryptomon.add(1);
+      }
+    }
+
+    return numKryptomon;
   }
 
   // Returns the address of the owner of a given Kryptomon id.
@@ -56,8 +66,6 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     require(ownerOf(_tokenId) == _from);
     require(_to != address(0));
     kryptomonIndexToOwner[_tokenId] = _to;
-    ownerToTotalKryptomon[_from] -= 1;
-    ownerToTotalKryptomon[_to] += 1;
     Transfer(_from, _to, _tokenId);
     KryptomonAssigned(_to, _tokenId);
   }
@@ -68,8 +76,6 @@ contract KryptomonTokenization is KryptomonGenZeroEggSales, ERC721 {
     require(ownerOf(_tokenId) == msg.sender);
     require(_to != address(0));
     kryptomonIndexToOwner[_tokenId] = _to;
-    ownerToTotalKryptomon[msg.sender] -= 1;
-    ownerToTotalKryptomon[_to] += 1;
     Transfer(msg.sender, _to, _tokenId);
     KryptomonAssigned(_to, _tokenId);
   }

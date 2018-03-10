@@ -1,4 +1,5 @@
 import React from 'react';
+import numeral from 'numeral';
 import {
   Container,
   Segment,
@@ -53,22 +54,46 @@ class EggStore extends React.Component {
       this.state.genZeroEggPrice.toString(),
       'ether'
     );
+
+    const displaySupply = numeral(this.state.genZeroEggSupply).format('0,0');
     return (
       <div>
         <FixedMenu />
-        <Container fluid text style={{marginTop: '84px' }}>
-          <Segment clearing loading={this.state.loading}>
-            <div>
+        <Container fluid text style={{marginTop: '84px'}}>
+          <Segment
+            basic
+            clearing
+            style={{display: 'flex', alignItems: 'center'}}
+          >
+            <Segment
+              padded
+              size='large'
+              floated='left'
+              clearing
+              loading={this.state.loading}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+              }}
+            >
               <div>
-                Current Egg Price: {displayPrice} ETH
+                <span>Current Egg Price</span>
+                <span>{displayPrice} ETH</span>
+              </div>
+              <div>
+                <span>Egg Supply Remaining</span>
+                <span>{displaySupply} Eggs</span>
               </div>
               <Button
+                loading={this.state.loading}
+                // disabled={this.state.loading}
                 onClick={this.buyGenZeroEgg}
                 color='green'
               >
-                Buy One Egg
+                  Buy One Egg
               </Button>
-            </div>
+            </Segment>
             <Image
               src={EggImg}
               size='medium'

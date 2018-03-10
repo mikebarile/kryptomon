@@ -1,5 +1,5 @@
-var KryptomonKore = artifacts.require("KryptomonKore");
+var KryptomonKore = artifacts.require('KryptomonKore');
 
 module.exports = function(deployer) {
-    deployer.deploy(KryptomonKore);
+  deployer.deploy(KryptomonKore);
 };

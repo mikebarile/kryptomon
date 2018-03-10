@@ -114,12 +114,12 @@ contract KryptomonKore is KryptomonBreeding {
     view
     returns (uint256[] kryptomonIds)
   {
+    uint256 totalKryptomon = totalSupply();
     uint256 numKryptomon = balanceOf(_address);
     if (numKryptomon == 0) {
       return new uint256[](0);
     }
 
-    uint256 totalKryptomon = totalSupply();
     uint256[] memory kryptomonIdsList = new uint256[](numKryptomon);
     uint256 kryptomonId;
     uint256 nextKryptomonIdsListIdx = 0;

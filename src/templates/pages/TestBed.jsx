@@ -30,9 +30,15 @@ class TestBed extends React.Component {
     const completeFreeze = await KryptomonKore.methods.completeFreeze().call();
     const accounts = await web3.eth.getAccounts();
     window.account = accounts[0];
-    const ownedEggs = await KryptomonKore.methods.eggBalanceOf(window.account).call();
-    const ownedKryptomon = await KryptomonKore.methods.balanceOf(window.account).call();
-    const ownedGenZeroEggs = await KryptomonKore.methods.genZeroEggBalanceOf(window.account).call();
+    const ownedEggs = await KryptomonKore.methods
+      .eggBalanceOf(window.account)
+      .call();
+    const ownedKryptomon = await KryptomonKore.methods
+      .balanceOf(window.account)
+      .call();
+    const ownedGenZeroEggs = await KryptomonKore.methods
+      .genZeroEggBalanceOf(window.account)
+      .call();
     this.setState({
       kryptoGod,
       userAccount: window.account,
@@ -53,19 +59,27 @@ class TestBed extends React.Component {
     };
 
     const toggleFreeze = () => {
-      KryptomonKore.methods.setCompleteFreeze(!this.state.completeFreeze).send(
-        { from: window.account }
-      );
+      KryptomonKore.methods
+        .setCompleteFreeze(!this.state.completeFreeze)
+        .send({ from: window.account });
     };
 
     const items = [
       { key: 'eggs', label: 'Eggs', value: this.state.ownedEggs },
-      { key: 'genZeroEggs', label: 'Gen Zero Eggs', value: this.state.ownedGenZeroEggs },
-      { key: 'kryptomon', label: 'Kryptomon', value: this.state.ownedKryptomon },
+      {
+        key: 'genZeroEggs',
+        label: 'Gen Zero Eggs',
+        value: this.state.ownedGenZeroEggs,
+      },
+      {
+        key: 'kryptomon',
+        label: 'Kryptomon',
+        value: this.state.ownedKryptomon,
+      },
     ];
 
     return (
-      <Container text style={{marginTop: '84px'}}>
+      <Container text style={{ marginTop: '84px' }}>
         <FixedMenu />
         <h2>Welcome to the Test Bed for Kryptomon!</h2>
         <br />
@@ -74,7 +88,8 @@ class TestBed extends React.Component {
         <div>You are browsing from: {this.state.userAccount}</div>
         <br />
         <h3>
-          Current Complete Freeze? {this.state.completeFreeze ? 'True' : 'False'}
+          Current Complete Freeze?{' '}
+          {this.state.completeFreeze ? 'True' : 'False'}
         </h3>
         <button onClick={toggleFreeze}>Toggle Freeze</button>
         <br />
@@ -84,14 +99,8 @@ class TestBed extends React.Component {
           <button onClick={buyGen0Egg}>Buy 1 Gen0 Egg</button>
           <br />
         </div>
-        <div>You currently own:
-          <Statistic.Group items={items} />
-          {/* <br/>
-          {this.state.ownedEggs} eggs
-          <br/>
-          {this.state.ownedGenZeroEggs} genZero eggs
-          <br/>
-          {this.state.ownedKryptomon} Kryptomon! */}
+        <div>
+          You currently own: <Statistic.Group items={items} />
         </div>
         <br />
         <button onClick={this.refreshState}>Refresh State</button>

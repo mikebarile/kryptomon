@@ -13,7 +13,7 @@ Run `npm install` to install all dependencies.
 2. Run `npm install -g ethereumjs-testrpc`
 3. Run `testrpc` to create a Ethereum test network. This should create 10 fake accounts on the network. Leave it running.
 4. Run `truffle migrate` (try 'rm -R build' and then add a '--reset' flag if it doesn't work)
-5. If there were changes to the contract code, update the ABI in `src/index.js` following the guide below.
+5. If there were changes to the contract code, update the ABI in `src/KryptomonKore.js` following the guide below.
 6. Run `npm run-script start` to open the react app.
 
 ## Do fun command line stuff
@@ -32,7 +32,9 @@ ALSO ALSO NOTE: By default, the KryptoGod is set to whatever the first account i
 
 ## Updating Contract ABI
 
-Running `truffle migrate` deployed our contract to our testnet. But for development work we can initialize the contract from the compiled ABI.
+Running `truffle migrate` deployed our contract to our testnet.
+To make our app work we initialize the contract from the compiled ABI.
+We need to keep this synced in the frontend.
 
 1. Open `build/contracts/KryptomonKore.json`
 2. Copy everything under the `abi` key

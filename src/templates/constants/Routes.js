@@ -4,5 +4,6 @@ export default {
   MY_KRYPTOMON: '/ranch',
   FAQ: '/faq',
   METAMASK: '/get-metamask',
-  WIKI: '/bestiary',
+  BESTIARY: '/bestiary',
+  TEST_BED: '/test-bed',
 };

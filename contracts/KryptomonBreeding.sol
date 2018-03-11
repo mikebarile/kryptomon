@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 import './KryptomonEggTokenization.sol';
-import './SafeMath.sol';
+import '../libraries/SafeMath.sol';
 
 contract KryptomonBreeding is KryptomonEggTokenization {
   using SafeMath for uint256;

@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 import './KryptomonDefinitions.sol';
-import './SafeMath.sol';
+import '../libraries/SafeMath.sol';
 
 contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   using SafeMath for uint256;

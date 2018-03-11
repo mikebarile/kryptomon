@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 import './KryptoGodController.sol';
-import './SafeMath.sol';
+import '../libraries/SafeMath.sol';
 
 contract KryptomonDefinitions is KryptoGodController {
   using SafeMath for uint256;

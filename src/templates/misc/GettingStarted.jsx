@@ -17,7 +17,7 @@ export default function GettingStarted() {
           Getting Started
         </Header>
         <Segment fluid attached>
-          <Accordion panels={panels} exclusive={false} fluid />
+          <Accordion panels={panels} exclusive={false} />
         </Segment>
       </Container>
     </Segment>

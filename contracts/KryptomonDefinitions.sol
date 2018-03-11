@@ -31,11 +31,6 @@ contract KryptomonDefinitions is KryptoGodController {
     // the child will be gen10).
     uint16 generation;
 
-    // The average of the egg's parents' gene attributes. The Kryptomon
-    // that hatches from this egg is slightly more likely to have this
-    // as their genetic value.
-    uint8 geneticPredisposition;
-
     // The species ID associated with the egg's matron. The egg has a
     // slightly larger chance of hatching into this species.
     uint16 matronSpeciesId;
@@ -43,27 +38,15 @@ contract KryptomonDefinitions is KryptoGodController {
     // The species ID associated with the egg's sire. The egg has a
     // slightly larger chance of hatching into this species.
     uint16 sireSpeciesId;
+
+    // The average of the egg's parents' gene attributes. The Kryptomon
+    // that hatches from this egg is slightly more likely to have this
+    // as their genetic value.
+    uint8 geneticPredisposition;
   }
 
   // The main Kryptomon struct.
   struct Kryptomon {
-    // The id associated with the Kryptomon's species. All metadata
-    // associated with the Kryptomon's species is stored in a separate
-    // lookup table.
-    uint16 speciesId;
-
-    // A value between 0 and 200 that modifies the Kryptomon's stats.
-    // A value of 0 results in a 10% decrease in base stats while a
-    // value of 200 results in a 10% increase. Children are
-    // predisposed to have similar genes as their parents but there is
-    // an element of randomness in gene assignment.
-    uint8 geneticValue;
-
-    // The Kryptomon's generation. Higher generation Kryptomon have
-    // increasingly degredated base stats and take exponentially more
-    // time to evolve.
-    uint16 generation;
-
     // Initiated when the Kryptomon is hatched from an egg. Used by
     // various
     uint32 birthTimeStamp;
@@ -72,13 +55,43 @@ contract KryptomonDefinitions is KryptoGodController {
     // breeding activities again. Is based on a Kryptomon's species.
     uint32 lastBred;
 
+    // The id associated with the Kryptomon's species. All metadata
+    // associated with the Kryptomon's species is stored in a separate
+    // lookup table.
+    uint16 speciesId;
+
+    // The Kryptomon's generation. Higher generation Kryptomon have
+    // increasingly degredated base stats and take exponentially more
+    // time to evolve.
+    uint16 generation;
+
     // The number of eggs that this Kryptomon has produced. Different
     // species of Kryptomon have different restrictions on how many
     // children they can have.
     uint16 numChildren;
+
+    // A value between 0 and 200 that modifies the Kryptomon's stats.
+    // A value of 0 results in a 10% decrease in base stats while a
+    // value of 200 results in a 10% increase. Children are
+    // predisposed to have similar genes as their parents but there is
+    // an element of randomness in gene assignment.
+    uint8 geneticValue;
   }
 
   struct Species {
+    // The amount of time a Kryptomon must wait before it can breed
+    // again.
+    uint32 breedingCooldown;
+
+    // Base amount time it takes for this Kryptomon to evolve. Actual
+    // evolution time is also based on Kryptomon's generation. Time is
+    // in seconds.
+    uint32 timeToEvolve;
+
+    // The ID for the species this type of Kryptomon will evolve into.
+    // A non-zero value indicates this type of Kryptomon can evolve.
+    uint16 evolveToId;
+
     // Stat used to determine "physical" type attack potency.
     uint8 attack;
 
@@ -103,19 +116,6 @@ contract KryptomonDefinitions is KryptoGodController {
 
     // The maximum number of children a Kryptomon can sire.
     uint8 maxChildren;
-
-    // The amount of time a Kryptomon must wait before it can breed
-    // again.
-    uint32 breedingCooldown;
-
-    // The ID for the species this type of Kryptomon will evolve into.
-    // A non-zero value indicates this type of Kryptomon can evolve.
-    uint16 evolveToId;
-
-    // Base amount time it takes for this Kryptomon to evolve. Actual
-    // evolution time is also based on Kryptomon's generation. Time is
-    // in seconds.
-    uint32 timeToEvolve;
 
     // Number representing the creature's rarity. Values can be between
     // 1 - 7 which translate into the following:

@@ -22,13 +22,17 @@ class MetaMask extends React.Component {
 
   componentDidMount() {
     this.refreshState();
-    setTimeout(this.refreshState, 500);
+    this.interval = setInterval(this.refreshState, 500);
   }
 
   refreshState = async () => {
     const accounts = await web3.eth.getAccounts();
     this.setState({ isLocked: accounts.length === 0 });
   };
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   renderLockedMessage() {
     return (

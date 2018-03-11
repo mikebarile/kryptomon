@@ -129,6 +129,7 @@ class MetaMask extends React.Component {
       <div>
         <FixedMenu />
         <Segment
+          basic
           textAlign="center"
           style={{ minHeight: 700, padding: '1em 0' }}
           vertical

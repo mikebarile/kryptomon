@@ -1,14 +1,22 @@
 import React from 'react';
 import numeral from 'numeral';
 import {
-  Container,
   Segment,
   Image,
   Button,
+  Grid,
+  Header,
+  Message,
+  Container,
+  Divider,
 } from 'semantic-ui-react';
+import { withRouter } from 'react-router';
+
+import faker from 'faker';
 
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
+import ROUTES from 'constants/Routes';
 
 import EggImg from 'images/logo2.png';
 import FixedMenu from 'misc/FixedMenu';
@@ -26,30 +34,34 @@ class EggStore extends React.Component {
 
   async componentDidMount() {
     const genZeroEggPrice = await KryptomonKore.methods
-      .genZeroEggPrice().call();
+      .genZeroEggPrice()
+      .call();
     const genZeroEggSupply = await KryptomonKore.methods
-      .genZeroEggTotalSupply().call();
+      .genZeroEggTotalSupply()
+      .call();
 
-    this.setState({genZeroEggPrice, genZeroEggSupply, loading: false});
+    this.setState({ genZeroEggPrice, genZeroEggSupply, loading: false });
   }
 
   async buyGenZeroEgg() {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     const accounts = await web3.eth.getAccounts();
     if (accounts[0]) {
-      KryptomonKore.methods.buyGenZeroEggs(1).send({
-        from: accounts[0],
-        value: this.state.genZeroEggPrice,
-      }).then(() => {
-        this.setState({loading: false});
-      });
+      KryptomonKore.methods
+        .buyGenZeroEggs(1)
+        .send({
+          from: accounts[0],
+          value: this.state.genZeroEggPrice,
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        });
     } else {
-      console.log('NO ACCOUNT FOUND...');
-      this.setState({loading: false});
+      this.props.history.push(ROUTES.METAMASK);
     }
   }
 
-  render() {
+  renderEggStatsBox() {
     const displayPrice = web3.utils.fromWei(
       this.state.genZeroEggPrice.toString(),
       'ether'
@@ -58,53 +70,102 @@ class EggStore extends React.Component {
     const displaySupply = numeral(this.state.genZeroEggSupply).format('0,0');
     return (
       <div>
+        <Header
+          textAlign="center"
+          attached="top"
+          as="h1"
+          content="Gen Zero Eggs"
+        />
+        <Segment attached compact loading={this.state.loading} size="small">
+          <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
+            <Grid.Row>
+              <Grid.Column textAlign="right">
+                <Header as="h3" style={{ fontWeight: 'lighter' }}>
+                  Current Egg Price
+                </Header>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
+                  {displayPrice} ETH
+                </Header>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column textAlign="right">
+                <Header as="h3" style={{ fontWeight: 'lighter' }}>
+                  Egg Supply Remaining
+                </Header>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
+                  {displaySupply} Eggs
+                </Header>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Message info compact style={{ margin: '0 21px' }}>
+                <Message.Header>No More Eggs?</Message.Header>
+                <p>
+                  You can always obtain Kryptomon directly from other users in
+                  our Marketplace! (coming soon)
+                </p>
+              </Message>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+        <Button
+          attached="bottom"
+          loading={this.state.loading}
+          // disabled={this.state.loading}
+          onClick={this.buyGenZeroEgg}
+          color="green"
+        >
+          Buy One Egg
+        </Button>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
         <FixedMenu />
-        <Container fluid text style={{marginTop: '84px'}}>
-          <Segment
-            basic
-            clearing
-            style={{display: 'flex', alignItems: 'center'}}
-          >
-            <Segment
-              padded
-              size='large'
-              floated='left'
-              clearing
-              loading={this.state.loading}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}
+        <div
+          style={{
+            marginTop: 84,
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}
+        >
+          {this.renderEggStatsBox()}
+          <Image src={EggImg} size="medium" style={{ padding: '34px' }} />
+        </div>
+        <Segment style={{ padding: '8em 0em' }} vertical>
+          <Container text>
+            <Divider
+              as="h1"
+              className="header"
+              horizontal
+              style={{ margin: '3em 0em', textTransform: 'uppercase' }}
             >
-              <div>
-                <span>Current Egg Price</span>
-                <span>{displayPrice} ETH</span>
-              </div>
-              <div>
-                <span>Egg Supply Remaining</span>
-                <span>{displaySupply} Eggs</span>
-              </div>
-              <Button
-                loading={this.state.loading}
-                // disabled={this.state.loading}
-                onClick={this.buyGenZeroEgg}
-                color='green'
-              >
-                  Buy One Egg
-              </Button>
-            </Segment>
-            <Image
-              src={EggImg}
-              size='medium'
-              style={{ padding: '34px' }}
-              floated='right'
-            />
-          </Segment>
-        </Container>
+              What is an Egg?
+            </Divider>
+            <p>{faker.lorem.paragraphs()}</p>
+            <Divider
+              as="h1"
+              className="header"
+              horizontal
+              style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+            >
+              How do Generations work?
+            </Divider>
+            <p>{faker.lorem.paragraphs()}</p>
+          </Container>
+        </Segment>
       </div>
     );
   }
 }
 
-export default EggStore;
+export default withRouter(EggStore);

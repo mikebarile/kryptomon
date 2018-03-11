@@ -81,7 +81,7 @@ contract KryptomonKore is KryptomonBreeding {
     );
   }
 
-  // Returns list of KryptomonIds belonging to an address
+  // Returns list of KryptomonIds that belong to an address.
   function getEggIdsForAddress(address _address)
     external
     view
@@ -89,18 +89,17 @@ contract KryptomonKore is KryptomonBreeding {
   {
     uint256 totalEggs = totalEggSupply();
     uint256 numEggs = eggBalanceOf(_address);
-    if (numEggs == 0) {
-      return new uint256[](0);
-    }
 
     uint256[] memory eggIdsList = new uint256[](numEggs);
     uint256 eggId;
     uint256 nextEggIdsListIdx = 0;
 
-    for (eggId = 0; eggId <= totalEggs; eggId++) {
-      if (eggIndexToOwner[eggId] == _address) {
-        eggIdsList[nextEggIdsListIdx] = eggId;
-        nextEggIdsListIdx++;
+    if (numEggs != 0) {
+      for (eggId = 0; eggId <= totalEggs; eggId++) {
+        if (eggIndexToOwner[eggId] == _address) {
+          eggIdsList[nextEggIdsListIdx] = eggId;
+          nextEggIdsListIdx++;
+        }
       }
     }
 

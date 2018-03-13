@@ -401,6 +401,7 @@ contract KryptomonDefinitions is KryptoGodController {
     require(kryptomonIndexToOwner[_kryptomonId] == msg.sender);
     Kryptomon memory kryptomon = kryptomonList[_kryptomonId];
     Species memory species = speciesList[kryptomon.speciesId];
+    require(species.evolveToId != 0);
     uint256 evolutionTimestamp  = enforceGenerationPenalty(
       uint256(kryptomon.birthTimeStamp),
       species.timeToEvolve,
@@ -449,7 +450,7 @@ contract KryptomonDefinitions is KryptoGodController {
     require (_speed <= 250);
     require (_maxChildren <= 100);
     require (_breedingCooldown < 4294967295);
-    require (_evolveToId <= 10000 && speciesList[_evolveToId].rarity != 0);
+    require (_evolveToId <= 10000);
     require (_timeToEvolve <= 2147483646);
     require (_rarity > 0 && _rarity <= 7);
 

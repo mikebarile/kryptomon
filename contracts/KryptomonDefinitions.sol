@@ -163,6 +163,9 @@ contract KryptomonDefinitions is KryptoGodController {
   // call the "transferFrom" method. Used to comply loosely with ERC721.
   mapping (uint256 => address) internal eggIndexToApproved;
 
+  // Total species for each rarity level.
+  mapping (uint256 => uint256) internal speciesCountByRarity;
+
   // Function used to return a pseudo-random int used to identy a
   // new Kryptomon's species.
   function random(uint256 id) internal view returns(uint256) {
@@ -282,7 +285,7 @@ contract KryptomonDefinitions is KryptoGodController {
       // If there are 0 legendaries remaining, return a rarity 6
       // Kryptomon species ID. Else, return a random legendary species
       // ID and set it to extinct.
-      if (getCountOfSpeciesWithGivenRarity(7) == 0) {
+      if (speciesCountByRarity[7] == 0) {
         return getRarityBasedSpeciesId(_eggId, 6);
       } else {
         uint256 speciesId = getRarityBasedSpeciesId(_eggId, 7);
@@ -299,7 +302,7 @@ contract KryptomonDefinitions is KryptoGodController {
     returns(uint256)
   {
     require(_rarity > 0 && _rarity <= 7);
-    uint256 speciesCount = getCountOfSpeciesWithGivenRarity(_rarity);
+    uint256 speciesCount = speciesCountByRarity[_rarity];
     require(speciesCount > 0);
     // Generates a random number between 1 and the total number
     // "speciesCount" of Kryptomon species with the given rarity. Then
@@ -320,26 +323,6 @@ contract KryptomonDefinitions is KryptoGodController {
       }
     }
     return 1;
-  }
-
-  // TODO(mikebarile, ktkonrad): Consider refactoring this function
-  // so that we use a mapping to determine the number of species with
-  // a given rarity. This would require us to maintain a separate
-  // mapping and update it every time a species is removed or added.
-  function getCountOfSpeciesWithGivenRarity(uint256 _rarity)
-    internal
-    view
-    returns(uint256)
-  {
-    uint256 speciesCount = 0;
-    for (uint256 idx = 0; idx < speciesList.length; idx++) {
-      if (speciesList[idx].rarity == _rarity
-        && !speciesList[idx].isExtinct
-      ) {
-        speciesCount += 1;
-      }
-    }
-    return speciesCount;
   }
 
   // Determines the genetic value of the resulting Kryptomon. Produces
@@ -469,6 +452,8 @@ contract KryptomonDefinitions is KryptoGodController {
       isExtinct: false
     }));
 
+    speciesCountByRarity[_rarity]
+      = speciesCountByRarity[_rarity].add(1);
     SpeciesIdAdded(speciesList.length.sub(1));
   }
 
@@ -478,6 +463,8 @@ contract KryptomonDefinitions is KryptoGodController {
   {
     require(_speciesId < speciesList.length);
     speciesList[_speciesId].isExtinct = true;
+    speciesCountByRarity[speciesList[_speciesId].rarity]
+      = speciesCountByRarity[speciesList[_speciesId].rarity].sub(1);
     SpeciesSetExtinct(_speciesId);
   }
 
@@ -485,6 +472,8 @@ contract KryptomonDefinitions is KryptoGodController {
     require(_speciesId < speciesList.length);
     require(speciesList[_speciesId].rarity == 7);
     speciesList[_speciesId].isExtinct = true;
+    speciesCountByRarity[speciesList[_speciesId].rarity]
+      = speciesCountByRarity[speciesList[_speciesId].rarity].sub(1);
     SpeciesSetExtinct(_speciesId);
   }
 
@@ -494,6 +483,8 @@ contract KryptomonDefinitions is KryptoGodController {
   {
     require(_speciesId < speciesList.length);
     speciesList[_speciesId].isExtinct = false;
+    speciesCountByRarity[speciesList[_speciesId].rarity]
+      = speciesCountByRarity[speciesList[_speciesId].rarity].add(1);
     SpeciesSetNotExtinct(_speciesId);
   }
 

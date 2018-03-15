@@ -9,26 +9,20 @@ import {
   Popup,
   Grid,
   Header,
-  Button,
 } from 'semantic-ui-react';
 import { times } from 'lodash';
 
 import faker from 'faker';
 
-import KryptomonKore from 'src/KryptomonKore';
-import web3 from 'src/web3';
+// import KryptomonKore from 'src/KryptomonKore';
+// import web3 from 'src/web3';
 
-import EggImg from 'images/logo2.png';
 import KryptomonImg from 'images/kryptomon.png';
 
 import FixedMenu from 'misc/FixedMenu';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
 
-// Unpack KryptomonKore methods
-
-const { hatchGenZeroEgg } = KryptomonKore.methods;
-
-class ViewEgg extends React.Component {
+class ViewKryptomon extends React.Component {
   state = {
     loading: false,
   };
@@ -41,26 +35,14 @@ class ViewEgg extends React.Component {
     clearInterval(this.interval);
   }
 
-  async hatchEgg() {
-    const accounts = await web3.eth.getAccounts();
-    const account = accounts[0];
-
-    if (this.props.genZero) {
-      hatchGenZeroEgg(1).send({ from: account });
-    } else {
-      // Somehow we need to get the eggID
-      // hatchEgg()
-    }
-  }
-
-  renderEggStatsBox() {
+  renderStatsBox() {
     return (
       <div>
         <Header
           textAlign="center"
           attached="top"
           as="h1"
-          content="Kryptomon Egg"
+          content="Kryptomon Name"
         />
         <Segment attached compact loading={this.state.loading} size="small">
           <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
@@ -78,14 +60,6 @@ class ViewEgg extends React.Component {
             </Grid.Row>
           </Grid>
         </Segment>
-        <Button
-          attached="bottom"
-          loading={this.state.loading}
-          onClick={this.hatchEgg}
-          color="green"
-        >
-          Hatch!
-        </Button>
       </div>
     );
   }
@@ -94,41 +68,27 @@ class ViewEgg extends React.Component {
     return (
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container>
-          {this.props.genZero ? (
-            <div>
-              <Divider
-                as="h1"
-                className="header"
-                horizontal
-                style={{ marginBottom: 24, textTransform: 'uppercase' }}
-              >
-                What is a Gen Zero Egg?
-              </Divider>
-              <p>{faker.lorem.paragraphs()}</p>
-            </div>
-          ) : (
-            <div>
-              <Divider
-                as="h1"
-                className="header"
-                horizontal
-                style={{ margin: 24, textTransform: 'uppercase' }}
-              >
-                Lineage
-              </Divider>
-              <p>{faker.lorem.paragraphs()}</p>
-            </div>
-          )}
+          <div>
+            <Divider
+              as="h1"
+              className="header"
+              horizontal
+              style={{ margin: 24, textTransform: 'uppercase' }}
+            >
+              Lineage
+            </Divider>
+            <p>{faker.lorem.paragraphs()}</p>
+          </div>
           <Divider
             as="h1"
             className="header"
             horizontal
             style={{ marginBottom: 24, textTransform: 'uppercase' }}
           >
-            Possible Contents
+            Evolution
           </Divider>
-          <Card.Group itemsPerRow={6}>
-            {times(6, (idx) => (
+          <Card.Group itemsPerRow={3}>
+            {times(3, (idx) => (
               <Popup key={idx} trigger={<Card image={KryptomonImg} />}>
                 Kryptomon Species
               </Popup>
@@ -151,8 +111,12 @@ class ViewEgg extends React.Component {
             alignItems: 'center',
           }}
         >
-          <Image src={EggImg} size="medium" style={{ marginRight: '8em' }} />
-          {this.renderEggStatsBox()}
+          <Image
+            src={KryptomonImg}
+            size="medium"
+            style={{ marginRight: '8em' }}
+          />
+          {this.renderStatsBox()}
         </div>
         {this.renderFAQ()}
       </div>
@@ -160,4 +124,4 @@ class ViewEgg extends React.Component {
   }
 }
 
-export default withRouter(ViewEgg);
+export default withRouter(ViewKryptomon);

@@ -17,7 +17,7 @@ import MetaMaskChecker from 'misc/MetaMaskChecker';
 import ROUTES from 'constants/Routes';
 
 import EggCard from 'misc/EggCard';
-// import KryptomonCard from 'misc/KryptomonCard';
+import KryptomonCard from 'misc/KryptomonCard';
 import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods here:
@@ -36,7 +36,7 @@ class MyKryptomon extends React.Component {
     gridLoading: true,
     startIdx: 0,
     totalLength: 0,
-    // showEggs: true,
+    showEggs: true,
   };
 
   componentDidMount() {
@@ -55,7 +55,8 @@ class MyKryptomon extends React.Component {
       ownedKryptomon,
       ownedEggs,
       ownedGenZeroEggs,
-      totalLength: ownedKryptomon.length + ownedEggs.length + ownedGenZeroEggs,
+      totalLength:
+        ownedKryptomon.length + ownedEggs.length + Number(ownedGenZeroEggs),
       ownageLoading: false,
       gridLoading: false, // TODO: Remove later
     });
@@ -88,6 +89,36 @@ class MyKryptomon extends React.Component {
     );
   }
 
+  renderGenZeroEggs() {
+    if (this.state.showEggs) {
+      return times(this.state.ownedGenZeroEggs, (idx) => (
+        <Grid.Column key={idx}>
+          <EggCard
+            link
+            onClick={() => this.props.history.push(ROUTES.VIEW_GEN_ZERO_EGG)}
+          />
+        </Grid.Column>
+      ));
+    }
+  }
+
+  renderEggs() {
+    return '';
+  }
+
+  renderKryptomon() {
+    return this.state.ownedKryptomon.map((kryptomonId) => (
+      <Grid.Column key={kryptomonId}>
+        <KryptomonCard
+          link
+          onClick={() =>
+            this.props.history.push(ROUTES.VIEW_KRYPTOMON + `/${kryptomonId}`)
+          }
+        />
+      </Grid.Column>
+    ));
+  }
+
   renderKrytomonGrid() {
     // const toggleText = this.state.showEggs ? 'Show Eggs' : 'Hide Eggs';
     // const handleToggle = (event) => {
@@ -101,16 +132,9 @@ class MyKryptomon extends React.Component {
         </Header>
         <Segment attached loading={this.state.gridLoading}>
           <Grid doubling columns={3}>
-            {times(this.state.ownedGenZeroEggs, (idx) => (
-              <Grid.Column key={idx}>
-                <EggCard
-                  link
-                  onClick={() =>
-                    this.props.history.push(ROUTES.VIEW_GEN_ZERO_EGG)
-                  }
-                />
-              </Grid.Column>
-            ))}
+            {this.renderGenZeroEggs()}
+            {this.renderEggs()}
+            {this.renderKryptomon()}
           </Grid>
         </Segment>
         <Segment attached="bottom" clearing>

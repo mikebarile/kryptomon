@@ -1,28 +1,23 @@
 import React from 'react';
-import { Card, Image, Icon } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 
 import KryptomonImg from 'images/kryptomon.png';
 
-export default function EggStub({ link }) {
+export default function KryptomonCard({ link, onClick }) {
+  // stub in case no onClick passed in
+  onClick = onClick || (() => {});
   return (
-    <Card link={link}>
-      <Image
-        src={KryptomonImg}
-        style={{ padding: '34px' }}
-        label={{ color: 'red', content: 'Hot', icon: 'fire', ribbon: true }}
-      />
+    <Card link={link} onClick={onClick}>
+      <Image src={KryptomonImg} style={{ padding: '34px' }} />
       <Card.Content>
-        <Card.Header>Kryptomon Egg</Card.Header>
+        <Card.Header>Kryptomon</Card.Header>
         <Card.Meta>
           <strong>Gen 0</strong>
         </Card.Meta>
         <Card.Description>
-          A rare Gen 0 egg! What could be inside?
+          Some basic stats about this Kryptomon! <br />
+          Maybe attack, defense, how old it is?
         </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <Icon name="shop" />
-        Bought {Math.floor(Math.random() * 100)} times today!
       </Card.Content>
     </Card>
   );

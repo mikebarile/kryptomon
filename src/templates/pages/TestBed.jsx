@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Statistic } from 'semantic-ui-react';
+import { Container, Statistic, Input, Button } from 'semantic-ui-react';
 
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
@@ -16,6 +16,7 @@ class TestBed extends React.Component {
       ownedEggs: 0,
       ownedGenZeroEggs: 0,
       ownedKryptomon: 0,
+      speciesStats: '',
     };
 
     this.refreshState = this.refreshState.bind(this);
@@ -64,6 +65,17 @@ class TestBed extends React.Component {
         .send({ from: window.account });
     };
 
+    const deploySpecies = () => {
+      const stats = this.state.speciesStats
+        .split(',')
+        .map((el) => Number(el.trim()));
+      if (stats.length === 11) {
+        KryptomonKore.methods
+          .addSpecies(...stats)
+          .send({ from: window.account });
+      }
+    };
+
     const items = [
       { key: 'eggs', label: 'Eggs', value: this.state.ownedEggs },
       {
@@ -91,19 +103,39 @@ class TestBed extends React.Component {
           Current Complete Freeze?{' '}
           {this.state.completeFreeze ? 'True' : 'False'}
         </h3>
-        <button onClick={toggleFreeze}>Toggle Freeze</button>
+        <Button onClick={toggleFreeze}>Toggle Freeze</Button>
         <br />
         <div>
           Here we can try buying some eggs:
           <br />
-          <button onClick={buyGen0Egg}>Buy 1 Gen0 Egg</button>
+          <Button onClick={buyGen0Egg}>Buy 1 Gen0 Egg</Button>
           <br />
         </div>
         <div>
           You currently own: <Statistic.Group items={items} />
         </div>
         <br />
-        <button onClick={this.refreshState}>Refresh State</button>
+        <h4>Deploy Species Here</h4>
+        <div>
+          Order: attack, defense, specialAttack, specialDefense, hitPoints,
+          speed, maxChildren, breedingCooldown, evolveToId, timeToEvolve, rarity
+        </div>
+        <label>
+          Species Stats:
+          <Input
+            onChange={(event) =>
+              this.setState({ speciesStats: event.target.value })
+            }
+            action={{
+              color: 'green',
+              content: 'Deploy',
+              onClick: deploySpecies,
+            }}
+            fluid
+          />
+        </label>
+        <br />
+        <Button onClick={this.refreshState}>Refresh State</Button>
         <br />
       </Container>
     );

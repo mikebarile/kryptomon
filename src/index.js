@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.KryptomonKore = KryptomonKore;
   window.web3 = web3;
 
-  window.callMethod = method => method().call().then(console.log);
-
   ReactDOM.render(<Root />, document.getElementById('root'));
   registerServiceWorker();
 });

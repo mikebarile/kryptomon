@@ -21,37 +21,40 @@ import ROUTES from 'constants/Routes';
 import EggImg from 'images/logo2.png';
 import FixedMenu from 'misc/FixedMenu';
 
+// Unpack KryptomonKore methods
+
+const {
+  genZeroEggPrice,
+  unassignedGenZeroEggs,
+  buyGenZeroEggs,
+} = KryptomonKore.methods;
+
 class EggStore extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       genZeroEggSupply: '',
-      genZeroEggPrice: '',
+      eggPrice: '',
       loading: true,
     };
     this.buyGenZeroEgg = this.buyGenZeroEgg.bind(this);
   }
 
   async componentDidMount() {
-    const genZeroEggPrice = await KryptomonKore.methods
-      .genZeroEggPrice()
-      .call();
-    const genZeroEggSupply = await KryptomonKore.methods
-      .genZeroEggTotalSupply()
-      .call();
+    const eggPrice = await genZeroEggPrice().call();
+    const genZeroEggSupply = await unassignedGenZeroEggs().call();
 
-    this.setState({ genZeroEggPrice, genZeroEggSupply, loading: false });
+    this.setState({ eggPrice, genZeroEggSupply, loading: false });
   }
 
   async buyGenZeroEgg() {
     this.setState({ loading: true });
     const accounts = await web3.eth.getAccounts();
     if (accounts[0]) {
-      KryptomonKore.methods
-        .buyGenZeroEggs(1)
+      buyGenZeroEggs(1)
         .send({
           from: accounts[0],
-          value: this.state.genZeroEggPrice,
+          value: this.state.eggPrice,
         })
         .then(() => {
           this.setState({ loading: false });
@@ -63,7 +66,7 @@ class EggStore extends React.Component {
 
   renderEggStatsBox() {
     const displayPrice = web3.utils.fromWei(
-      this.state.genZeroEggPrice.toString(),
+      this.state.eggPrice.toString(),
       'ether'
     );
 

@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 import './KryptomonEggTokenization.sol';
-import './SafeMath.sol';
+import '../libraries/SafeMath.sol';
 
 contract KryptomonBreeding is KryptomonEggTokenization {
   using SafeMath for uint256;
@@ -53,25 +53,28 @@ contract KryptomonBreeding is KryptomonEggTokenization {
   {
     Kryptomon memory sire = kryptomonList[_sireIndex];
     Kryptomon memory matron = kryptomonList[_matronIndex];
-    uint256 geneticPredisposition;
-    uint256 generation;
-    if (sire.geneticValue + matron.geneticValue == 0) {
-      geneticPredisposition = 0;
-    } else {
-      geneticPredisposition =
-        uint256(sire.geneticValue + matron.geneticValue).div(2);
-    }
-    if (sire.generation > matron.generation) {
-      generation = sire.generation + 1;
-    } else {
-      generation = matron.generation + 1;
-    }
+
+    uint256 geneticPredisposition
+      = sire.geneticValue + matron.geneticValue == 0
+        ? geneticPredisposition = 0
+        : uint256(sire.geneticValue + matron.geneticValue).div(2);
+
+    uint256 generation
+      = sire.generation > matron.generation
+        ? sire.generation + 1
+        : matron.generation + 1;
+
+    uint256 rarity
+      = speciesList[sire.speciesId].rarity
+          < speciesList[matron.speciesId].rarity
+        ? speciesList[sire.speciesId].rarity
+        : speciesList[matron.speciesId].rarity;
+
     eggList.push(
       Egg({
         geneticPredisposition: uint8(geneticPredisposition),
         generation: uint16(generation),
-        matronSpeciesId: matron.speciesId,
-        sireSpeciesId: sire.speciesId
+        rarity: uint8(rarity)
       })
     );
     return uint256(eggList.length.sub(1));

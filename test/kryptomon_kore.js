@@ -108,7 +108,6 @@ contract("Kryptomon", function(accounts) {
 
     contract("Breeding", function() {
         const breed = async function(user) {
-            
             const [matron_id, sire_id] =
                   (await kore.assignReserveEggs(user, /* num eggs = */ 2)).logs
                   .filter(log => log.event === 'KryptomonAssigned')

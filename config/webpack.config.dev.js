@@ -64,7 +64,7 @@ module.exports = {
     // This is the URL that app is served from. We use "/" in development.
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
+    devtoolModuleFilenameTemplate: (info) =>
       path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   resolve: {
@@ -87,6 +87,7 @@ module.exports = {
       src: paths.appSrc,
       templates: path.join(paths.appSrc, 'templates/'),
       misc: path.join(paths.appSrc, 'templates/misc/'),
+      constants: path.join(paths.appSrc, 'templates/constants/'),
       pages: path.join(paths.appSrc, 'templates/pages'),
       images: path.join(paths.appSrc, 'images/'),
       // Support React Native Web
@@ -119,7 +120,6 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -148,7 +148,6 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.

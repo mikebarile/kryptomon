@@ -44,16 +44,14 @@ contract KryptomonKore is KryptomonBreeding {
     returns (
       uint256 generation,
       uint256 geneticPredisposition,
-      uint256 matronSpeciesId,
-      uint256 sireSpeciesId
+      uint256 rarity
     )
   {
     Egg memory egg = eggList[_eggId];
     return (
       uint256(egg.generation),
       uint256(egg.geneticPredisposition),
-      uint256(egg.matronSpeciesId),
-      uint256(egg.sireSpeciesId)
+      uint256(egg.rarity)
     );
   }
 
@@ -81,7 +79,7 @@ contract KryptomonKore is KryptomonBreeding {
     );
   }
 
-  // Returns list of KryptomonIds belonging to an address
+  // Returns list of KryptomonIds that belong to an address.
   function getEggIdsForAddress(address _address)
     external
     view
@@ -89,18 +87,17 @@ contract KryptomonKore is KryptomonBreeding {
   {
     uint256 totalEggs = totalEggSupply();
     uint256 numEggs = eggBalanceOf(_address);
-    if (numEggs == 0) {
-      return new uint256[](0);
-    }
 
     uint256[] memory eggIdsList = new uint256[](numEggs);
     uint256 eggId;
     uint256 nextEggIdsListIdx = 0;
 
-    for (eggId = 0; eggId <= totalEggs; eggId++) {
-      if (eggIndexToOwner[eggId] == _address) {
-        eggIdsList[nextEggIdsListIdx] = eggId;
-        nextEggIdsListIdx++;
+    if (numEggs != 0) {
+      for (eggId = 0; eggId <= totalEggs; eggId++) {
+        if (eggIndexToOwner[eggId] == _address) {
+          eggIdsList[nextEggIdsListIdx] = eggId;
+          nextEggIdsListIdx++;
+        }
       }
     }
 

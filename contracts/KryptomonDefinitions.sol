@@ -284,7 +284,7 @@ contract KryptomonDefinitions is KryptoGodController {
     if (rarity == 7 && speciesCountByRarity[7] == 0) {
       rarity = 6;
     }
-    uint256 speciesId = getRarityBasedSpeciesId(_id, rarity);
+    uint256 speciesId = getRarityBasedSpeciesId(_eggId, rarity);
     if (rarity == 7) {
       setLegendarySpeciesExtinct(speciesId);
     }

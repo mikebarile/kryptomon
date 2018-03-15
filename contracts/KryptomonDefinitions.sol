@@ -241,58 +241,55 @@ contract KryptomonDefinitions is KryptoGodController {
   ) private
     returns(uint256)
   {
-    uint256 randSpecies = randomSpecies(_eggId, 1000000);
-    if (randSpecies <= 1000) {
+    uint256 randRarity = randomSpecies(_eggId, 1000000);
+    uint256 rarity;
+    if (randRarity <= 1000) {
       // Set species ID to matron's species ID unless it's' extinct.
-      if (speciesList[_matronSpeciesId].isExtinct) {
-        return getRarityBasedSpeciesId(
-          _eggId,
-          speciesList[_matronSpeciesId].rarity
-        );
-      } else {
+      if (!speciesList[_matronSpeciesId].isExtinct) {
         return _matronSpeciesId;
       }
-    } else if (randSpecies > 1000 && randSpecies <= 2000) {
+      rarity = speciesList[_matronSpeciesId].rarity;
+    } else if (randRarity > 1000 && randRarity <= 2000) {
       // Set species ID to sire's species ID unless it's extinct.
-      if (speciesList[_sireSpeciesId].isExtinct) {
-        return getRarityBasedSpeciesId(
-          _eggId,
-          speciesList[_sireSpeciesId].rarity
-        );
-      } else {
+      if (!speciesList[_sireSpeciesId].isExtinct) {
         return _sireSpeciesId;
       }
-    } else if (randSpecies > 2000 && randSpecies <= 400000) {
+      rarity = speciesList[_sireSpeciesId].rarity;
+    } else if (randRarity > 2000 && randRarity <= 400000) {
       // Set to a common creature (38% probability).
-      return getRarityBasedSpeciesId(_eggId, 1);
-    } else if (randSpecies > 400000 && randSpecies <= 650000) {
+      rarity = 1;
+    } else if (randRarity > 400000 && randRarity <= 650000) {
       // Set to an uncommon creature (25% probability).
-      return getRarityBasedSpeciesId(_eggId, 2);
-    } else if (randSpecies > 650000 && randSpecies <= 850000) {
+      rarity = 2;
+    } else if (randRarity > 650000 && randRarity <= 850000) {
       // Set to a rare creature (20% probability).
-      return getRarityBasedSpeciesId(_eggId, 3);
-    } else if (randSpecies > 850000 && randSpecies <= 950000) {
+      rarity = 3;
+    } else if (randRarity > 850000 && randRarity <= 950000) {
       // Set to a super rare creature (10% probability).
-      return getRarityBasedSpeciesId(_eggId, 4);
-    } else if (randSpecies > 950000 && randSpecies <= 998000) {
+      rarity = 4;
+    } else if (randRarity > 950000 && randRarity <= 998000) {
       // Set to an ultra rare creature (~5% probability).
-      return getRarityBasedSpeciesId(_eggId, 5);
-    } else if (randSpecies > 998000 && randSpecies <= 999995) {
+      rarity = 5;
+    } else if (randRarity > 998000 && randRarity <= 999995) {
       // Set to a mega rare creature (~0.1% probability).
-      return getRarityBasedSpeciesId(_eggId, 6);
-    } else if (randSpecies > 999995 && randSpecies <= 1000000) {
+      rarity = 6;
+    } else if (randRarity > 999995 && randRarity <= 1000000) {
       // Set to a legendary creature (0.0005% probability).
-      // If there are 0 legendaries remaining, return a rarity 6
-      // Kryptomon species ID. Else, return a random legendary species
-      // ID and set it to extinct.
-      if (speciesCountByRarity[7] == 0) {
-        return getRarityBasedSpeciesId(_eggId, 6);
-      } else {
-        uint256 speciesId = getRarityBasedSpeciesId(_eggId, 7);
-        setLegendarySpeciesExtinct(speciesId);
-        return speciesId;
-      }
+      rarity = 7;
     }
+
+    // If there are 0 legendaries remaining, return a rarity 6
+    // Kryptomon species ID. Else, return a random legendary species
+    // ID and set it to extinct.
+    if (rarity == 7 && speciesCountByRarity[7] == 0) {
+      rarity = 6;
+    }
+    uint256 speciesId = getRarityBasedSpeciesId(_id, rarity);
+    if (rarity == 7) {
+      setLegendarySpeciesExtinct(speciesId);
+    }
+
+    return speciesId;
   }
 
   // Returns a random species ID of the given rarity.
@@ -472,8 +469,7 @@ contract KryptomonDefinitions is KryptoGodController {
     require(_speciesId < speciesList.length);
     require(speciesList[_speciesId].rarity == 7);
     speciesList[_speciesId].isExtinct = true;
-    speciesCountByRarity[speciesList[_speciesId].rarity]
-      = speciesCountByRarity[speciesList[_speciesId].rarity].sub(1);
+    speciesCountByRarity[7] = speciesCountByRarity[7].sub(1);
     SpeciesSetExtinct(_speciesId);
   }
 

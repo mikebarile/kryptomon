@@ -194,27 +194,27 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
     private
     returns(uint256)
   {
-    uint256 randSpecies = randomSpecies(_id, 1000000);
+    uint256 randRarity = randomSpecies(_id, 1000000);
     uint256 rarity;
-    if (randSpecies <= 400000) {
+    if (randRarity <= 400000) {
       // Set to a common creature (40% probability).
       rarity = 1;
-    } else if (randSpecies > 400000 && randSpecies <= 650000) {
+    } else if (randRarity > 400000 && randRarity <= 650000) {
       // Set to an uncommon creature (25% probability).
       rarity = 2;
-    } else if (randSpecies > 650000 && randSpecies <= 850000) {
+    } else if (randRarity > 650000 && randRarity <= 850000) {
       // Set to a rare creature (20% probability).
       rarity = 3;
-    } else if (randSpecies > 850000 && randSpecies <= 950000) {
+    } else if (randRarity > 850000 && randRarity <= 950000) {
       // Set to a super rare creature (10% probability).
       rarity = 4;
-    } else if (randSpecies > 950000 && randSpecies <= 998000) {
+    } else if (randRarity > 950000 && randRarity <= 998000) {
       // Set to an ultra rare creature (~5% probability).
       rarity = 5;
-    } else if (randSpecies > 998000 && randSpecies <= 999995) {
+    } else if (randRarity > 998000 && randRarity <= 999995) {
       // Set to a mega rare creature (~0.1% probability).
       rarity = 6;
-    } else if (randSpecies > 999995 && randSpecies <= 1000000) {
+    } else if (randRarity > 999995 && randRarity <= 1000000) {
       // Set to a legendary creature (0.0005% probability).
       rarity = 7;
     }

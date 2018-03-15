@@ -212,7 +212,7 @@ contract KryptomonDefinitions is KryptoGodController {
   // gene value.
   function createKryptomon(uint256 _eggId) internal returns(uint256) {
     Egg memory egg = eggList[_eggId];
-    uint256 speciesId = determineSpeciesId(_eggId);
+    uint256 speciesId = determineSpeciesId(_eggId, egg.rarity);
     uint256 geneticValue = determineGeneticValue(
       egg.geneticPredisposition,
       _eggId
@@ -233,31 +233,32 @@ contract KryptomonDefinitions is KryptoGodController {
   // Function used to determine a new Kryptomon's species ID. There is
   // a 2% chance that the resulting Kryptomon will inherit one of its
   // parents' species.
-  function determineSpeciesId(uint256 _eggId)
+  function determineSpeciesId(uint256 _eggId, uint256 _eggRarity)
     internal
     returns(uint256)
   {
     uint256 randRarity = randomSpecies(_eggId, 1000000);
+    uint24[6] memory bracket = getRarityBracketArray(_eggRarity);
     uint256 rarity;
-    if (randRarity <= 400000) {
+    if (randRarity <= bracket[0]) {
       // Set to a common creature (40% probability).
       rarity = 1;
-    } else if (randRarity > 400000 && randRarity <= 650000) {
+    } else if (randRarity > bracket[0] && randRarity <= bracket[1]) {
       // Set to an uncommon creature (25% probability).
       rarity = 2;
-    } else if (randRarity > 650000 && randRarity <= 850000) {
+    } else if (randRarity > bracket[1] && randRarity <= bracket[2]) {
       // Set to a rare creature (20% probability).
       rarity = 3;
-    } else if (randRarity > 850000 && randRarity <= 950000) {
+    } else if (randRarity > bracket[2] && randRarity <= bracket[3]) {
       // Set to a super rare creature (10% probability).
       rarity = 4;
-    } else if (randRarity > 950000 && randRarity <= 998000) {
+    } else if (randRarity > bracket[3] && randRarity <= bracket[4]) {
       // Set to an ultra rare creature (~5% probability).
       rarity = 5;
-    } else if (randRarity > 998000 && randRarity <= 999995) {
+    } else if (randRarity > bracket[4] && randRarity <= bracket[5]) {
       // Set to a mega rare creature (~0.1% probability).
       rarity = 6;
-    } else if (randRarity > 999995 && randRarity <= 1000000) {
+    } else if (randRarity > bracket[5] && randRarity <= 1000000) {
       // Set to a legendary creature (0.0005% probability).
       rarity = 7;
     }
@@ -274,6 +275,35 @@ contract KryptomonDefinitions is KryptoGodController {
     }
 
     return speciesId;
+  }
+
+  // Returns an array with the "rarity-based bracket" e.g. the
+  // probabilities of hatching a Kryptomon of a given rarity.
+  function getRarityBracketArray(uint256 _eggRarity)
+    private
+    pure
+    returns(uint24[6])
+  {
+    require(_eggRarity > 0);
+    require(_eggRarity <= 7);
+    uint24[6] memory rarityBracket;
+
+    if (_eggRarity == 1) {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    } else if (_eggRarity == 2) {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    } else if (_eggRarity == 3) {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    } else if (_eggRarity == 4) {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    } else if (_eggRarity == 5) {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    } else if (_eggRarity == 6) {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    } else {
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+    }
+    return rarityBracket;
   }
 
   // Returns a random species ID of the given rarity.

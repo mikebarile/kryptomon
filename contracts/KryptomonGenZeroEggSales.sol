@@ -173,7 +173,7 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
     internal
     returns(uint256)
   {
-    uint256 speciesId = determineSpeciesId(_id);
+    uint256 speciesId = determineSpeciesId(_id, 1);
     uint256 geneticValue = determineGenZeroGeneticValue(_id);
     kryptomonList.push(
       Kryptomon({

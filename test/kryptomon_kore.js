@@ -30,8 +30,8 @@ contract("Kryptomon", function(accounts) {
 
             it("no one has eggs or kryptomon", function() {
                 accounts.forEach(async function(account) {
-                    (await kore.ownerToTotalKryptomon(account)).toNumber().should.equal(0);
-                    (await kore.ownerToTotalEggs(account)).toNumber().should.equal(0);
+                    (await kore.balanceOf(account)).toNumber().should.equal(0);
+                    (await kore.eggBalanceOf(account)).toNumber().should.equal(0);
                 });
             });
 
@@ -46,7 +46,7 @@ contract("Kryptomon", function(accounts) {
          
     contract("GenZeroEggSales", function() {
         const testGenZeroEggsAssigned = async function(user, assign_eggs_fn) {
-            const starting_user_num_kryptomon = await kore.ownerToTotalKryptomon(user);
+            const starting_user_balance = await kore.balanceOf(user);
             const starting_total_supply = await kore.totalSupply();
             const num_eggs = 2;
             const result = await assign_eggs_fn(num_eggs);
@@ -62,15 +62,13 @@ contract("Kryptomon", function(accounts) {
                         event: 'KryptomonAssigned',
                         args: {ownerAddress: user}
                     }));
-            const owner_is = async (user) => async (id) => await kore.kryptomonIndexToOwner(id) === user;
+            const owner_is = async (user) => async (id) => await kore.ownerOf(id) === user;
             const kryptomon_ids = result.logs
                   .filter(log => log.event === 'KryptomonAssigned')
                   .map(log => log.args.kryptomonId.toNumber());
             kryptomon_ids.should.all.satisfy(await owner_is(user));
-            (await kore.ownerToTotalKryptomon(user))
-                .should.deep.equal(starting_user_num_kryptomon.plus(num_eggs));
-            (await kore.totalSupply())
-                .should.deep.equal(starting_total_supply.plus(num_eggs));
+            (await kore.balanceOf(user)).should.deep.equal(starting_user_balance.plus(num_eggs));
+            (await kore.totalSupply()).should.deep.equal(starting_total_supply.plus(num_eggs));
         };
 
         contract("#assignReserveEggs()", function() {
@@ -141,22 +139,20 @@ contract("Kryptomon", function(accounts) {
         contract("#breedKryptomon()", function () {
             it("creates an egg", async function() {
                 const user = user1;
-                const starting_user_num_eggs = await kore.ownerToTotalEggs(user);
+                const starting_user_egg_balance = await kore.eggBalanceOf(user);
                 const egg_id = (await breed(user)).egg_id;
-                (await kore.ownerToTotalEggs(user))
-                    .should.deep.equal(starting_user_num_eggs.plus(1));
-                (await kore.eggIndexToOwner(egg_id))
-                    .should.equal(user);
+                (await kore.eggBalanceOf(user)).should.deep.equal(starting_user_egg_balance.plus(1));
+                (await kore.eggOwnerOf(egg_id)).should.equal(user);
             });
         });
 
         contract("#hatchEgg()", function() {
             it("hatches an egg", async function() {
                 const user = user1;
-                const starting_user_num_eggs = await kore.ownerToTotalEggs(user);
+                const starting_user_egg_balance = await kore.eggBalanceOf(user);
                 const egg_id = (await breed(user)).egg_id;
                 // Set this after breeding to include the sire and maton used to breed.
-                const starting_user_num_kryptomon = await kore.ownerToTotalKryptomon(user);
+                const starting_user_balance = await kore.balanceOf(user);
                 const hatch_result = await kore.hatchEgg(egg_id, {from: user});
                 hatch_result.logs.should
                     .have.lengthOf(2).and
@@ -176,13 +172,10 @@ contract("Kryptomon", function(accounts) {
                 const kryptomon_id = hatch_result.logs
                       .filter(log => log.event === 'KryptomonAssigned')[0]
                       .args.kryptomonId;
-                (+await kore.eggIndexToOwner(egg_id)).should.equal(0);
-                (await kore.kryptomonIndexToOwner(kryptomon_id))
-                    .should.equal(user);
-                (await kore.ownerToTotalEggs(user))
-                    .should.deep.equal(starting_user_num_eggs);
-                (await kore.ownerToTotalKryptomon(user))
-                    .should.deep.equal(starting_user_num_kryptomon.plus(1));
+                (+await kore.eggOwnerOf(egg_id)).should.equal(0);
+                (await kore.ownerOf(kryptomon_id)).should.equal(user);
+                (await kore.eggBalanceOf(user)).should.deep.equal(starting_user_egg_balance);
+                (await kore.balanceOf(user)).should.deep.equal(starting_user_balance.plus(1));
             });
             
             it("cannot hatch another user's egg", async function() {

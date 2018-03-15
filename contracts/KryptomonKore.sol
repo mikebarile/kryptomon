@@ -44,16 +44,14 @@ contract KryptomonKore is KryptomonBreeding {
     returns (
       uint256 generation,
       uint256 geneticPredisposition,
-      uint256 matronSpeciesId,
-      uint256 sireSpeciesId
+      uint256 rarity
     )
   {
     Egg memory egg = eggList[_eggId];
     return (
       uint256(egg.generation),
       uint256(egg.geneticPredisposition),
-      uint256(egg.matronSpeciesId),
-      uint256(egg.sireSpeciesId)
+      uint256(egg.rarity)
     );
   }
 

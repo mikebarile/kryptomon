@@ -31,18 +31,21 @@ contract KryptomonDefinitions is KryptoGodController {
     // the child will be gen10).
     uint16 generation;
 
-    // The species ID associated with the egg's matron. The egg has a
-    // slightly larger chance of hatching into this species.
-    uint16 matronSpeciesId;
-
-    // The species ID associated with the egg's sire. The egg has a
-    // slightly larger chance of hatching into this species.
-    uint16 sireSpeciesId;
-
     // The average of the egg's parents' gene attributes. The Kryptomon
     // that hatches from this egg is slightly more likely to have this
     // as their genetic value.
     uint8 geneticPredisposition;
+
+    // The egg's rarity, calculated as the minimum rarity of the egg's
+    // parents.
+    // 1: Common
+    // 2: Uncommon
+    // 3: Rare
+    // 4: Super Rare
+    // 5: Ultra Rare
+    // 6: Mega Rare
+    // 7: Legendary
+    uint8 rarity;
   }
 
   // The main Kryptomon struct.
@@ -209,11 +212,7 @@ contract KryptomonDefinitions is KryptoGodController {
   // gene value.
   function createKryptomon(uint256 _eggId) internal returns(uint256) {
     Egg memory egg = eggList[_eggId];
-    uint256 speciesId = determineSpeciesId(
-      egg.matronSpeciesId,
-      egg.sireSpeciesId,
-      _eggId
-    );
+    uint256 speciesId = determineSpeciesId(_eggId);
     uint256 geneticValue = determineGeneticValue(
       egg.geneticPredisposition,
       _eggId
@@ -234,29 +233,14 @@ contract KryptomonDefinitions is KryptoGodController {
   // Function used to determine a new Kryptomon's species ID. There is
   // a 2% chance that the resulting Kryptomon will inherit one of its
   // parents' species.
-  function determineSpeciesId(
-    uint256 _matronSpeciesId,
-    uint256 _sireSpeciesId,
-    uint256 _eggId
-  ) private
+  function determineSpeciesId(uint256 _eggId)
+    internal
     returns(uint256)
   {
     uint256 randRarity = randomSpecies(_eggId, 1000000);
     uint256 rarity;
-    if (randRarity <= 1000) {
-      // Set species ID to matron's species ID unless it's' extinct.
-      if (!speciesList[_matronSpeciesId].isExtinct) {
-        return _matronSpeciesId;
-      }
-      rarity = speciesList[_matronSpeciesId].rarity;
-    } else if (randRarity > 1000 && randRarity <= 2000) {
-      // Set species ID to sire's species ID unless it's extinct.
-      if (!speciesList[_sireSpeciesId].isExtinct) {
-        return _sireSpeciesId;
-      }
-      rarity = speciesList[_sireSpeciesId].rarity;
-    } else if (randRarity > 2000 && randRarity <= 400000) {
-      // Set to a common creature (38% probability).
+    if (randRarity <= 400000) {
+      // Set to a common creature (40% probability).
       rarity = 1;
     } else if (randRarity > 400000 && randRarity <= 650000) {
       // Set to an uncommon creature (25% probability).

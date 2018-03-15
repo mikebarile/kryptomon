@@ -173,7 +173,7 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
     internal
     returns(uint256)
   {
-    uint256 speciesId = determineGenZeroSpeciesId(_id);
+    uint256 speciesId = determineSpeciesId(_id);
     uint256 geneticValue = determineGenZeroGeneticValue(_id);
     kryptomonList.push(
       Kryptomon({
@@ -186,51 +186,6 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       })
     );
     return uint256(kryptomonList.length.sub(1));
-  }
-
-  // Function that pseudo-randomly determines a species ID for a new
-  // gen 0 Kryptomon.
-  function determineGenZeroSpeciesId(uint256 _id)
-    private
-    returns(uint256)
-  {
-    uint256 randRarity = randomSpecies(_id, 1000000);
-    uint256 rarity;
-    if (randRarity <= 400000) {
-      // Set to a common creature (40% probability).
-      rarity = 1;
-    } else if (randRarity > 400000 && randRarity <= 650000) {
-      // Set to an uncommon creature (25% probability).
-      rarity = 2;
-    } else if (randRarity > 650000 && randRarity <= 850000) {
-      // Set to a rare creature (20% probability).
-      rarity = 3;
-    } else if (randRarity > 850000 && randRarity <= 950000) {
-      // Set to a super rare creature (10% probability).
-      rarity = 4;
-    } else if (randRarity > 950000 && randRarity <= 998000) {
-      // Set to an ultra rare creature (~5% probability).
-      rarity = 5;
-    } else if (randRarity > 998000 && randRarity <= 999995) {
-      // Set to a mega rare creature (~0.1% probability).
-      rarity = 6;
-    } else if (randRarity > 999995 && randRarity <= 1000000) {
-      // Set to a legendary creature (0.0005% probability).
-      rarity = 7;
-    }
-
-    // If there are 0 legendaries remaining, return a rarity 6
-    // Kryptomon species ID. Else, return a random legendary species
-    // ID and set it to extinct.
-    if (rarity == 7 && speciesCountByRarity[7] == 0) {
-      rarity = 6;
-    }
-    uint256 speciesId = getRarityBasedSpeciesId(_id, rarity);
-    if (rarity == 7) {
-      setLegendarySpeciesExtinct(speciesId);
-    }
-
-    return speciesId;
   }
 
   // Determines the genetic value for a new gen0 Kryptomon.

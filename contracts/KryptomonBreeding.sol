@@ -1,6 +1,7 @@
 pragma solidity ^0.4.11;
 import './KryptomonEggTokenization.sol';
 import '../libraries/SafeMath.sol';
+import '../libraries/Util.sol';
 
 contract KryptomonBreeding is KryptomonEggTokenization {
   using SafeMath for uint256;
@@ -55,20 +56,14 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     Kryptomon memory matron = kryptomonList[_matronIndex];
 
     uint256 geneticPredisposition
-      = sire.geneticValue + matron.geneticValue == 0
-        ? geneticPredisposition = 0
-        : uint256(sire.geneticValue + matron.geneticValue).div(2);
+      = uint256(sire.geneticValue + matron.geneticValue).div(2);
 
     uint256 generation
-      = sire.generation > matron.generation
-        ? sire.generation + 1
-        : matron.generation + 1;
+      = Util.max(sire.generation, matron.generation) + 1;
 
     uint256 rarity
-      = speciesList[sire.speciesId].rarity
-          < speciesList[matron.speciesId].rarity
-        ? speciesList[sire.speciesId].rarity
-        : speciesList[matron.speciesId].rarity;
+      = Util.min(speciesList[sire.speciesId].rarity,
+                 speciesList[matron.speciesId].rarity);
 
     eggList.push(
       Egg({

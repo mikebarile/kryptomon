@@ -29,7 +29,7 @@ contract KryptomonDefinitions is KryptoGodController {
     // egg. The generation is calculated as the max of the two parents'
     // generations plus 1 (e.g. if parent1 is gen0 and parent 2 is gen9,
     // the child will be gen10).
-    uint16 generation;
+    uint8 generation;
 
     // The average of the egg's parents' gene attributes. The Kryptomon
     // that hatches from this egg is slightly more likely to have this
@@ -66,7 +66,7 @@ contract KryptomonDefinitions is KryptoGodController {
     // The Kryptomon's generation. Higher generation Kryptomon have
     // increasingly degredated base stats and take exponentially more
     // time to evolve.
-    uint16 generation;
+    uint8 generation;
 
     // The number of eggs that this Kryptomon has produced. Different
     // species of Kryptomon have different restrictions on how many

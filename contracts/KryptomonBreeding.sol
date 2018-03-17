@@ -68,7 +68,7 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     eggList.push(
       Egg({
         geneticPredisposition: uint8(geneticPredisposition),
-        generation: uint16(generation),
+        generation: uint8(generation),
         rarity: uint8(rarity)
       })
     );

@@ -1,3 +1,4 @@
+pragma solidity ^0.4.11;
 // Kitchen sink of util functions for Kryptomon
 
 library Util {

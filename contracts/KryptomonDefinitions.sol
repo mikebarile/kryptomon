@@ -63,15 +63,15 @@ contract KryptomonDefinitions is KryptoGodController {
     // lookup table.
     uint16 speciesId;
 
+    // The number of eggs that this Kryptomon has produced. Different
+    // species of Kryptomon have different restrictions on how many
+    // children they can have.
+    uint8 numChildren;
+
     // The Kryptomon's generation. Higher generation Kryptomon have
     // increasingly degredated base stats and take exponentially more
     // time to evolve.
     uint8 generation;
-
-    // The number of eggs that this Kryptomon has produced. Different
-    // species of Kryptomon have different restrictions on how many
-    // children they can have.
-    uint16 numChildren;
 
     // A value between 0 and 200 that modifies the Kryptomon's stats.
     // A value of 0 results in a 10% decrease in base stats while a
@@ -289,19 +289,75 @@ contract KryptomonDefinitions is KryptoGodController {
     uint24[6] memory rarityBracket;
 
     if (_eggRarity == 1) {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // COMMON EGG HATCH RATE:
+      // Common: 40%
+      // Uncommon: 25%
+      // Rare: 20%
+      // Super rare: 12%
+      // Ultra rare: 2%
+      // Mega rare: <1%
+      // Legendary: <1%
+      rarityBracket = [400000, 650000, 850000, 970000, 999000, 999995];
     } else if (_eggRarity == 2) {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // UNCOMMON EGG HATCH RATE:
+      // Common: 30%
+      // Uncommon: 30%
+      // Rare: 25%
+      // Super rare: 10%
+      // Ultra rare: 3%
+      // Mega rare: <2%
+      // Legendary: <1%
+      rarityBracket = [300000, 600000, 850000, 950000, 998000, 999995];
     } else if (_eggRarity == 3) {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // RARE EGG HATCH RATE:
+      // Common: 25%
+      // Uncommon: 25%
+      // Rare: 30%
+      // Super rare: 13%
+      // Ultra rare: 5%
+      // Mega rare: <2%
+      // Legendary: <1%
+      rarityBracket = [250000, 500000, 800000, 993000, 998000, 999995];
     } else if (_eggRarity == 4) {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // SUPER RARE EGG HATCH RATE:
+      // Common: 20%
+      // Uncommon: 20%
+      // Rare: 30%
+      // Super rare: 22%
+      // Ultra rare: 5%
+      // Mega rare: <3%
+      // Legendary: <1%
+      rarityBracket = [200000, 400000, 700000, 920000, 997000, 999985];
     } else if (_eggRarity == 5) {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // ULTRA RARE EGG HATCH RATE:
+      // Common: 10%
+      // Uncommon: 15%
+      // Rare: 30%
+      // Super rare: 30%
+      // Ultra rare: 11%
+      // Mega rare: <4%
+      // Legendary: <1%
+      rarityBracket = [100000, 250000, 550000, 850000, 960000, 999975];
     } else if (_eggRarity == 6) {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // MEGA RARE EGG HATCH RATE:
+      // Common: 0%
+      // Uncommon: 10%
+      // Rare: 25%
+      // Super rare: 30%
+      // Ultra rare: 25%
+      // Mega rare: <10%
+      // Legendary: <1%
+      rarityBracket = [0, 100000, 350000, 650000, 900000, 999965];
     } else {
-      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999995];
+      // LEGENDARY EGG HATCH RATE:
+      // Common: 0%
+      // Uncommon: 0%
+      // Rare: 0%
+      // Super rare: 0%
+      // Ultra rare: 80%
+      // Mega rare: <20%
+      // Legendary: <1%
+      rarityBracket = [0, 0, 0, 0, 800000, 999950];
     }
     return rarityBracket;
   }

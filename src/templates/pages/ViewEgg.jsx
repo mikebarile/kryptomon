@@ -41,7 +41,7 @@ class ViewEgg extends React.Component {
     clearInterval(this.interval);
   }
 
-  async hatchEgg() {
+  hatchEgg = async () => {
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
 
@@ -51,7 +51,7 @@ class ViewEgg extends React.Component {
       // Somehow we need to get the eggID
       // hatchEgg()
     }
-  }
+  };
 
   renderEggStatsBox() {
     return (

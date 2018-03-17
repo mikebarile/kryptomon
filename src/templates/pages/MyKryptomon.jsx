@@ -40,8 +40,12 @@ class MyKryptomon extends React.Component {
   };
 
   componentDidMount() {
-    MetaMaskChecker(this.props.history);
+    this.checker = MetaMaskChecker(this.props.history);
     this.getOwnageStats();
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.checker);
   }
 
   getOwnageStats = async () => {

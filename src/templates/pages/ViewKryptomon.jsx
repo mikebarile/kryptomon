@@ -28,11 +28,11 @@ class ViewKryptomon extends React.Component {
   };
 
   componentDidMount() {
-    this.interval = MetaMaskChecker(this.props.history);
+    this.checker = MetaMaskChecker(this.props.history);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.checker);
   }
 
   renderStatsBox() {

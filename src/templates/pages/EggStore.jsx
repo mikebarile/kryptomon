@@ -17,6 +17,7 @@ import faker from 'faker';
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
 import ROUTES from 'constants/Routes';
+import MetaMaskChecker from 'misc/MetaMaskChecker';
 
 import EggImg from 'images/logo2.png';
 import FixedMenu from 'misc/FixedMenu';
@@ -41,6 +42,8 @@ class EggStore extends React.Component {
   }
 
   async componentDidMount() {
+    this.checker = MetaMaskChecker(this.props.history);
+
     const eggPrice = await genZeroEggPrice().call();
     const genZeroEggSupply = await unassignedGenZeroEggs().call();
 
@@ -62,6 +65,10 @@ class EggStore extends React.Component {
     } else {
       this.props.history.push(ROUTES.METAMASK);
     }
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.checker);
   }
 
   renderEggStatsBox() {

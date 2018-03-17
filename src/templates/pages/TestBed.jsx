@@ -1,9 +1,11 @@
 import React from 'react';
 import { Container, Statistic, Input, Button } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
 import FixedMenu from 'misc/FixedMenu';
+import MetaMaskChecker from 'misc/MetaMaskChecker';
 
 class TestBed extends React.Component {
   constructor(props) {
@@ -24,6 +26,7 @@ class TestBed extends React.Component {
 
   componentDidMount() {
     this.refreshState();
+    this.checker = MetaMaskChecker(this.props.history);
   }
 
   async refreshState() {
@@ -48,6 +51,10 @@ class TestBed extends React.Component {
       ownedGenZeroEggs,
       ownedKryptomon,
     });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.checker);
   }
 
   render() {
@@ -142,4 +149,4 @@ class TestBed extends React.Component {
   }
 }
 
-export default TestBed;
+export default withRouter(TestBed);

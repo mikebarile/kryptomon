@@ -4,7 +4,7 @@ import web3 from './web3';
 
 // TODO(mikebarile): Update this address once we've finalized the contract.
 // Update this when running truffle migrate
-const kryptomonAddress = '0x7e8a859f3e4477d75388e6629d89cae1428e6974';
+const kryptomonAddress = '0x1036bf5913263819310401b97180c7dcec19859c';
 
 // TODO(mikebarile): Update this ABI once we've finalized the contract.
 const kryptomonABI = [
@@ -1125,11 +1125,7 @@ const kryptomonABI = [
         type: 'uint256',
       },
       {
-        name: 'matronSpeciesId',
-        type: 'uint256',
-      },
-      {
-        name: 'sireSpeciesId',
+        name: 'rarity',
         type: 'uint256',
       },
     ],

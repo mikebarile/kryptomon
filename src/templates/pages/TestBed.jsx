@@ -2,6 +2,9 @@ import React from 'react';
 import { Container, Statistic, Input, Button } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 
+// TODO: Remove in prod
+import deployAllSpecies from 'src/initiate_species.js';
+
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
 import FixedMenu from 'misc/FixedMenu';
@@ -141,6 +144,10 @@ class TestBed extends React.Component {
             fluid
           />
         </label>
+        <br />
+        <Button onClick={deployAllSpecies} color="yellow">
+          Deploy Test Species
+        </Button>
         <br />
         <Button onClick={this.refreshState}>Refresh State</Button>
         <br />

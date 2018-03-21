@@ -1,0 +1,152 @@
+,,,,,,,,,,,,,,,,,,,
+,Id,Name,Type,Rarity,Evolve to id,Max eggs,Breeding Cooldown (days),BC (seconds),Time to Evolve (days),TtE (seconds),Image,Attack,Defense,HP,Speed,Special attack,Special defense,Actual total,Total
+,0,Krypto God,Fire / Ice,Legendary,-,3,7,604800,40,3456000,,250,250,250,250,250,250,1500,1440
+,1,Foxie,Grass,Rare,2,1,3,0,15,1296000,,,,,,,,,600
+,2,Yoshibud,Grass,Super Rare,3,1,4,0,20,1728000,,,,,,,,,780
+,3,Dholeaf,Grass,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,4,Bacon,Fire,Rare,5,1,3,0,15,1296000,,,,,,,,,600
+,5,Blazehog,Fire,Super Rare,6,1,4,0,20,1728000,,,,,,,,,780
+,6,Infernor,Fire,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,7,Tingadot,Water,Rare,8,1,3,0,15,1296000,,,,,,,,,600
+,8,Aquoge,Water,Super Rare,9,1,4,0,20,1728000,,,,,,,,,780
+,9,Seamonte,Water,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,10,Hammy,Normal,Common,11,4,1,0,5,432000,,,,,,,,,300
+,11,Hamstow,Normal,Uncommon,12,3,2,0,10,864000,,,,,,,,,420
+,12,Hampop,Normal,Rare,-,2,3,0,15,1296000,,,,,,,,,600
+,13,Caternut,Normal / Bug,Common,14,2,1,0,5,432000,,,,,,,,,300
+,14,Papoon,Normal / Bug,Uncommon,15,1,2,0,10,864000,,,,,,,,,420
+,15,Smetterling,Normal / Bug,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,16,,Grass,Common,17,2,1,0,5,432000,,,,,,,,,300
+,17,,Grass,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,18,Fledgy,Flying / Psychic,Uncommon,19,2,2,0,10,864000,,,,,,,,,420
+,19,Hypnobill,Flying / Psychic,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,20,Grasschopper,Bug / Fighting,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,21,Buzzfly,Electric / Flying / Bug,Uncommon,22,2,2,0,10,864000,,,,,,,,,420
+,22,Flaxenbolt,Electric / Flying / Bug,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,23,Nugget,Normal,Common,24,3,1,0,5,432000,,,,,,,,,300
+,24,Pumpchick,Normal,Uncommon,25,2,2,0,10,864000,,,,,,,,,420
+,25,Cheagle,Normal / Flying,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,26,Pillama,Normal,Common,27,2,1,0,5,432000,,,,,,,,,300
+,27,Papillamb,Normal / Flying,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,28,Makaha,Grass / Fairy,Common,29,2,1,0,5,432000,,,,,,,,,300
+,29,Waiqiqi,Grass / Fairy,Uncommon,-,2,2,0,10,864000,,,,,,,,,420
+,30,Boohuahua,Dark,Uncommon,31,2,2,0,10,864000,,,,,,,,,420
+,31,Ghyena,Dark,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,32,Pluffer,Normal,Common,33,2,1,0,5,432000,,,,,,,,,300
+,33,,Normal,Uncommon,34,1,2,0,10,864000,,,,,,,,,420
+,34,Lobolf,Normal,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,35,Ocekit,Water / Grass,Uncommon,36,2,2,0,10,864000,,,,,,,,,420
+,36,Otakon,Water / Grass,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,37,Darva,Bug / Dark,Uncommon,38,2,2,0,10,864000,,,,,,,,,420
+,38,Assassant,Bug / Dark,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,39,Tippytap,Bug / Poison,Uncommon,40,2,2,0,10,864000,,,,,,,,,420
+,40,Taranturat,Bug / Poison,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,41,,Normal / Fighting,Uncommon,42,2,2,0,10,864000,,,,,,,,,420
+,42,,Normal / Fighting,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,43,Platypoop,Water / Psychic,Uncommon,44,2,2,0,10,864000,,,,,,,,,420
+,44,Duckula,Water / Psychic,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,45,Amphibiman,Water,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,46,,Dark,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,47,Boba,Fairy,Common,-,2,1,0,5,432000,,,,,,,,,300
+,48,Kalinda,Fairy,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,49,Flameling,Fire / Flying,Rare,50,2,3,0,15,1296000,,,,,,,,,600
+,50,Screech,Fire / Flying,Super Rare,51,1,4,0,20,1728000,,,,,,,,,780
+,51,Cinereus,Fire / Flying,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,52,,Normal,Common,53,2,1,0,5,432000,,,,,,,,,300
+,53,,Normal / Dark,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,54,,Rock,Rare,55,2,3,0,15,1296000,,,,,,,,,600
+,55,,Rock,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,56,Merdonk,Water,Uncommon,57,1,2,0,10,864000,,,,,,,,,420
+,57,Pegafin,Water,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,58,Mustela,Ghost,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,59,Matilda,Ghost,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,60,Nincoon,Normal / Fighting,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,61,,Electric,Uncommon,62,2,2,0,10,864000,,,,,,,,,420
+,62,,Electric,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,63,Chickapee,Normal,Common,64,2,1,0,5,432000,,,,,,,,,300
+,64,Sandrunner,Normal,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,65,,Normal,Common,66,2,1,0,5,432000,,,,,,,,,300
+,66,,Normal,Uncommon,67,1,2,0,10,864000,,,,,,,,,420
+,67,,Normal,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,68,Rodentice,Normal / Fighting,Common,69,2,1,0,5,432000,,,,,,,,,300
+,69,Ratafu,Normal / Fighting,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,70,,Bug,Uncommon,71,1,2,0,10,864000,,,,,,,,,420
+,71,,Bug / Poison,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,72,,Water,Uncommon,73,2,2,0,10,864000,,,,,,,,,420
+,73,,Water,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,74,,Water,Common,75,2,1,0,5,432000,,,,,,,,,300
+,75,,Water,Uncommon,76,1,2,0,10,864000,,,,,,,,,420
+,76,,Water,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,77,,Fire,Common,78,2,1,0,5,432000,,,,,,,,,300
+,78,,Fire,Uncommon,79,1,2,0,10,864000,,,,,,,,,420
+,79,,Fire,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,80,Zaphog,Electric,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,81,Blutore,Fighting,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,82,,Dark / Fighting,Rare,83,1,3,0,15,1296000,,,,,,,,,600
+,83,,Dark / Fighting,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,84,Yiddle,Ice / Fighting,Rare,85,1,3,0,15,1296000,,,,,,,,,600
+,85,Yeddi,Ice / Fighting,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,86,,Flying,Common,-,1,1,0,5,432000,,,,,,,,,300
+,87,,Ghost,Rare,88,2,3,0,15,1296000,,,,,,,,,600
+,88,,Ghost,Super Rare,89,1,4,0,20,1728000,,,,,,,,,780
+,89,,Ghost,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,90,Tilla,Grass / Poison,Uncommon,91,2,2,0,10,864000,,,,,,,,,420
+,91,Lacertilla,Grass / Poison,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,92,Foge,Fire,Rare,93,2,3,0,15,1296000,,,,,,,,,600
+,93,Exploge,Fire,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,94,Uniphin,Water,Common,95,2,1,0,5,432000,,,,,,,,,300
+,95,Unihorn,Water,Uncommon,-,1,2,0,10,864000,,,,,,,,,420
+,96,Pritty,Grass / Fairy,Uncommon,97,2,2,0,10,864000,,,,,,,,,420
+,97,Kateline,Grass / Fairy,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,98,Skullex,Ghost / Psychic,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,99,Goatee,Fire,Rare,100,1,3,0,15,1296000,,,,,,,,,600
+,100,Ramfire,Fire / Dark,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,101,,Ground,Rare,102,2,3,0,15,1296000,,,,,,,,,600
+,102,Scaleton,Ground,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,103,,Psychic,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,104,Abu,Grass,Rare,105,2,3,0,15,1296000,,,,,,,,,600
+,105,Geurilla,Grass,Super Rare,106,1,4,0,20,1728000,,,,,,,,,780
+,106,Alphape,Grass,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,107,Stingy,Water / Electric,Uncommon,108,2,2,0,10,864000,,,,,,,,,420
+,108,Thundray,Water / Electric,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,109,Gupzee,Water / Electric,Uncommon,110,2,2,0,10,864000,,,,,,,,,420
+,110,Ampacuda,Water / Electric,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,111,Staloon,Steel,Rare,112,2,3,0,15,1296000,,,,,,,,,600
+,112,Stoldier,Steel,Super Rare,113,1,4,0,20,1728000,,,,,,,,,780
+,113,Stank,Steel,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,114,Helaloon,Steel / Flying,Rare,115,2,3,0,15,1296000,,,,,,,,,600
+,115,Metablimp,Steel / Flying,Super Rare,116,1,4,0,20,1728000,,,,,,,,,780
+,116,Quadrone,Steel / Flying,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,117,,Psychic,Rare,118,2,3,0,15,1296000,,,,,,,,,600
+,118,,Psychic,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,119,,Fire / Psychic,Common,120,2,1,0,5,432000,,,,,,,,,300
+,120,,Fire / Psychic,Uncommon,121,1,2,0,10,864000,,,,,,,,,420
+,121,,Fire / Psychic,Rare,-,1,3,0,15,1296000,,,,,,,,,600
+,122,,Water,Common,123,2,1,0,15,1296000,,,,,,,,,300
+,123,,Water,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,124,,Ghost / Psychic,Rare,125,2,3,0,15,1296000,,,,,,,,,600
+,125,,Ghost / Psychic,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,126,,Ghost / Psychic,Rare,127,2,3,0,15,1296000,,,,,,,,,600
+,127,,Ghost / Psychic,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,128,,Fire,Rare,129,2,3,0,15,1296000,,,,,,,,,600
+,129,,Fire,Super Rare,130,1,4,0,20,1728000,,,,,,,,,780
+,130,,Fire,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,131,,Rock,Rare,132,2,3,0,15,1296000,,,,,,,,,600
+,132,,Rock,Super Rare,133,1,4,0,20,1728000,,,,,,,,,780
+,133,,Rock,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,134,,Dark / Psychic,Rare,135,1,3,0,15,1296000,,,,,,,,,600
+,135,,Dark / Psychic,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,136,,Dark,Rare,137,1,3,0,15,1296000,,,,,,,,,600
+,137,,Dark,Super Rare,-,1,4,0,20,1728000,,,,,,,,,780
+,138,,Fire / Rock,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,139,,Ice / Fighting,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,140,,Fighting / Psychic,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,141,,Fire / Rock,Ultra Rare,-,1,5,0,25,2160000,,,,,,,,,1020
+,142,,Ground / Dragon,Mega Rare,-,1,6,0,30,2592000,,,,,,,,,1230
+,143,,Ice / Dragon,Mega Rare,-,1,6,0,30,2592000,,,,,,,,,1230
+,144,,Electric / Dragon,Mega Rare,-,1,6,0,30,2592000,,,,,,,,,1230
+,145,,Fire / Dragon,Mega Rare,-,1,6,0,30,2592000,,,,,,,,,1230
+,146,,Grass / Dragon,Legendary,-,1,7,0,40,3456000,,,,,,,,,1440
+,147,,Fire / Flying,Legendary,-,1,7,0,40,3456000,,,,,,,,,1440
+,148,,Dragon,Legendary,-,1,7,0,40,3456000,,,,,,,,,1440
+,149,,Dark,Legendary,-,1,7,0,40,3456000,,,,,,,,,1440

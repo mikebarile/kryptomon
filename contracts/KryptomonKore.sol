@@ -16,6 +16,33 @@ contract KryptomonKore is KryptomonBreeding {
     kryptoGodAddress = msg.sender;
     completeFreeze = true;
     totalGenZeroEggs = unassignedGenZeroEggs.add(genZeroEggsReserve);
+
+    speciesList.push(Species({
+      attack: uint8(250),
+      defense: uint8(250),
+      specialAttack: uint8(250),
+      specialDefense: uint8(250),
+      hitPoints: uint8(250),
+      speed: uint8(250),
+      maxChildren: uint8(10),
+      breedingCooldown: uint32(0),
+      evolveToId: uint16(0),
+      timeToEvolve: uint32(0),
+      rarity: uint8(7),
+      isExtinct: true
+    }));
+    kryptomonList.push(
+      Kryptomon({
+        speciesId: uint16(0),
+        geneticValue: uint8(100),
+        generation: 0,
+        birthTimeStamp: uint32(now),
+        lastBred: uint32(now),
+        numChildren: 0
+      })
+    );
+    kryptomonIndexToOwner[0] = msg.sender;
+    KryptomonAssigned(msg.sender, 0);
   }
 
   // If this field is set, the Kryptomon contract address has been

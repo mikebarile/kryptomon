@@ -36,11 +36,11 @@ const Root = () => (
           render={(props) => <ViewEgg genZero {...props} />}
         />
         <Route
-          path={ROUTES.VIEW_EGG + '/:egg_id'}
+          path={ROUTES.VIEW_EGG + '/:eggId'}
           render={(props) => <ViewEgg genZero={false} {...props} />}
         />
         <Route
-          path={ROUTES.VIEW_KRYPTOMON + '/:kryptomon_id'}
+          path={ROUTES.VIEW_KRYPTOMON + '/:kryptomonId'}
           component={ViewKryptomon}
         />
         <Route path={ROUTES.TEST_BED} component={TestBed} />

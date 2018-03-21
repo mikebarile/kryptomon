@@ -4,7 +4,7 @@ import web3 from './web3';
 
 // TODO(mikebarile): Update this address once we've finalized the contract.
 // Update this when running truffle migrate
-const kryptomonAddress = '0x1036bf5913263819310401b97180c7dcec19859c';
+const kryptomonAddress = '0xb63f92d766c5a075491d281a2aac659733ed675a';
 
 // TODO(mikebarile): Update this ABI once we've finalized the contract.
 const kryptomonABI = [

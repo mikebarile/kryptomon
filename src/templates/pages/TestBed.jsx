@@ -2,6 +2,9 @@ import React from 'react';
 import { Container, Statistic, Input, Button } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 
+// TODO: Remove in prod
+import deployAllSpecies from 'src/initiate_species.js';
+
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
 import FixedMenu from 'misc/FixedMenu';
@@ -74,7 +77,7 @@ class TestBed extends React.Component {
 
     const deploySpecies = () => {
       const stats = this.state.speciesStats
-        .split(',')
+        .split(' ')
         .map((el) => Number(el.trim()));
       if (stats.length === 11) {
         KryptomonKore.methods
@@ -127,6 +130,11 @@ class TestBed extends React.Component {
           Order: attack, defense, specialAttack, specialDefense, hitPoints,
           speed, maxChildren, breedingCooldown, evolveToId, timeToEvolve, rarity
         </div>
+        <br />
+        <div>
+          <strong>Space delimited!</strong>
+        </div>
+        <br />
         <label>
           Species Stats:
           <Input
@@ -141,6 +149,12 @@ class TestBed extends React.Component {
             fluid
           />
         </label>
+        <br />
+        <Button onClick={deployAllSpecies} color="yellow">
+          Deploy Test Species
+        </Button>
+        <br />
+        <br />
         <br />
         <Button onClick={this.refreshState}>Refresh State</Button>
         <br />

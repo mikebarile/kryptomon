@@ -16,7 +16,7 @@ export default function GettingStarted() {
         <Header attached="top" as="h3">
           Getting Started
         </Header>
-        <Segment fluid attached>
+        <Segment attached>
           <Accordion panels={panels} exclusive={false} />
         </Segment>
       </Container>

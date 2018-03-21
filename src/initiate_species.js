@@ -18,7 +18,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       6 /* _evolveToId */,
       1 /* _timeToEvolve */,
-      1 /* _rarity */
+      1 /* _rarity */,
     )
     .send({
       from: account,
@@ -38,7 +38,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       0 /* _evolveToId */,
       0 /* _timeToEvolve */,
-      2 /* _rarity */
+      2 /* _rarity */,
     )
     .send({
       from: account,
@@ -58,7 +58,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       0 /* _evolveToId */,
       0 /* _timeToEvolve */,
-      3 /* _rarity */
+      3 /* _rarity */,
     )
     .send({
       from: account,
@@ -78,7 +78,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       0 /* _evolveToId */,
       0 /* _timeToEvolve */,
-      4 /* _rarity */
+      4 /* _rarity */,
     )
     .send({
       from: account,
@@ -98,7 +98,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       0 /* _evolveToId */,
       0 /* _timeToEvolve */,
-      5 /* _rarity */
+      5 /* _rarity */,
     )
     .send({
       from: account,
@@ -118,7 +118,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       0 /* _evolveToId */,
       0 /* _timeToEvolve */,
-      6 /* _rarity */
+      6 /* _rarity */,
     )
     .send({
       from: account,
@@ -138,7 +138,7 @@ export default async function deployAllSpecies() {
       1 /* _breedingCooldown */,
       0 /* _evolveToId */,
       0 /* _timeToEvolve */,
-      7 /* _rarity */
+      7 /* _rarity */,
     )
     .send({
       from: account,

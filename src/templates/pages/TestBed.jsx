@@ -77,7 +77,7 @@ class TestBed extends React.Component {
 
     const deploySpecies = () => {
       const stats = this.state.speciesStats
-        .split(',')
+        .split(' ')
         .map((el) => Number(el.trim()));
       if (stats.length === 11) {
         KryptomonKore.methods
@@ -130,6 +130,11 @@ class TestBed extends React.Component {
           Order: attack, defense, specialAttack, specialDefense, hitPoints,
           speed, maxChildren, breedingCooldown, evolveToId, timeToEvolve, rarity
         </div>
+        <br />
+        <div>
+          <strong>Space delimited!</strong>
+        </div>
+        <br />
         <label>
           Species Stats:
           <Input
@@ -148,6 +153,8 @@ class TestBed extends React.Component {
         <Button onClick={deployAllSpecies} color="yellow">
           Deploy Test Species
         </Button>
+        <br />
+        <br />
         <br />
         <Button onClick={this.refreshState}>Refresh State</Button>
         <br />

@@ -17,10 +17,12 @@ Run `npm install` to install all dependencies.
 3.  Run `testrpc` to create a Ethereum test network. This should create 10 fake accounts on the network. Leave it running.
 4.  Run `truffle migrate` (try 'rm -R build' and then add a '--reset' flag if it doesn't work)
 5.  If there were changes to the contract code, update the ABI in `src/KryptomonKore.js` following the guide below.
-6.  Run `npm run-script start` to open the react app.
-7.  Double check that you're logged into the kryptoGod address on Metamask (the first testrpc address)
-8.  Copy paste the contents of scripts/initialize_species.js into the terminal.
-9.  You should be up and running!
+6.  Update the kryptomonAddress in KryptomonKore.js
+7.  Run `npm run-script start` to open the react app.
+8.  Double check that you're logged into the kryptoGod address on Metamask (the first testrpc address)
+9.  Copy paste the contents of scripts/initialize_species.js into the terminal.
+10. Turn off the complete freeze in the test bed.
+11. You should be up and running!
 
 ## Do fun command line stuff
 

@@ -20,7 +20,7 @@ Run `npm install` to install all dependencies.
 6.  Update the kryptomonAddress in KryptomonKore.js
 7.  Run `npm run-script start` to open the react app.
 8.  Double check that you're logged into the kryptoGod address on Metamask (the first testrpc address)
-9.  Copy paste the contents of scripts/initialize_species.js into the terminal.
+9.  Copy paste the contents of src/initialize_species.js into the terminal.
 10. Turn off the complete freeze in the test bed.
 11. You should be up and running!
 

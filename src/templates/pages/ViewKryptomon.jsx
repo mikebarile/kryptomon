@@ -17,7 +17,11 @@ import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
-import { getImageFromSpeciesId, rarityById } from 'src/util';
+import {
+  getImageFromSpeciesId,
+  rarityById,
+  getAllEvolutionImages,
+} from 'src/util';
 import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods
@@ -57,6 +61,7 @@ class ViewKryptomon extends React.Component {
       _timeToEvolve: '',
     },
     loading: true,
+    evolutionImgSrcs: [],
   };
 
   componentDidMount() {
@@ -78,11 +83,10 @@ class ViewKryptomon extends React.Component {
 
   async getSpeciesDetails(speciesId) {
     const species = await getSpeciesDetails(speciesId).call();
-    this.setState({ species, loading: false });
+    const evolutionImgSrcs = await getAllEvolutionImages(species);
+    this.setState({ species, loading: false, evolutionImgSrcs });
     this.computeKryptomonStats();
   }
-
-  async getEvolveToKryptomon() {}
 
   computeKryptomonStats() {
     // Compute Kryptomon stats and store for rendering later
@@ -217,16 +221,12 @@ class ViewKryptomon extends React.Component {
           >
             Evolution
           </Divider>
-          <Card.Group>
-            <Popup
-              trigger={
-                <Card
-                  image={getImageFromSpeciesId(this.state.species._evolveToId)}
-                />
-              }
-            >
-              Kryptomon Species
-            </Popup>
+          <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
+            {this.state.evolutionImgSrcs.map((src, idx) => (
+              <Popup key={idx} trigger={<Card image={src} />}>
+                Kryptomon Species
+              </Popup>
+            ))}
           </Card.Group>
         </div>
       );

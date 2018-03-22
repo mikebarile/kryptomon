@@ -5,6 +5,9 @@ import numeral from 'numeral';
 
 import KryptomonKore from 'src/KryptomonKore';
 
+// Unpack KryptomonKore methods
+const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
+
 export const KMON_IMG_BASE_URL =
   'https://res.cloudinary.com/dsguwnfdw/image/upload/v1521682933/Kryptomon_PNG/';
 
@@ -27,10 +30,18 @@ export function getImageFromSpeciesId(speciesId) {
 }
 
 export async function getImageFromKryptomonId(kryptomonId) {
-  const kryptomon = await KryptomonKore.methods
-    .getKryptomon(kryptomonId)
-    .call();
+  const kryptomon = await getKryptomon(kryptomonId).call();
   return getImageFromKryptomon(kryptomon);
+}
+
+export async function getAllEvolutionImages(species) {
+  const evolutionImgSrcs = [];
+  while (species._evolveToId !== '0') {
+    evolutionImgSrcs.push(getImageFromSpeciesId(species._evolveToId));
+    species = await getSpeciesDetails(species._evolveToId).call();
+  }
+
+  return evolutionImgSrcs;
 }
 
 export const rarityById = {

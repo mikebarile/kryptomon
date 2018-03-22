@@ -515,8 +515,7 @@ contract KryptomonDefinitions is KryptoGodController {
       breedingCooldown: uint32(_breedingCooldown),
       evolveToId: uint16(_evolveToId),
       timeToEvolve: uint32(_timeToEvolve),
-      rarity: uint8(_rarity),
-      isExtinct: false
+      rarity: uint8(_rarity)
     }));
 
     speciesCountByRarity[_rarity]

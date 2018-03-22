@@ -9,6 +9,7 @@ import {
   Popup,
   Grid,
   Header,
+  Label,
 } from 'semantic-ui-react';
 import { times } from 'lodash';
 import moment from 'moment';
@@ -16,7 +17,6 @@ import moment from 'moment';
 import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
-// import web3 from 'src/web3';
 
 import KryptomonImg from 'images/kryptomon.png';
 
@@ -26,11 +26,20 @@ import MetaMaskChecker from 'misc/MetaMaskChecker';
 // Unpack KryptomonKore methods
 const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
 
+const rarityById = [
+  { color: 'grey', name: 'Common' },
+  { color: 'green', name: 'Uncommon' },
+  { color: 'teal', name: 'Rare' },
+  { color: 'blue', name: 'Super Rare' },
+  { color: 'purple', name: 'Ultra Rare' },
+  { color: 'red', name: 'Mega Rare' },
+  { color: 'orange', name: 'Legendary' },
+];
 class ViewKryptomon extends React.Component {
   state = {
     kryptomon: {
       birthTimeStamp: '',
-      generation: '',
+      generation: '--',
       geneticValue: '',
       lastBred: '',
       numChildren: '',
@@ -73,7 +82,7 @@ class ViewKryptomon extends React.Component {
 
   async getKryptomonDetails() {
     const kryptomon = await getKryptomon(
-      this.props.match.params.kryptomonId
+      this.props.match.params.kryptomonId,
     ).call();
     this.setState({ kryptomon });
     this.getSpeciesDetails(kryptomon.speciesId);
@@ -90,6 +99,9 @@ class ViewKryptomon extends React.Component {
   computeKryptomonStats() {
     // Compute Kryptomon stats and store for rendering later
     const { kryptomon, species } = this.state;
+    const timeUntilEvolution = moment.unix(
+      Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
+    );
     const stats = {
       attack: species._attack,
       defense: species._defense,
@@ -99,7 +111,7 @@ class ViewKryptomon extends React.Component {
       speed: species._speed,
       hitPoints: species._hitPoints,
       isExtinct: species._isExtinct,
-      timeUntilEvolution: kryptomon.birthTimeStamp + species._timeToEvolve,
+      timeUntilEvolution,
 
       // TODO: Remove this when speciesName's get added
       speciesName: 'Species Name',
@@ -116,11 +128,12 @@ class ViewKryptomon extends React.Component {
   }
 
   renderStatsBox() {
-    const { kryptomon } = this.state;
+    const { kryptomon, loading } = this.state;
+    const rarity = rarityById[Number(kryptomon.rarity) - 1] || {};
 
     const renderStatRow = (label, value) => {
       return (
-        <Grid.Row>
+        <Grid.Row style={{ padding: 0 }}>
           <Grid.Column textAlign="right">
             <Header as="h3" style={{ fontWeight: 'lighter' }}>
               {label}
@@ -135,22 +148,33 @@ class ViewKryptomon extends React.Component {
       );
     };
 
+    const getEvolutionText = () => {
+      if (moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second')) {
+        return 'Now!';
+      } else {
+        return moment().from(kryptomon.timeUntilEvolution);
+      }
+    };
+
     return (
       <div>
-        <Header
-          textAlign="center"
-          attached="top"
-          as="h1"
-          content={kryptomon.speciesName}
-        />
-        <Segment attached compact loading={this.state.loading} size="small">
-          <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
-            {renderStatRow('Genetic Level', kryptomon.geneticValue)}
-            {/* Duplicated to see what looks better */}
+        <Header textAlign="center" attached="top" as="h1">
+          {kryptomon.speciesName}
+          <Label color="red" horizontal style={{ marginLeft: 24 }}>
+            Gen {kryptomon.generation}
+          </Label>
+          <Label color={rarity.color} content={rarity.name} horizontal />
+        </Header>
+        <Segment attached compact loading={loading} size="small">
+          <Grid
+            columns="2"
+            verticalAlign="middle"
+            style={{ width: 410, padding: '14px 0' }}
+          >
             {renderStatRow('Power Rating', kryptomon.geneticValue)}
             {renderStatRow(
               'Born',
-              moment.unix(kryptomon.birthTimeStamp).format('MM/DD/YY')
+              moment.unix(kryptomon.birthTimeStamp).format('MM/DD/YY'),
             )}
             {renderStatRow('Attack', kryptomon.attack)}
             {renderStatRow('Defense', kryptomon.defense)}
@@ -158,10 +182,7 @@ class ViewKryptomon extends React.Component {
             {renderStatRow('Special Defense', kryptomon.specialDefense)}
             {renderStatRow('Health', kryptomon.hitPoints)}
             {renderStatRow('Speed', kryptomon.speed)}
-            {renderStatRow(
-              'Time To Evolution',
-              moment.unix(kryptomon.timeUntilEvolution).fromNow()
-            )}
+            {renderStatRow('Ready to Evolve', getEvolutionText())}
           </Grid>
         </Segment>
       </div>

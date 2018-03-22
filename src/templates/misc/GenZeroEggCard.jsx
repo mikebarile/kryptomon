@@ -12,7 +12,7 @@ export default function GenZeroEggCard({ link, onClick }) {
         src={EggImg}
         style={{ padding: '34px' }}
         label={{
-          // NOTE: This should match the rarity coloring / iconography in util.js
+          // NOTE: This should match the rarity info in util.js
           color: 'teal',
           content: 'Rare',
           icon: 'diamond',

@@ -1,3 +1,5 @@
+/* eslint max-len:0 */
+
 // Library of utils used around dApp
 import numeral from 'numeral';
 
@@ -7,6 +9,7 @@ export const KMON_IMG_BASE_URL =
   'https://res.cloudinary.com/dsguwnfdw/image/upload/v1521682933/Kryptomon_PNG/';
 
 export function getImageFromKryptomon(kryptomon) {
+  // TODO: Remove after getting kGod png
   if (kryptomon.speciesId === '0') {
     kryptomon.speciesId = '143';
   }
@@ -16,6 +19,10 @@ export function getImageFromKryptomon(kryptomon) {
 }
 
 export function getImageFromSpeciesId(speciesId) {
+  // TODO: Remove after getting kGod png
+  if (speciesId === '0') {
+    speciesId = '143';
+  }
   return KMON_IMG_BASE_URL + numeral(speciesId).format('000') + '.png';
 }
 

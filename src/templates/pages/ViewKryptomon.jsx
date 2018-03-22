@@ -185,21 +185,10 @@ class ViewKryptomon extends React.Component {
     );
   }
 
-  renderFAQ() {
-    return (
-      <Segment style={{ padding: '8em 0em' }} vertical>
-        <Container>
-          <div>
-            <Divider
-              as="h1"
-              className="header"
-              horizontal
-              style={{ margin: 24, textTransform: 'uppercase' }}
-            >
-              Lineage
-            </Divider>
-            <p>{faker.lorem.paragraphs()}</p>
-          </div>
+  renderEvolution() {
+    if (this.state.species._evolveToId !== '0') {
+      return (
+        <div>
           <Divider
             as="h1"
             className="header"
@@ -219,6 +208,34 @@ class ViewKryptomon extends React.Component {
               Kryptomon Species
             </Popup>
           </Card.Group>
+        </div>
+      );
+    }
+    return null;
+  }
+
+  renderLineage() {
+    return (
+      <div>
+        <Divider
+          as="h1"
+          className="header"
+          horizontal
+          style={{ margin: 24, textTransform: 'uppercase' }}
+        >
+          Lineage
+        </Divider>
+        <p>{faker.lorem.paragraphs()}</p>
+      </div>
+    );
+  }
+
+  renderFAQ() {
+    return (
+      <Segment style={{ padding: '8em 0em' }} vertical>
+        <Container>
+          {this.renderLineage()}
+          {this.renderEvolution()}
         </Container>
       </Segment>
     );

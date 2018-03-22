@@ -37,8 +37,9 @@ class EggStore extends React.Component {
       genZeroEggSupply: '',
       eggPrice: '',
       loading: true,
+      quantity: 1,
     };
-    this.buyGenZeroEgg = this.buyGenZeroEgg.bind(this);
+    this.buyGenZeroEggs = this.buyGenZeroEggs.bind(this);
   }
 
   async componentDidMount() {
@@ -50,14 +51,15 @@ class EggStore extends React.Component {
     this.setState({ eggPrice, genZeroEggSupply, loading: false });
   }
 
-  async buyGenZeroEgg() {
+  async buyGenZeroEggs() {
+    const { quantity, eggPrice } = this.state;
     this.setState({ loading: true });
     const accounts = await web3.eth.getAccounts();
     if (accounts[0]) {
-      buyGenZeroEggs(1)
+      buyGenZeroEggs(quantity)
         .send({
           from: accounts[0],
-          value: this.state.eggPrice,
+          value: Number(eggPrice) * quantity,
         })
         .then(() => {
           this.setState({ loading: false });
@@ -74,7 +76,7 @@ class EggStore extends React.Component {
   renderEggStatsBox() {
     const displayPrice = web3.utils.fromWei(
       this.state.eggPrice.toString(),
-      'ether'
+      'ether',
     );
 
     const displaySupply = numeral(this.state.genZeroEggSupply).format('0,0');
@@ -113,6 +115,50 @@ class EggStore extends React.Component {
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
+              <Grid.Column textAlign="right">
+                <Header
+                  as="h3"
+                  style={{ fontWeight: 'lighter' }}
+                  content="Quantity"
+                />
+              </Grid.Column>
+              <Grid.Column>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Button
+                    compact
+                    disabled={this.state.quantity <= 1}
+                    icon="minus"
+                    size="mini"
+                    style={{ margin: 0 }}
+                    onClick={() =>
+                      this.setState({ quantity: this.state.quantity - 1 })
+                    }
+                  />
+                  <Header
+                    as="strong"
+                    color="green"
+                    style={{
+                      fontWeight: 'lighter',
+                      margin: '0 7px',
+                      fontSize: '2rem',
+                    }}
+                    content={this.state.quantity}
+                  />
+                  <Button
+                    compact
+                    disabled={
+                      this.state.quantity === this.state.genZeroEggSupply
+                    }
+                    icon="plus"
+                    size="mini"
+                    onClick={() =>
+                      this.setState({ quantity: this.state.quantity + 1 })
+                    }
+                  />
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
               <Message info compact style={{ margin: '0 21px' }}>
                 <Message.Header>No More Eggs?</Message.Header>
                 <p>
@@ -127,10 +173,10 @@ class EggStore extends React.Component {
           attached="bottom"
           loading={this.state.loading}
           // disabled={this.state.loading}
-          onClick={this.buyGenZeroEgg}
+          onClick={this.buyGenZeroEggs}
           color="green"
         >
-          Buy One Egg
+          Buy {this.state.quantity} Egg{this.state.quantity !== 1 ? 's' : ''}
         </Button>
       </div>
     );

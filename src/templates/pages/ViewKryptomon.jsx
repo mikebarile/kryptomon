@@ -10,31 +10,23 @@ import {
   Grid,
   Header,
   Label,
+  Button,
 } from 'semantic-ui-react';
-import { times } from 'lodash';
 import moment from 'moment';
-
 import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
-
-import KryptomonImg from 'images/kryptomon.png';
-
-import FixedMenu from 'misc/FixedMenu';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
+import {
+  getImageFromSpeciesId,
+  rarityById,
+  getAllEvolutionImages,
+} from 'src/util';
+import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods
 const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
 
-const rarityById = [
-  { color: 'grey', name: 'Common' },
-  { color: 'green', name: 'Uncommon' },
-  { color: 'teal', name: 'Rare' },
-  { color: 'blue', name: 'Super Rare' },
-  { color: 'purple', name: 'Ultra Rare' },
-  { color: 'red', name: 'Mega Rare' },
-  { color: 'orange', name: 'Legendary' },
-];
 class ViewKryptomon extends React.Component {
   state = {
     kryptomon: {
@@ -51,8 +43,8 @@ class ViewKryptomon extends React.Component {
       rarity: '',
       speed: '',
       hitPoints: '',
-      isExtinct: '',
-      timeUntilEvolution: '',
+      isExtinct: 'false',
+      timeUntilEvolution: moment(),
     },
     species: {
       isExtinct: false,
@@ -69,6 +61,7 @@ class ViewKryptomon extends React.Component {
       _timeToEvolve: '',
     },
     loading: true,
+    evolutionImgSrcs: [],
   };
 
   componentDidMount() {
@@ -90,11 +83,10 @@ class ViewKryptomon extends React.Component {
 
   async getSpeciesDetails(speciesId) {
     const species = await getSpeciesDetails(speciesId).call();
-    this.setState({ species, loading: false });
+    const evolutionImgSrcs = await getAllEvolutionImages(species);
+    this.setState({ species, loading: false, evolutionImgSrcs });
     this.computeKryptomonStats();
   }
-
-  async getEvolveToKryptomon() {}
 
   computeKryptomonStats() {
     // Compute Kryptomon stats and store for rendering later
@@ -102,6 +94,8 @@ class ViewKryptomon extends React.Component {
     const timeUntilEvolution = moment.unix(
       Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
     );
+    window.timeUntilEvolution = timeUntilEvolution;
+    window.moment = moment;
     const stats = {
       attack: species._attack,
       defense: species._defense,
@@ -123,13 +117,17 @@ class ViewKryptomon extends React.Component {
 
   renderKryptomon() {
     return (
-      <Image src={KryptomonImg} size="medium" style={{ marginRight: '8em' }} />
+      <Image
+        src={getImageFromSpeciesId(this.state.kryptomon.speciesId)}
+        size="medium"
+        style={{ marginRight: '8em' }}
+      />
     );
   }
 
   renderStatsBox() {
-    const { kryptomon, loading } = this.state;
-    const rarity = rarityById[Number(kryptomon.rarity) - 1] || {};
+    const { kryptomon, loading, species } = this.state;
+    const rarity = rarityById[kryptomon.rarity] || {};
 
     const renderStatRow = (label, value) => {
       return (
@@ -152,7 +150,7 @@ class ViewKryptomon extends React.Component {
       if (moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second')) {
         return 'Now!';
       } else {
-        return moment().from(kryptomon.timeUntilEvolution);
+        return kryptomon.timeUntilEvolution.from(moment());
       }
     };
 
@@ -163,7 +161,20 @@ class ViewKryptomon extends React.Component {
           <Label color="red" horizontal style={{ marginLeft: 24 }}>
             Gen {kryptomon.generation}
           </Label>
-          <Label color={rarity.color} content={rarity.name} horizontal />
+          <Label
+            color={rarity.color}
+            content={rarity.name}
+            icon={rarity.icon}
+            horizontal
+          />
+          {this.state.kryptomon.isExtinct === 'true' ? (
+            <Label
+              color="black"
+              content="Extinct"
+              icon="exclamation triangle"
+              horizontal
+            />
+          ) : null}
         </Header>
         <Segment attached compact loading={loading} size="small">
           <Grid
@@ -182,9 +193,59 @@ class ViewKryptomon extends React.Component {
             {renderStatRow('Special Defense', kryptomon.specialDefense)}
             {renderStatRow('Health', kryptomon.hitPoints)}
             {renderStatRow('Speed', kryptomon.speed)}
-            {renderStatRow('Ready to Evolve', getEvolutionText())}
+            {species._evolveToId !== '0'
+              ? renderStatRow('Ready to Evolve', getEvolutionText())
+              : ''}
           </Grid>
         </Segment>
+        {moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second') ? (
+          <Button attached="bottom" color="green" content="Evolve!" disabled />
+        ) : null}
+      </div>
+    );
+  }
+
+  renderEvolutionFAQ() {
+    if (this.state.species._evolveToId !== '0') {
+      return (
+        <div>
+          <Divider
+            as="h1"
+            className="header"
+            horizontal
+            style={{
+              marginBottom: 24,
+              marginTop: 18,
+              textTransform: 'uppercase',
+            }}
+          >
+            Evolution
+          </Divider>
+          <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
+            {this.state.evolutionImgSrcs.map((src, idx) => (
+              <Popup key={idx} trigger={<Card image={src} />}>
+                Kryptomon Species
+              </Popup>
+            ))}
+          </Card.Group>
+        </div>
+      );
+    }
+    return null;
+  }
+
+  renderLineageFAQ() {
+    return (
+      <div>
+        <Divider
+          as="h1"
+          className="header"
+          horizontal
+          style={{ margin: 24, textTransform: 'uppercase' }}
+        >
+          Lineage
+        </Divider>
+        <p>{faker.lorem.paragraphs()}</p>
       </div>
     );
   }
@@ -193,32 +254,8 @@ class ViewKryptomon extends React.Component {
     return (
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container>
-          <div>
-            <Divider
-              as="h1"
-              className="header"
-              horizontal
-              style={{ margin: 24, textTransform: 'uppercase' }}
-            >
-              Lineage
-            </Divider>
-            <p>{faker.lorem.paragraphs()}</p>
-          </div>
-          <Divider
-            as="h1"
-            className="header"
-            horizontal
-            style={{ marginBottom: 24, textTransform: 'uppercase' }}
-          >
-            Evolution
-          </Divider>
-          <Card.Group itemsPerRow={3}>
-            {times(3, (idx) => (
-              <Popup key={idx} trigger={<Card image={KryptomonImg} />}>
-                Kryptomon Species
-              </Popup>
-            ))}
-          </Card.Group>
+          {this.renderLineageFAQ()}
+          {this.renderEvolutionFAQ()}
         </Container>
       </Segment>
     );

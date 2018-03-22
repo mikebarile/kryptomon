@@ -74,7 +74,7 @@ class MyKryptomon extends React.Component {
           horizontal
           style={{ margin: 0, textTransform: 'uppercase' }}
         >
-          Inventory
+          My Inventory
         </Divider>
         <Segment basic loading={this.state.ownageLoading}>
           <Statistic.Group widths="three">

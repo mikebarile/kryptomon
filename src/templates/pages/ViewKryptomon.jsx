@@ -10,6 +10,7 @@ import {
   Grid,
   Header,
   Label,
+  Button,
 } from 'semantic-ui-react';
 import moment from 'moment';
 import faker from 'faker';
@@ -38,8 +39,8 @@ class ViewKryptomon extends React.Component {
       rarity: '',
       speed: '',
       hitPoints: '',
-      isExtinct: '',
-      timeUntilEvolution: '',
+      isExtinct: 'false',
+      timeUntilEvolution: moment(),
     },
     species: {
       isExtinct: false,
@@ -89,6 +90,8 @@ class ViewKryptomon extends React.Component {
     const timeUntilEvolution = moment.unix(
       Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
     );
+    window.timeUntilEvolution = timeUntilEvolution;
+    window.moment = moment;
     const stats = {
       attack: species._attack,
       defense: species._defense,
@@ -119,7 +122,7 @@ class ViewKryptomon extends React.Component {
   }
 
   renderStatsBox() {
-    const { kryptomon, loading } = this.state;
+    const { kryptomon, loading, species } = this.state;
     const rarity = rarityById[kryptomon.rarity] || {};
 
     const renderStatRow = (label, value) => {
@@ -143,7 +146,7 @@ class ViewKryptomon extends React.Component {
       if (moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second')) {
         return 'Now!';
       } else {
-        return moment().from(kryptomon.timeUntilEvolution);
+        return kryptomon.timeUntilEvolution.from(moment());
       }
     };
 
@@ -160,6 +163,14 @@ class ViewKryptomon extends React.Component {
             icon={rarity.icon}
             horizontal
           />
+          {this.state.kryptomon.isExtinct === 'true' ? (
+            <Label
+              color="black"
+              content="Extinct"
+              icon="exclamation triangle"
+              horizontal
+            />
+          ) : null}
         </Header>
         <Segment attached compact loading={loading} size="small">
           <Grid
@@ -178,14 +189,19 @@ class ViewKryptomon extends React.Component {
             {renderStatRow('Special Defense', kryptomon.specialDefense)}
             {renderStatRow('Health', kryptomon.hitPoints)}
             {renderStatRow('Speed', kryptomon.speed)}
-            {renderStatRow('Ready to Evolve', getEvolutionText())}
+            {species._evolveToId !== '0'
+              ? renderStatRow('Ready to Evolve', getEvolutionText())
+              : ''}
           </Grid>
         </Segment>
+        {moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second') ? (
+          <Button attached="bottom" color="green" content="Evolve!" disabled />
+        ) : null}
       </div>
     );
   }
 
-  renderEvolution() {
+  renderEvolutionFAQ() {
     if (this.state.species._evolveToId !== '0') {
       return (
         <div>
@@ -193,7 +209,11 @@ class ViewKryptomon extends React.Component {
             as="h1"
             className="header"
             horizontal
-            style={{ marginBottom: 24, textTransform: 'uppercase' }}
+            style={{
+              marginBottom: 24,
+              marginTop: 18,
+              textTransform: 'uppercase',
+            }}
           >
             Evolution
           </Divider>
@@ -214,7 +234,7 @@ class ViewKryptomon extends React.Component {
     return null;
   }
 
-  renderLineage() {
+  renderLineageFAQ() {
     return (
       <div>
         <Divider
@@ -234,8 +254,8 @@ class ViewKryptomon extends React.Component {
     return (
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container>
-          {this.renderLineage()}
-          {this.renderEvolution()}
+          {this.renderLineageFAQ()}
+          {this.renderEvolutionFAQ()}
         </Container>
       </Segment>
     );

@@ -3,7 +3,7 @@ import { Card, Image } from 'semantic-ui-react';
 
 import EggImg from 'images/logo2.png';
 
-export default function EggCard({ link, onClick }) {
+export default function GenZeroEggCard({ link, onClick }) {
   // stub in case no onClick passed in
   onClick = onClick || (() => {});
   return (
@@ -12,7 +12,8 @@ export default function EggCard({ link, onClick }) {
         src={EggImg}
         style={{ padding: '34px' }}
         label={{
-          color: 'blue',
+          // NOTE: This should match the rarity coloring / iconography in util.js
+          color: 'teal',
           content: 'Rare',
           icon: 'diamond',
           ribbon: true,

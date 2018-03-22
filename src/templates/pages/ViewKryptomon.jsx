@@ -11,30 +11,17 @@ import {
   Header,
   Label,
 } from 'semantic-ui-react';
-import { times } from 'lodash';
 import moment from 'moment';
-
 import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
-
-import KryptomonImg from 'images/kryptomon.png';
-
-import FixedMenu from 'misc/FixedMenu';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
+import { getImageFromSpeciesId, rarityById } from 'src/util';
+import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods
 const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
 
-const rarityById = [
-  { color: 'grey', name: 'Common' },
-  { color: 'green', name: 'Uncommon' },
-  { color: 'teal', name: 'Rare' },
-  { color: 'blue', name: 'Super Rare' },
-  { color: 'purple', name: 'Ultra Rare' },
-  { color: 'red', name: 'Mega Rare' },
-  { color: 'orange', name: 'Legendary' },
-];
 class ViewKryptomon extends React.Component {
   state = {
     kryptomon: {
@@ -123,13 +110,17 @@ class ViewKryptomon extends React.Component {
 
   renderKryptomon() {
     return (
-      <Image src={KryptomonImg} size="medium" style={{ marginRight: '8em' }} />
+      <Image
+        src={getImageFromSpeciesId(this.state.kryptomon.speciesId)}
+        size="medium"
+        style={{ marginRight: '8em' }}
+      />
     );
   }
 
   renderStatsBox() {
     const { kryptomon, loading } = this.state;
-    const rarity = rarityById[Number(kryptomon.rarity) - 1] || {};
+    const rarity = rarityById[kryptomon.rarity] || {};
 
     const renderStatRow = (label, value) => {
       return (
@@ -163,7 +154,12 @@ class ViewKryptomon extends React.Component {
           <Label color="red" horizontal style={{ marginLeft: 24 }}>
             Gen {kryptomon.generation}
           </Label>
-          <Label color={rarity.color} content={rarity.name} horizontal />
+          <Label
+            color={rarity.color}
+            content={rarity.name}
+            icon={rarity.icon}
+            horizontal
+          />
         </Header>
         <Segment attached compact loading={loading} size="small">
           <Grid
@@ -212,12 +208,16 @@ class ViewKryptomon extends React.Component {
           >
             Evolution
           </Divider>
-          <Card.Group itemsPerRow={3}>
-            {times(3, (idx) => (
-              <Popup key={idx} trigger={<Card image={KryptomonImg} />}>
-                Kryptomon Species
-              </Popup>
-            ))}
+          <Card.Group>
+            <Popup
+              trigger={
+                <Card
+                  image={getImageFromSpeciesId(this.state.species._evolveToId)}
+                />
+              }
+            >
+              Kryptomon Species
+            </Popup>
           </Card.Group>
         </Container>
       </Segment>

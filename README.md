@@ -27,8 +27,10 @@ Run `npm install` to install all dependencies.
 ## Do fun command line stuff
 
 1.  Run `truffle console`
-2.  Run `var kryptomon = KryptomonKore.at(KryptomonKore.address)`
-3.  Do fun things with your new kryptomon contract object
+2.  Run `var k = KryptomonKore.at(KryptomonKore.address)`
+3.  Do fun things with your new kryptomon contract object:
+    `k.setCompleteFreeze(false)`
+    `k.buyGenZeroEggs(4, {value: 1e18, from: web3.eth.accounts[0]})`
 
 NOTE: If npm install fails, try deleting the package-lock.json and
 trying again.
@@ -38,6 +40,14 @@ that you get when you run "kryptomon.address" in truffle console (there's a 1/10
 probability that it is).
 
 ALSO ALSO NOTE: By default, the KryptoGod is set to whatever the first account is in MetaMask.
+
+## Troubleshooting
+
+Try the following
+
+`rm -rf build/`
+restart `testrpc`
+`truffle run migrate --reset`
 
 ## Updating Contract ABI
 

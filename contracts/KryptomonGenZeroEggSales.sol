@@ -160,21 +160,22 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       genZeroEggBalances[msg.sender]
         = genZeroEggBalances[msg.sender].sub(1);
       uint256 kryptomonId = createGenZeroKryptomon(i);
+      Debug("got Id");
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
       totalGenZeroEggs = totalGenZeroEggs.sub(1);
       GenZeroEggHatched(msg.sender);
-      KryptomonAssigned(msg.sender, kryptomonId);
+      KryptomonAssigned(msg.sender, 1/*kryptomonId*/);
     }
   }
 
   // Function used to create a gen0 kryptomon. Employs similar logic to
   // createKryptomon except that there aren't any genetic effects.
-  function createGenZeroKryptomon(uint256 _id)
+  function createGenZeroKryptomon(uint256 _seed)
     internal
     returns(uint256)
   {
-    uint256 speciesId = determineSpeciesId(_id, 1);
-    uint256 geneticValue = determineGenZeroGeneticValue(_id);
+    uint256 speciesId = determineSpeciesId(_seed, /* _eggRarity = */ 1);
+    uint256 geneticValue = determineGenZeroGeneticValue(_seed);
     kryptomonList.push(
       Kryptomon({
         speciesId: uint16(speciesId),
@@ -189,11 +190,11 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
   }
 
   // Determines the genetic value for a new gen0 Kryptomon.
-  function determineGenZeroGeneticValue(uint256 _id)
+  function determineGenZeroGeneticValue(uint256 _seed)
     internal
     view
     returns(uint256)
   {
-    return uint256(random(_id.add(1000000)) % 200);
+    return uint256(random(_seed) % 200);
   }
 }

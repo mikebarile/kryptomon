@@ -169,27 +169,27 @@ contract KryptomonDefinitions is KryptoGodController {
   // Total species for each rarity level.
   mapping (uint256 => uint256) internal speciesCountByRarity;
 
-  // Function used to return a pseudo-random int used to identy a
-  // new Kryptomon's species.
-  function random(uint256 id) internal view returns(uint256) {
+  // Returns a pseudo-random value seeded with _seed and some other
+  // not-very-random data.
+  function random(uint256 _seed) internal view returns(uint256) {
     return uint256(keccak256(
-      id,
+      _seed,
       msg.gas,
       msg.sender,
       block.timestamp
     ));
   }
 
-  // Function used to return a pseudo-random int between 1 and
-  // numProbs for use in generating a species ID.
-  function randomSpecies(uint256 _id, uint256 _numProbs)
+  // returns an approximately uniformly distributed pseudo-random int
+  // in [1, _n].
+  function uniformRandom(uint256 _seed, uint256 _n)
     internal
     view
     returns(uint256)
   {
     // Ensure we don't divide by zero or try to overflow the int.
-    require(_numProbs > 0 && _numProbs < 1000000000000);
-    return random(_id.add(_numProbs)) % _numProbs.add(1);
+    require(_n > 0 && _n < 1000000000000);
+    return random(_seed) % _n + 1;
   }
 
   // Function called by Kryptomon users to hatch their eggs. Destroys
@@ -230,14 +230,14 @@ contract KryptomonDefinitions is KryptoGodController {
     return uint256(kryptomonList.length.sub(1));
   }
 
-  // Function used to determine a new Kryptomon's species ID. There is
-  // a 2% chance that the resulting Kryptomon will inherit one of its
-  // parents' species.
+  // Function used to determine a new Kryptomon's species ID. The
+  // species ID is chosen randomly from rarity buckets based on
+  // the egg's rarity.
   function determineSpeciesId(uint256 _eggId, uint256 _eggRarity)
     internal
     returns(uint256)
   {
-    uint256 randRarity = randomSpecies(_eggId, 1000000);
+    uint256 randRarity = uniformRandom(_eggId, 1000000);
     uint24[6] memory bracket = getRarityBracketArray(_eggRarity);
     uint256 rarity;
     if (randRarity <= bracket[0]) {
@@ -258,7 +258,7 @@ contract KryptomonDefinitions is KryptoGodController {
     } else if (randRarity > bracket[4] && randRarity <= bracket[5]) {
       // Set to a mega rare creature (~0.1% probability).
       rarity = 6;
-    } else if (randRarity > bracket[5] && randRarity <= 1000000) {
+    } else if (randRarity > bracket[5]) {
       // Set to a legendary creature (0.0005% probability).
       rarity = 7;
     }
@@ -375,7 +375,7 @@ contract KryptomonDefinitions is KryptoGodController {
     // "speciesCount" of Kryptomon species with the given rarity. Then
     // crawls through the Kryptomon species list until we've reached
     // the nth species of the given rarity and return it.
-    uint256 speciesNum = randomSpecies(_eggId, speciesCount);
+    uint256 speciesNum = uniformRandom(_eggId, speciesCount);
     require(speciesNum > 0 && speciesNum <= speciesCount);
     uint256 counter = 0;
     for (uint256 idx = 0; idx < speciesList.length; idx++) {
@@ -535,6 +535,8 @@ contract KryptomonDefinitions is KryptoGodController {
     SpeciesSetExtinct(_speciesId);
   }
 
+  // This is a separate function from setSpeciesExtinct with internal
+  // visibility to optimize gas cost.
   function setLegendarySpeciesExtinct(uint256 _speciesId) internal {
     require(_speciesId < speciesList.length);
     require(speciesList[_speciesId].rarity == 7);

@@ -131,34 +131,40 @@ class ViewKryptomon extends React.Component {
     );
   }
 
-  renderEvolutionText() {
-    if (this.isReadyToEvolve()) {
-      return 'Now!';
-    } else {
-      return this.state.timeUntilEvolution.from(moment());
+  renderStatRow(label, value) {
+    return (
+      <Grid.Row style={{ padding: 0 }}>
+        <Grid.Column textAlign="right">
+          <Header as="h3" style={{ fontWeight: 'lighter' }}>
+            {label}
+          </Header>
+        </Grid.Column>
+        <Grid.Column>
+          <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
+            {value}
+          </Header>
+        </Grid.Column>
+      </Grid.Row>
+    );
+  }
+
+  renderEvolutionRow() {
+    if (this.state.species._evolveToId !== '0') {
+      if (this.isReadyToEvolve()) {
+        return this.renderStatRow('Ready to Evolve', 'Now!');
+      } else {
+        return this.renderStatRow(
+          'Ready to Evolve',
+          this.state.timeUntilEvolution.from(moment()),
+        );
+      }
     }
+    return null;
   }
 
   renderStatsBox() {
     const { kryptomon, loading, species, stats } = this.state;
     const rarity = rarityById[species._rarity] || {};
-
-    const renderStatRow = (label, value) => {
-      return (
-        <Grid.Row style={{ padding: 0 }}>
-          <Grid.Column textAlign="right">
-            <Header as="h3" style={{ fontWeight: 'lighter' }}>
-              {label}
-            </Header>
-          </Grid.Column>
-          <Grid.Column>
-            <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
-              {value}
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
-      );
-    };
 
     return (
       <div>
@@ -188,20 +194,18 @@ class ViewKryptomon extends React.Component {
             verticalAlign="middle"
             style={{ width: 410, padding: '14px 0' }}
           >
-            {renderStatRow('Power Rating', kryptomon.geneticValue)}
-            {renderStatRow(
+            {this.renderStatRow('Power Rating', kryptomon.geneticValue)}
+            {this.renderStatRow(
               'Born',
               moment.unix(kryptomon.birthTimeStamp).format('MM/DD/YY'),
             )}
-            {renderStatRow('Attack', stats.attack)}
-            {renderStatRow('Defense', stats.defense)}
-            {renderStatRow('Special Attack', stats.specialAttack)}
-            {renderStatRow('Special Defense', stats.specialDefense)}
-            {renderStatRow('Health', stats.hitPoints)}
-            {renderStatRow('Speed', stats.speed)}
-            {species._evolveToId !== '0'
-              ? renderStatRow('Ready to Evolve', this.renderEvolutionText())
-              : ''}
+            {this.renderStatRow('Attack', stats.attack)}
+            {this.renderStatRow('Defense', stats.defense)}
+            {this.renderStatRow('Special Attack', stats.specialAttack)}
+            {this.renderStatRow('Special Defense', stats.specialDefense)}
+            {this.renderStatRow('Health', stats.hitPoints)}
+            {this.renderStatRow('Speed', stats.speed)}
+            {this.renderEvolutionRow()}
           </Grid>
         </Segment>
         {this.isReadyToEvolve() ? (

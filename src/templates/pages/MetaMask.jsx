@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import web3 from 'src/web3';
 import FixedMenu from 'misc/FixedMenu';
 import ROUTES from 'constants/Routes';
-import GettingStarted from 'misc/GettingStarted';
+import GettingStarted from 'pages/FAQ/GettingStarted';
 
 class MetaMask extends React.Component {
   state = {

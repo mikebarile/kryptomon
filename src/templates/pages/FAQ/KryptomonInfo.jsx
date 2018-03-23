@@ -9,12 +9,12 @@ const panels = times(3, () => ({
   content: faker.lorem.paragraphs(),
 }));
 
-export default function GettingStarted() {
+export default function KryptomonInfo() {
   return (
-    <Segment style={{ padding: '8em 0em' }} vertical>
-      <Container text style={{ height: 450 }}>
+    <Segment vertical>
+      <Container text>
         <Header attached="top" as="h3">
-          Getting Started
+          What is a Kryptomon?
         </Header>
         <Segment attached>
           <Accordion panels={panels} exclusive={false} />

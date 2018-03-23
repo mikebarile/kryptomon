@@ -13,10 +13,7 @@ import MyKryptomon from 'pages/MyKryptomon';
 import ViewGenZeroEgg from 'pages/ViewGenZeroEgg';
 import ViewKryptomon from 'pages/ViewKryptomon';
 import Bestiary from 'pages/Bestiary';
-
-// TODO: Remove when we get a real getting started page
-import GettingStarted from 'misc/GettingStarted';
-
+import FAQ from 'pages/FAQ';
 import ROUTES from 'constants/Routes';
 
 const Root = () => (
@@ -26,7 +23,7 @@ const Root = () => (
         <Route path={ROUTES.HOME} exact component={Home} />
         <Route path={ROUTES.METAMASK} component={MetaMask} />
         <Route path={ROUTES.BESTIARY} component={Bestiary} />
-        <Route path={ROUTES.FAQ} component={GettingStarted} />
+        <Route path={ROUTES.FAQ} component={FAQ} />
         {/* Below should require log in!! */}
         <Route path={ROUTES.EGG_STORE} component={EggStore} />
         <Route path={ROUTES.MY_KRYPTOMON} component={MyKryptomon} />

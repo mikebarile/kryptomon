@@ -9,7 +9,6 @@ import {
   Grid,
 } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
-import { times } from 'lodash';
 
 import KryptomonKore from 'src/KryptomonKore';
 import web3 from 'src/web3';
@@ -95,14 +94,15 @@ class MyKryptomon extends React.Component {
 
   renderGenZeroEggs() {
     if (this.state.showEggs) {
-      return times(this.state.ownedGenZeroEggs, (idx) => (
-        <Grid.Column key={idx}>
+      return (
+        <Grid.Column>
           <GenZeroEggCard
             link
             onClick={() => this.props.history.push(ROUTES.VIEW_GEN_ZERO_EGG)}
+            quantity={this.state.ownedGenZeroEggs}
           />
         </Grid.Column>
-      ));
+      );
     }
     return null;
   }

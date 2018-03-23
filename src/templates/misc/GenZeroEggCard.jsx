@@ -1,13 +1,19 @@
 import React from 'react';
-import { Card, Image } from 'semantic-ui-react';
+import { Card, Image, Label } from 'semantic-ui-react';
 
 import EggImg from 'images/logo2.png';
 
-export default function GenZeroEggCard({ link, onClick }) {
+export default function GenZeroEggCard({ link, onClick, quantity }) {
   // stub in case no onClick passed in
   onClick = onClick || (() => {});
   return (
     <Card link={link} onClick={onClick}>
+      <Label
+        style={{ position: 'absolute', right: 0, bottom: 50, fontSize: 18 }}
+        color="red"
+        content={'x ' + quantity}
+        horizontal
+      />
       <Image
         src={EggImg}
         style={{ padding: '34px' }}

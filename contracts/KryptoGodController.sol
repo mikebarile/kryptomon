@@ -12,6 +12,8 @@ contract KryptoGodController {
     _;
   }
 
+  event Debug(string messsage);
+  
   // Allows the KryptoGod to reset the address associated with the
   // KryptoGod.
   function setNewKryptoGod(address _newKryptoGod)

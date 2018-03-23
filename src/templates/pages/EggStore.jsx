@@ -146,9 +146,7 @@ class EggStore extends React.Component {
                   />
                   <Button
                     compact
-                    disabled={
-                      this.state.quantity === this.state.genZeroEggSupply
-                    }
+                    disabled={this.state.quantity >= 20}
                     icon="plus"
                     size="mini"
                     onClick={() =>

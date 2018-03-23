@@ -59,7 +59,8 @@ class ViewKryptomon extends React.Component {
     },
     loading: true,
     evolutions: [],
-    timeUntilEvolution: moment(),
+    evolutionTime: moment('01-01-2090'),
+    breedingTime: moment('01-01-2090'),
   };
 
   componentDidMount() {
@@ -89,12 +90,12 @@ class ViewKryptomon extends React.Component {
   computeKryptomonStats() {
     // Compute Kryptomon stats and store for rendering later
     const { kryptomon, species } = this.state;
-    const timeUntilEvolution = moment.unix(
+    const evolutionTime = moment.unix(
       Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
     );
-
-    window.timeUntilEvolution = timeUntilEvolution;
-    window.moment = moment;
+    const breedingTime = moment.unix(
+      Number(kryptomon.lastBred) + Number(species._breedingCooldown),
+    );
 
     const stats = {
       attack: species._attack,
@@ -109,16 +110,21 @@ class ViewKryptomon extends React.Component {
     // Attach these stats to kryptomon, for easier recall later
     this.setState({
       stats,
-      timeUntilEvolution,
+      evolutionTime,
+      breedingTime,
     });
   }
 
   isReadyToEvolve() {
-    const { timeUntilEvolution, species } = this.state;
+    const { evolutionTime, species } = this.state;
     return (
-      moment().isSameOrAfter(timeUntilEvolution, 'second') &&
+      moment().isSameOrAfter(evolutionTime, 'second') &&
       species._evolveToId !== '0'
     );
+  }
+
+  isReadyToBreed() {
+    return moment().isSameOrAfter(this.state.breedingTime, 'second');
   }
 
   renderKryptomon() {
@@ -155,7 +161,7 @@ class ViewKryptomon extends React.Component {
       } else {
         return this.renderStatRow(
           'Ready to Evolve',
-          this.state.timeUntilEvolution.from(moment()),
+          this.state.evolutionTime.from(moment()),
         );
       }
     }

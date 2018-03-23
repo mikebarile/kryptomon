@@ -79,7 +79,6 @@ export const SpeciesNames = [
   '<Species>',
   '<Species>',
   '<Species>',
-  '<Species>',
   'Zaphog',
   'Blutore',
   '<Species>',

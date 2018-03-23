@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import {
   Image,
   Segment,
@@ -10,6 +10,7 @@ import {
   Grid,
   Header,
   Button,
+  Message,
 } from 'semantic-ui-react';
 import { times, random } from 'lodash';
 
@@ -17,6 +18,7 @@ import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
 import web3 from 'src/web3';
+import ROUTES from 'constants/Routes';
 import { SpeciesNames } from 'constants/Kryptomon';
 import { getImageFromSpeciesId } from 'src/util';
 import EggImg from 'images/logo2.png';
@@ -25,16 +27,23 @@ import MetaMaskChecker from 'misc/MetaMaskChecker';
 
 // Unpack KryptomonKore methods
 
-const { hatchGenZeroEgg } = KryptomonKore.methods;
+const { hatchGenZeroEgg, genZeroEggBalanceOf } = KryptomonKore.methods;
 
 class ViewGenZeroEgg extends React.Component {
   state = {
     loading: false,
+    error: false,
+    ownedGenZeroEggs: 0,
+    trxn: '',
     quantity: 1,
+    possibleContents: this.getPossibleContents(),
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.checker = MetaMaskChecker(this.props.history);
+    const accounts = await web3.eth.getAccounts();
+    const ownedGenZeroEggs = await genZeroEggBalanceOf(accounts[0]).call();
+    this.setState({ ownedGenZeroEggs });
   }
 
   componentWillUnmount() {
@@ -55,10 +64,130 @@ class ViewGenZeroEgg extends React.Component {
   }
 
   hatchEgg = async () => {
+    this.setState({ loading: true, error: false });
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
-    hatchGenZeroEgg(this.state.quantity).send({ from: account });
+    hatchGenZeroEgg(this.state.quantity)
+      .send({ from: account })
+      .then(({ transactionHash }) => {
+        this.setState({
+          loading: false,
+          error: false,
+          trxn: transactionHash,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          loading: false,
+          error: true,
+          errorMessage: err.message,
+        });
+      });
   };
+
+  renderStatRow(label, value) {
+    return (
+      <Grid.Row>
+        <Grid.Column textAlign="right">
+          <Header as="h3" style={{ fontWeight: 'lighter' }}>
+            {label}
+          </Header>
+        </Grid.Column>
+        <Grid.Column>
+          <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
+            {value}
+          </Header>
+        </Grid.Column>
+      </Grid.Row>
+    );
+  }
+
+  renderQuantityRow() {
+    return (
+      <Grid.Row>
+        <Grid.Column textAlign="right">
+          <Header
+            as="h3"
+            style={{ fontWeight: 'lighter' }}
+            content="Quantity"
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              compact
+              disabled={this.state.quantity <= 1}
+              icon="minus"
+              size="mini"
+              style={{ margin: 0 }}
+              onClick={() =>
+                this.setState({ quantity: this.state.quantity - 1 })
+              }
+            />
+            <Header
+              as="strong"
+              color="green"
+              style={{
+                fontWeight: 'lighter',
+                margin: '0 7px',
+                fontSize: '2rem',
+              }}
+              content={this.state.quantity}
+            />
+            <Button
+              compact
+              disabled={
+                this.state.quantity >= 5 ||
+                this.state.quantity >= this.state.ownedGenZeroEggs
+              }
+              icon="plus"
+              size="mini"
+              onClick={() =>
+                this.setState({ quantity: this.state.quantity + 1 })
+              }
+            />
+          </div>
+        </Grid.Column>
+      </Grid.Row>
+    );
+  }
+
+  renderMessages() {
+    const { error, trxn } = this.state;
+    if (error) {
+      return (
+        <Grid.Row centered textAlign="left">
+          <Message error compact style={{ margin: '0 21px' }}>
+            <Message.Header>Uh Oh</Message.Header>
+            There was an error processing your transaction. Please try again
+            later.
+          </Message>
+        </Grid.Row>
+      );
+    }
+    if (!error && trxn.length > 0) {
+      return (
+        <Grid.Row centered textAlign="left">
+          <Message success compact style={{ margin: '0 21px' }}>
+            <Message.Header>
+              Your Kryptomon {this.state.quantity === 1 ? 'is' : 'are'}{' '}
+              hatching!
+            </Message.Header>
+            <p>
+              Track {this.state.quantity === 1 ? 'its' : 'their'} progress{' '}
+              <a href={`https://etherscan.io/tx/${trxn}`}>here</a>.
+              <br />
+              <br />
+              Once hatched, visit
+              <Link to={ROUTES.MY_KRYPTOMON}> My Kryptomon</Link> to meet{' '}
+              {this.state.quantity === 1 ? 'it' : 'them'}!
+            </p>
+          </Message>
+        </Grid.Row>
+      );
+    }
+    return null;
+  }
 
   renderEggStatsBox() {
     return (
@@ -71,60 +200,9 @@ class ViewGenZeroEgg extends React.Component {
         />
         <Segment attached compact loading={this.state.loading} size="small">
           <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
-            <Grid.Row>
-              <Grid.Column textAlign="right">
-                <Header as="h3" style={{ fontWeight: 'lighter' }}>
-                  STUFF
-                </Header>
-              </Grid.Column>
-              <Grid.Column>
-                <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
-                  STUFF
-                </Header>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column textAlign="right">
-                <Header
-                  as="h3"
-                  style={{ fontWeight: 'lighter' }}
-                  content="Quantity"
-                />
-              </Grid.Column>
-              <Grid.Column>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Button
-                    compact
-                    disabled={this.state.quantity <= 1}
-                    icon="minus"
-                    size="mini"
-                    style={{ margin: 0 }}
-                    onClick={() =>
-                      this.setState({ quantity: this.state.quantity - 1 })
-                    }
-                  />
-                  <Header
-                    as="strong"
-                    color="green"
-                    style={{
-                      fontWeight: 'lighter',
-                      margin: '0 7px',
-                      fontSize: '2rem',
-                    }}
-                    content={this.state.quantity}
-                  />
-                  <Button
-                    compact
-                    disabled={this.state.quantity >= 5}
-                    icon="plus"
-                    size="mini"
-                    onClick={() =>
-                      this.setState({ quantity: this.state.quantity + 1 })
-                    }
-                  />
-                </div>
-              </Grid.Column>
-            </Grid.Row>
+            {this.renderStatRow('Stuff', 'STUFF')}
+            {this.renderQuantityRow()}
+            {this.renderMessages()}
           </Grid>
         </Segment>
         <Button
@@ -161,7 +239,7 @@ class ViewGenZeroEgg extends React.Component {
             Possible Contents
           </Divider>
           <Card.Group itemsPerRow={6}>
-            {this.getPossibleContents().map((el, idx) => (
+            {this.state.possibleContents.map((el, idx) => (
               <Popup
                 key={idx}
                 trigger={

@@ -104,10 +104,11 @@ class MyKryptomon extends React.Component {
         </Grid.Column>
       ));
     }
+    return null;
   }
 
   renderEggs() {
-    return '';
+    return null;
   }
 
   renderKryptomon() {

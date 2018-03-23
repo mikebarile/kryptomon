@@ -17,11 +17,8 @@ import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
-import {
-  getImageFromSpeciesId,
-  rarityById,
-  getAllEvolutionImages,
-} from 'src/util';
+import { getImageFromSpeciesId, getEvolutionInformation } from 'src/util';
+import { SpeciesNames, rarityById } from 'constants/Kryptomon';
 import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods
@@ -30,21 +27,12 @@ const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
 class ViewKryptomon extends React.Component {
   state = {
     kryptomon: {
-      birthTimeStamp: '',
+      birthTimeStamp: moment(),
       generation: '--',
       geneticValue: '',
       lastBred: '',
       numChildren: '',
       speciesId: '',
-      attack: '',
-      defense: '',
-      specialAttack: '',
-      specialDefense: '',
-      rarity: '',
-      speed: '',
-      hitPoints: '',
-      isExtinct: 'false',
-      timeUntilEvolution: moment(),
     },
     species: {
       isExtinct: false,
@@ -60,8 +48,18 @@ class ViewKryptomon extends React.Component {
       _speed: '',
       _timeToEvolve: '',
     },
+    stats: {
+      attack: '',
+      defense: '',
+      specialAttack: '',
+      specialDefense: '',
+      rarity: '',
+      speed: '',
+      hitPoints: '',
+    },
     loading: true,
-    evolutionImgSrcs: [],
+    evolutions: [],
+    timeUntilEvolution: moment(),
   };
 
   componentDidMount() {
@@ -83,8 +81,8 @@ class ViewKryptomon extends React.Component {
 
   async getSpeciesDetails(speciesId) {
     const species = await getSpeciesDetails(speciesId).call();
-    const evolutionImgSrcs = await getAllEvolutionImages(species);
-    this.setState({ species, loading: false, evolutionImgSrcs });
+    const evolutions = await getEvolutionInformation(species);
+    this.setState({ species, loading: false, evolutions });
     this.computeKryptomonStats();
   }
 
@@ -94,8 +92,10 @@ class ViewKryptomon extends React.Component {
     const timeUntilEvolution = moment.unix(
       Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
     );
+
     window.timeUntilEvolution = timeUntilEvolution;
     window.moment = moment;
+
     const stats = {
       attack: species._attack,
       defense: species._defense,
@@ -104,15 +104,21 @@ class ViewKryptomon extends React.Component {
       rarity: species._rarity,
       speed: species._speed,
       hitPoints: species._hitPoints,
-      isExtinct: species._isExtinct,
-      timeUntilEvolution,
-
-      // TODO: Remove this when speciesName's get added
-      speciesName: 'Species Name',
     };
 
     // Attach these stats to kryptomon, for easier recall later
-    this.setState({ kryptomon: Object.assign({}, kryptomon, stats) });
+    this.setState({
+      stats,
+      timeUntilEvolution,
+    });
+  }
+
+  isReadyToEvolve() {
+    const { timeUntilEvolution, species } = this.state;
+    return (
+      moment().isSameOrAfter(timeUntilEvolution, 'second') &&
+      species._evolveToId !== '0'
+    );
   }
 
   renderKryptomon() {
@@ -125,9 +131,17 @@ class ViewKryptomon extends React.Component {
     );
   }
 
+  renderEvolutionText() {
+    if (this.isReadyToEvolve()) {
+      return 'Now!';
+    } else {
+      return this.state.timeUntilEvolution.from(moment());
+    }
+  }
+
   renderStatsBox() {
-    const { kryptomon, loading, species } = this.state;
-    const rarity = rarityById[kryptomon.rarity] || {};
+    const { kryptomon, loading, species, stats } = this.state;
+    const rarity = rarityById[species._rarity] || {};
 
     const renderStatRow = (label, value) => {
       return (
@@ -146,18 +160,10 @@ class ViewKryptomon extends React.Component {
       );
     };
 
-    const getEvolutionText = () => {
-      if (moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second')) {
-        return 'Now!';
-      } else {
-        return kryptomon.timeUntilEvolution.from(moment());
-      }
-    };
-
     return (
       <div>
         <Header textAlign="center" attached="top" as="h1">
-          {kryptomon.speciesName}
+          {SpeciesNames[kryptomon.speciesId]}
           <Label color="red" horizontal style={{ marginLeft: 24 }}>
             Gen {kryptomon.generation}
           </Label>
@@ -167,7 +173,7 @@ class ViewKryptomon extends React.Component {
             icon={rarity.icon}
             horizontal
           />
-          {this.state.kryptomon.isExtinct === 'true' ? (
+          {species.isExtinct === true ? (
             <Label
               color="black"
               content="Extinct"
@@ -187,18 +193,18 @@ class ViewKryptomon extends React.Component {
               'Born',
               moment.unix(kryptomon.birthTimeStamp).format('MM/DD/YY'),
             )}
-            {renderStatRow('Attack', kryptomon.attack)}
-            {renderStatRow('Defense', kryptomon.defense)}
-            {renderStatRow('Special Attack', kryptomon.specialAttack)}
-            {renderStatRow('Special Defense', kryptomon.specialDefense)}
-            {renderStatRow('Health', kryptomon.hitPoints)}
-            {renderStatRow('Speed', kryptomon.speed)}
+            {renderStatRow('Attack', stats.attack)}
+            {renderStatRow('Defense', stats.defense)}
+            {renderStatRow('Special Attack', stats.specialAttack)}
+            {renderStatRow('Special Defense', stats.specialDefense)}
+            {renderStatRow('Health', stats.hitPoints)}
+            {renderStatRow('Speed', stats.speed)}
             {species._evolveToId !== '0'
-              ? renderStatRow('Ready to Evolve', getEvolutionText())
+              ? renderStatRow('Ready to Evolve', this.renderEvolutionText())
               : ''}
           </Grid>
         </Segment>
-        {moment().isSameOrAfter(kryptomon.timeUntilEvolution, 'second') ? (
+        {this.isReadyToEvolve() ? (
           <Button attached="bottom" color="green" content="Evolve!" disabled />
         ) : null}
       </div>
@@ -222,9 +228,9 @@ class ViewKryptomon extends React.Component {
             Evolution
           </Divider>
           <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
-            {this.state.evolutionImgSrcs.map((src, idx) => (
+            {this.state.evolutions.map(({ name, src }, idx) => (
               <Popup key={idx} trigger={<Card image={src} />}>
-                Kryptomon Species
+                {name}
               </Popup>
             ))}
           </Card.Group>

@@ -29,7 +29,9 @@ Run `npm install` to install all dependencies.
 1.  Run `truffle console`
 2.  Run `var k = KryptomonKore.at(KryptomonKore.address)`
 3.  Do fun things with your new kryptomon contract object:
+
     `k.setCompleteFreeze(false)`
+
     `k.buyGenZeroEggs(4, {value: 1e18, from: web3.eth.accounts[0]})`
 
 NOTE: If npm install fails, try deleting the package-lock.json and

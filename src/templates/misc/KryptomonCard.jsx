@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, Image } from 'semantic-ui-react';
 
-import { getImageFromKryptomonId, rarityById } from 'src/util';
+import { getImageFromKryptomonId } from 'src/util';
+import { rarityById } from 'constants/Kryptomon';
 import KryptomonKore from 'src/KryptomonKore';
 
 // Unpack KryptomonKore methods

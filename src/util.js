@@ -4,6 +4,7 @@
 import numeral from 'numeral';
 
 import KryptomonKore from 'src/KryptomonKore';
+import { SpeciesNames } from 'constants/Kryptomon';
 
 // Unpack KryptomonKore methods
 const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
@@ -13,7 +14,7 @@ export const KMON_IMG_BASE_URL =
 
 export function getImageFromKryptomon(kryptomon) {
   // TODO: Remove after getting kGod png
-  if (kryptomon.speciesId === '0') {
+  if (kryptomon.speciesId === '0' || kryptomon.speciesId === '') {
     kryptomon.speciesId = '143';
   }
   return (
@@ -23,7 +24,7 @@ export function getImageFromKryptomon(kryptomon) {
 
 export function getImageFromSpeciesId(speciesId) {
   // TODO: Remove after getting kGod png
-  if (speciesId === '0') {
+  if (speciesId === '0' || speciesId === '') {
     speciesId = '143';
   }
   return KMON_IMG_BASE_URL + numeral(speciesId).format('000') + '.png';
@@ -34,22 +35,15 @@ export async function getImageFromKryptomonId(kryptomonId) {
   return getImageFromKryptomon(kryptomon);
 }
 
-export async function getAllEvolutionImages(species) {
-  const evolutionImgSrcs = [];
+export async function getEvolutionInformation(species) {
+  const evolutions = [];
   while (species._evolveToId !== '0') {
-    evolutionImgSrcs.push(getImageFromSpeciesId(species._evolveToId));
+    evolutions.push({
+      src: getImageFromSpeciesId(species._evolveToId),
+      name: SpeciesNames[species._evolveToId],
+    });
     species = await getSpeciesDetails(species._evolveToId).call();
   }
 
-  return evolutionImgSrcs;
+  return evolutions;
 }
-
-export const rarityById = {
-  1: { color: 'grey', name: 'Common', icon: 'asterisk' },
-  2: { color: 'green', name: 'Uncommon', icon: 'asterisk' },
-  3: { color: 'teal', name: 'Rare', icon: 'diamond' },
-  4: { color: 'blue', name: 'Super Rare', icon: 'diamond' },
-  5: { color: 'purple', name: 'Ultra Rare', icon: 'fire' },
-  6: { color: 'red', name: 'Mega Rare', icon: 'fire' },
-  7: { color: 'orange', name: 'Legendary', icon: 'star' },
-};

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Image } from 'semantic-ui-react';
 
 import { getImageFromKryptomonId } from 'src/util';
-import { rarityById } from 'constants/Kryptomon';
+import { rarityById, SpeciesNames } from 'constants/Kryptomon';
 import KryptomonKore from 'src/KryptomonKore';
 
 // Unpack KryptomonKore methods
@@ -43,7 +43,9 @@ class KryptomonCard extends React.Component {
           }}
         />
         <Card.Content>
-          <Card.Header>Species Name</Card.Header>
+          <Card.Header>
+            {SpeciesNames[this.state.kryptomon.speciesId]}
+          </Card.Header>
           <Card.Meta>
             <strong>Gen {this.state.kryptomon.generation}</strong>
           </Card.Meta>

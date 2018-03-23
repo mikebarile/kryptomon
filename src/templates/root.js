@@ -10,7 +10,7 @@ import TestBed from 'pages/TestBed';
 import MetaMask from 'pages/MetaMask';
 import NotFound from 'pages/NotFound';
 import MyKryptomon from 'pages/MyKryptomon';
-import ViewEgg from 'pages/ViewEgg';
+import ViewGenZeroEgg from 'pages/ViewGenZeroEgg';
 import ViewKryptomon from 'pages/ViewKryptomon';
 import Bestiary from 'pages/Bestiary';
 
@@ -33,12 +33,12 @@ const Root = () => (
         <Route
           exact
           path={ROUTES.VIEW_GEN_ZERO_EGG}
-          render={(props) => <ViewEgg genZero {...props} />}
+          component={ViewGenZeroEgg}
         />
-        <Route
+        {/* <Route
           path={ROUTES.VIEW_EGG + '/:eggId'}
-          render={(props) => <ViewEgg genZero={false} {...props} />}
-        />
+          component={ViewEgg}
+        /> */}
         <Route
           path={ROUTES.VIEW_KRYPTOMON + '/:kryptomonId'}
           component={ViewKryptomon}

@@ -172,7 +172,6 @@ class EggStore extends React.Component {
         <Button
           attached="bottom"
           loading={this.state.loading}
-          // disabled={this.state.loading}
           onClick={this.buyGenZeroEggs}
           color="green"
         >

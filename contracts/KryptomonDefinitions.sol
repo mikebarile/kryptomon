@@ -151,7 +151,7 @@ contract KryptomonDefinitions is KryptoGodController {
   Species[] speciesList;
 
   // Total number of eggs in circulation (not including gen0).
-  int totalEggs;
+  uint256 totalEggs;
 
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
   // owner at all times.

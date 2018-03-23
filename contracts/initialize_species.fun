@@ -1,4 +1,3 @@
-KryptomonKore.at(KryptomonKore.address).addSpecies(250, 250, 250, 250, 250, 250, 3, 604800, 0, 3456000, 7);
 KryptomonKore.at(KryptomonKore.address).addSpecies(87, 72, 111, 103, 87, 146, 1, 259200, 2, 1296000, 3);
 KryptomonKore.at(KryptomonKore.address).addSpecies(100, 87, 133, 118, 102, 174, 1, 345600, 3, 1728000, 4);
 KryptomonKore.at(KryptomonKore.address).addSpecies(131, 107, 166, 155, 127, 218, 1, 432000, 0, 2160000, 5);

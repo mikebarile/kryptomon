@@ -1,5 +1,13 @@
 # KRYPTOMON!
 
+##IMPORTANT: POST LAUNCH TO DO LIST:
+1.  Verify that there is 1 krypto god kryptomon assigned to krypto god.
+2.  Turn off complete freeze.
+3.  Turn on breeding freeze.
+4.  Initialize the species and set the extinct creatures to extinct.
+5.  Check that we can transfer money from contract to Krypto God address.
+6.  
+
 ## Install dependencies
 
 Run `npm install` to install all dependencies.

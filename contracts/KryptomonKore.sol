@@ -15,6 +15,7 @@ contract KryptomonKore is KryptomonBreeding {
   function KryptomonKore() public {
     kryptoGodAddress = msg.sender;
     completeFreeze = true;
+    totalEggs = 0;
     totalGenZeroEggs = unassignedGenZeroEggs.add(genZeroEggsReserve);
 
     speciesList.push(Species({

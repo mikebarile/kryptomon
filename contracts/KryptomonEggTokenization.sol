@@ -10,7 +10,7 @@ contract KryptomonEggTokenization is KryptomonTokenization {
 
   // Returns the total number of Kryptomon eggs in existence.
   function totalEggSupply() public view returns(uint256) {
-    return eggList.length;
+    return totalEggs;
   }
 
   // Returns the total number of Kryptomon eggs owned by a given

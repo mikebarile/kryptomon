@@ -150,6 +150,9 @@ contract KryptomonDefinitions is KryptoGodController {
   // species' ID is its index in the array.
   Species[] speciesList;
 
+  // Total number of eggs in circulation (not including gen0).
+  int totalEggs;
+
   // Maps all kryptomon IDs to an owner. All Kryptomon should have an
   // owner at all times.
   mapping (uint256 => address) internal kryptomonIndexToOwner;
@@ -201,6 +204,7 @@ contract KryptomonDefinitions is KryptoGodController {
     uint256 kryptomonId = createKryptomon(_eggId);
     delete eggList[_eggId];
     delete eggIndexToOwner[_eggId];
+    totalEggs = totalEggs.sub(1);
     kryptomonIndexToOwner[kryptomonId] = msg.sender;
     EggHatched(msg.sender, _eggId);
     KryptomonAssigned(msg.sender, kryptomonId);

@@ -44,6 +44,7 @@ contract KryptomonBreeding is KryptomonEggTokenization {
     kryptomonList[_sireIndex].lastBred = uint32(now);
     kryptomonList[_matronIndex].lastBred = uint32(now);
     eggIndexToOwner[eggIndex] = msg.sender;
+    totalEggs = totalEggs.add(1);
     EggAssigned(msg.sender, eggIndex);
   }
 

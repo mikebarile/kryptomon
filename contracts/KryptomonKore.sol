@@ -30,7 +30,7 @@ contract KryptomonKore is KryptomonBreeding {
       evolveToId: uint16(0),
       timeToEvolve: uint32(0),
       rarity: uint8(7),
-      isExtinct: true
+      isExtinct: false
     }));
     kryptomonList.push(
       Kryptomon({
@@ -42,6 +42,7 @@ contract KryptomonKore is KryptomonBreeding {
         numChildren: 0
       })
     );
+    setLegendarySpeciesExtinct(0);
     kryptomonIndexToOwner[0] = msg.sender;
     KryptomonAssigned(msg.sender, 0);
   }

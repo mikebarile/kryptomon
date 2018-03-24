@@ -170,7 +170,7 @@ contract KryptomonDefinitions is KryptoGodController {
   mapping (uint256 => address) internal eggIndexToApproved;
 
   // Total species for each rarity level.
-  mapping (uint256 => uint256) internal speciesCountByRarity;
+  mapping (uint256 => uint256) public speciesCountByRarity;
 
   // Returns a pseudo-random value seeded with _seed and some other
   // not-very-random data.
@@ -275,10 +275,33 @@ contract KryptomonDefinitions is KryptoGodController {
     }
     uint256 speciesId = getRarityBasedSpeciesId(_eggId, rarity);
     if (rarity == 7) {
-      setLegendarySpeciesExtinct(speciesId);
+      /* setLegendarySpeciesExtinct(speciesId); */
     }
 
     return speciesId;
+  }
+
+  function test(uint max, uint offset) external view
+    returns(
+        uint256[8]
+    )
+  {
+    uint256[8] memory list;
+    for (uint i = 0; i < max; i++) {
+      uint speciesId = determineSpeciesId(i + offset, 1);
+      uint rarity = speciesList[speciesId].rarity;
+      if (rarity == 1) {list[0] = list[0] += 1;}
+      else if (rarity == 2) {list[1] = list[1] += 1;}
+      else if (rarity == 3) {list[2] = list[2] += 1;}
+      else if (rarity == 4) {list[3] = list[3] += 1;}
+      else if (rarity == 5) {list[4] = list[4] += 1;}
+      else if (rarity == 6) {list[5] = list[5] += 1;}
+      else if (rarity == 7) {list[6] = list[6] += 1;}
+      else {list[7] = list[7] += 1;}
+    }
+    return (
+        list
+    );
   }
 
   // Returns an array with the "rarity-based bracket" e.g. the
@@ -293,75 +316,19 @@ contract KryptomonDefinitions is KryptoGodController {
     uint24[6] memory rarityBracket;
 
     if (_eggRarity == 1) {
-      // COMMON EGG HATCH RATE:
-      // Common: 40%
-      // Uncommon: 25%
-      // Rare: 20%
-      // Super rare: 12%
-      // Ultra rare: 2%
-      // Mega rare: <1%
-      // Legendary: <1%
-      rarityBracket = [400000, 650000, 850000, 970000, 999000, 999995];
+      rarityBracket = [400000, 650000, 850000, 950000, 998000, 999800];
     } else if (_eggRarity == 2) {
-      // UNCOMMON EGG HATCH RATE:
-      // Common: 30%
-      // Uncommon: 30%
-      // Rare: 25%
-      // Super rare: 10%
-      // Ultra rare: 3%
-      // Mega rare: <2%
-      // Legendary: <1%
-      rarityBracket = [300000, 600000, 850000, 950000, 998000, 999995];
+      rarityBracket = [300000, 600000, 850000, 950000, 998000, 999800];
     } else if (_eggRarity == 3) {
-      // RARE EGG HATCH RATE:
-      // Common: 25%
-      // Uncommon: 25%
-      // Rare: 30%
-      // Super rare: 13%
-      // Ultra rare: 5%
-      // Mega rare: <2%
-      // Legendary: <1%
-      rarityBracket = [250000, 500000, 800000, 993000, 998000, 999995];
+      rarityBracket = [250000, 500000, 800000, 993000, 997000, 999700];
     } else if (_eggRarity == 4) {
-      // SUPER RARE EGG HATCH RATE:
-      // Common: 20%
-      // Uncommon: 20%
-      // Rare: 30%
-      // Super rare: 22%
-      // Ultra rare: 5%
-      // Mega rare: <3%
-      // Legendary: <1%
-      rarityBracket = [200000, 400000, 700000, 920000, 997000, 999985];
+      rarityBracket = [200000, 400000, 700000, 920000, 996000, 999600];
     } else if (_eggRarity == 5) {
-      // ULTRA RARE EGG HATCH RATE:
-      // Common: 10%
-      // Uncommon: 15%
-      // Rare: 30%
-      // Super rare: 30%
-      // Ultra rare: 11%
-      // Mega rare: <4%
-      // Legendary: <1%
-      rarityBracket = [100000, 250000, 550000, 850000, 960000, 999975];
+      rarityBracket = [100000, 250000, 550000, 850000, 990000, 999500];
     } else if (_eggRarity == 6) {
-      // MEGA RARE EGG HATCH RATE:
-      // Common: 0%
-      // Uncommon: 10%
-      // Rare: 25%
-      // Super rare: 30%
-      // Ultra rare: 25%
-      // Mega rare: <10%
-      // Legendary: <1%
-      rarityBracket = [0, 100000, 350000, 650000, 900000, 999965];
+      rarityBracket = [0, 100000, 350000, 650000, 950000, 999000];
     } else {
-      // LEGENDARY EGG HATCH RATE:
-      // Common: 0%
-      // Uncommon: 0%
-      // Rare: 0%
-      // Super rare: 0%
-      // Ultra rare: 80%
-      // Mega rare: <20%
-      // Legendary: <1%
-      rarityBracket = [0, 0, 0, 0, 800000, 999950];
+      rarityBracket = [0, 0, 0, 0, 800000, 998000];
     }
     return rarityBracket;
   }
@@ -389,8 +356,8 @@ contract KryptomonDefinitions is KryptoGodController {
       ) {
         return idx;
       } else if (speciesList[idx].rarity == _rarity
-      && !speciesList[idx].isExtinct) {
-        counter += 1;
+        && !speciesList[idx].isExtinct) {
+          counter += 1;
       }
     }
     return 1;

@@ -340,10 +340,6 @@ contract KryptomonDefinitions is KryptoGodController {
     return 1;
   }
 
-  function test(uint _id, uint rarity) external view returns (uint) {
-    return getRarityBasedSpeciesId(_id, rarity);
-  }
-
   // Determines the genetic value of the resulting Kryptomon. Produces
   // a value between 0 and 200. There is a 50% chance that the
   // resulting Kryptomon will have the same genetic value as its

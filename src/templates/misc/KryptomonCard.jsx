@@ -2,8 +2,8 @@ import React from 'react';
 import { Card, Image, Label } from 'semantic-ui-react';
 import moment from 'moment';
 
-import { getImageFromKryptomonId } from 'src/util';
-import { rarityById, SpeciesNames } from 'constants/Kryptomon';
+import { getImageFromKryptomon } from 'src/util';
+import { rarityById, Species, typeByName } from 'constants/Kryptomon';
 import KryptomonKore from 'src/KryptomonKore';
 
 // Unpack KryptomonKore methods
@@ -22,21 +22,32 @@ class KryptomonCard extends React.Component {
       generation: '--',
     },
     species: {},
-    evolutionTime: moment('01-01-2090'),
-    breedingTime: moment('01-01-2090'),
+    evolutionTime: moment('01-01-2090', 'MM-DD-YYYY'),
+    breedingTime: moment('01-01-2090', 'MM-DD-YYYY'),
+    speciesName: '',
+    speciesTypes: [],
   };
 
   async componentDidMount() {
-    const imgSrc = await getImageFromKryptomonId(this.props.kryptomonId);
     const kryptomon = await getKryptomon(this.props.kryptomonId).call();
     const species = await getSpeciesDetails(kryptomon.speciesId).call();
+    const imgSrc = getImageFromKryptomon(kryptomon);
     const evolutionTime = moment.unix(
       Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
     );
     const breedingTime = moment.unix(
       Number(kryptomon.lastBred) + Number(species._breedingCooldown),
     );
-    this.setState({ imgSrc, kryptomon, species, evolutionTime, breedingTime });
+
+    this.setState({
+      imgSrc,
+      kryptomon,
+      species,
+      evolutionTime,
+      breedingTime,
+      speciesName: Species[kryptomon.speciesId].name,
+      speciesTypes: Species[kryptomon.speciesId].types,
+    });
   }
 
   isReadyToEvolve() {
@@ -66,14 +77,21 @@ class KryptomonCard extends React.Component {
           }}
         />
         <Card.Content>
-          <Card.Header>
-            {SpeciesNames[this.state.kryptomon.speciesId]}
-          </Card.Header>
+          <Card.Header>{this.state.speciesName}</Card.Header>
           <Card.Meta>
-            <strong>Gen {this.state.kryptomon.generation}</strong>
+            <strong>Gen {this.state.kryptomon.generation}</strong> |{' '}
+            <strong>Power Level {this.state.kryptomon.geneticValue}</strong>
           </Card.Meta>
           <Card.Description>
-            <Label basic color="red" content="TYPE" horizontal />
+            {this.state.speciesTypes.map((type, idx) => (
+              <Label
+                key={idx}
+                basic
+                color={typeByName[type].color}
+                content={type}
+                horizontal
+              />
+            ))}
             {this.state.species.isExtinct ? (
               <Label
                 basic
@@ -84,11 +102,11 @@ class KryptomonCard extends React.Component {
               />
             ) : null}
             {this.isReadyToEvolve() ? (
-              <Label basic color="green" content="Ready to Evolve" horizontal />
+              <Label basic color="green" content="Can Evolve" horizontal />
             ) : null}
-            {this.isReadyToBreed() ? (
-              <Label basic color="pink" content="Ready to Breed" horizontal />
-            ) : null}
+            {/* {this.isReadyToBreed() && this.state.kryptomon.speciesId !== '0' ? (
+              <Label basic color="pink" content="Can Breed" horizontal />
+            ) : null} */}
           </Card.Description>
         </Card.Content>
       </Card>

@@ -83,6 +83,7 @@ class Home extends React.Component {
               padding: '1em 0',
               background: 'black',
               backgroundImage:
+                // eslint-disable-next-line
                 'url(https://res.cloudinary.com/adoundakov/image/upload/b_rgb:000000,e_blur:50,o_50/v1521916244/banner_glooqj.png)',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',

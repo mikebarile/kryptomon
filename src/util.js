@@ -41,6 +41,7 @@ export async function getEvolutionInformation(species) {
     evolutions.push({
       src: getImageFromSpeciesId(species._evolveToId),
       name: Species[species._evolveToId].name,
+      speciesId: species._evolveToId,
     });
     species = await getSpeciesDetails(species._evolveToId).call();
   }

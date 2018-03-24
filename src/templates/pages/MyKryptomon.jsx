@@ -9,6 +9,7 @@ import {
   Grid,
 } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import KryptomonKore from 'src/KryptomonKore';
 import web3 from 'src/web3';
@@ -191,13 +192,56 @@ class MyKryptomon extends React.Component {
     );
   }
 
+  renderEmptyMessage() {
+    return (
+      <Segment
+        loading={this.state.gridLoading}
+        style={{ minHeight: 350, paddingTop: '3em' }}
+      >
+        <Header
+          as="h1"
+          textAlign="center"
+          content="There's nothing here!"
+          style={{ fontSize: '2.75em' }}
+        />
+        <Header
+          as="h3"
+          color="grey"
+          textAlign="center"
+          style={{ fontWeight: 'lighter', fontSize: '1.5em' }}
+        >
+          Get started by purchasing some eggs in the{' '}
+          <Link to={ROUTES.EGG_STORE}>Egg Store</Link>!
+        </Header>
+        <Divider
+          as="h1"
+          horizontal
+          style={{ margin: 0, textTransform: 'uppercase', fontSize: '1.5em' }}
+        >
+          OR
+        </Divider>
+        <Header
+          as="h3"
+          color="grey"
+          textAlign="center"
+          style={{ fontWeight: 'lighter', fontSize: '1.5em', marginTop: 18 }}
+        >
+          Learn about all the wonderful Kryptomon you can own in the
+          <Link to={ROUTES.BESTIARY}> Bestiary</Link>!
+        </Header>
+      </Segment>
+    );
+  }
+
   render() {
     return (
       <div>
         <FixedMenu />
         <Container style={{ marginTop: 84 }}>
           {this.renderOwnageStats()}
-          {this.renderKrytomonGrid()}
+          {this.state.totalLength > 0
+            ? this.renderKrytomonGrid()
+            : this.renderEmptyMessage()}
         </Container>
       </div>
     );

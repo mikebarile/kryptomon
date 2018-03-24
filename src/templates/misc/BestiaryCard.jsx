@@ -1,14 +1,16 @@
 import React from 'react';
 import { Card, Image, Label } from 'semantic-ui-react';
+import { withRouter } from 'react-router';
 
 import { getImageFromSpeciesId } from 'src/util';
 import { rarityById, Species, typeByName } from 'constants/Kryptomon';
 import KryptomonKore from 'src/KryptomonKore';
+import ROUTES from 'constants/Routes';
 
 // Unpack KryptomonKore methods
 const { getSpeciesDetails } = KryptomonKore.methods;
 
-class KryptomonCard extends React.Component {
+class BestiaryCard extends React.Component {
   state = {
     imgSrc: '', // Maybe load a placeholder locally?
     species: {},
@@ -31,7 +33,12 @@ class KryptomonCard extends React.Component {
   render() {
     const rarity = rarityById[this.state.species._rarity] || {};
     return (
-      <Card>
+      <Card
+        link
+        onClick={() =>
+          this.props.history.push(ROUTES.BESTIARY + `/${this.props.speciesId}`)
+        }
+      >
         <Image
           src={this.state.imgSrc}
           style={{ width: '100%', height: 'auto', minHeight: 283 }}
@@ -70,4 +77,4 @@ class KryptomonCard extends React.Component {
   }
 }
 
-export default KryptomonCard;
+export default withRouter(BestiaryCard);

@@ -13,6 +13,7 @@ import MyKryptomon from 'pages/MyKryptomon';
 import ViewGenZeroEgg from 'pages/ViewGenZeroEgg';
 import ViewKryptomon from 'pages/ViewKryptomon';
 import Bestiary from 'pages/Bestiary';
+import ViewSpecies from 'pages/ViewSpecies';
 import FAQ from 'pages/FAQ';
 import ROUTES from 'constants/Routes';
 
@@ -22,7 +23,8 @@ const Root = () => (
       <Switch>
         <Route path={ROUTES.HOME} exact component={Home} />
         <Route path={ROUTES.METAMASK} component={MetaMask} />
-        <Route path={ROUTES.BESTIARY} component={Bestiary} />
+        <Route exact path={ROUTES.BESTIARY} component={Bestiary} />
+        <Route path={ROUTES.BESTIARY + '/:speciesId'} component={ViewSpecies} />
         <Route path={ROUTES.FAQ} component={FAQ} />
         {/* Below should require log in!! */}
         <Route path={ROUTES.EGG_STORE} component={EggStore} />

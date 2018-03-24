@@ -14,6 +14,8 @@ import {
 } from 'semantic-ui-react';
 import moment from 'moment';
 
+import faker from 'faker';
+
 import KryptomonKore from 'src/KryptomonKore';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
 import { getImageFromSpeciesId, getEvolutionInformation } from 'src/util';
@@ -266,9 +268,7 @@ class ViewKryptomon extends React.Component {
         >
           Lineage
         </Divider>
-        <p style={{ margin: '0 auto' }}>
-          This Kryptomon is the first of its line!
-        </p>
+        <p style={{ margin: '0 auto' }}>{faker.lorem.paragraphs()}</p>
       </div>
     );
   }

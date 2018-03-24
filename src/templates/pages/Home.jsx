@@ -108,7 +108,7 @@ class Home extends React.Component {
                 Kryptomon is a game powered by blockchain technology that will
                 forever change how we think about intellectual property.
               </Header>
-              <Button primary size="huge">
+              <Button as={Link} to={ROUTES.EGG_STORE} primary size="huge">
                 Get Started
                 <Icon name="right arrow" />
               </Button>
@@ -124,11 +124,10 @@ class Home extends React.Component {
                   About
                 </Header>
                 <p>
-                  Super cool info about Kryptomon. Really awesome detail about
-                  creatures and stuff. Buy eggs now. Hatch them today! Battle...
-                  soon. Super cool info about Kryptomon. Really awesome detail
-                  about creatures and stuff. Buy eggs now. Hatch them today!
-                  Battle... soon.
+                  Kryptomon are magical creatures that live on the Ethereum
+                  blockchain. Other neat info coming soon. Buy eggs now. Hatch
+                  them today! See all of the adorable Kryptomon you can own in
+                  the <Link to={ROUTES.BESTIARY}>Bestiary</Link>.
                 </p>
               </Grid.Column>
               <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -136,10 +135,10 @@ class Home extends React.Component {
                   Blockchain
                 </Header>
                 <p>
-                  Super cool info about blockchain. Praise be to Satoshi.
-                  HODL!!! Don&apos;t worry about Tether.. everything is normal!
-                  Buy PoWHCoin today! Link to informative paper about blockchain
-                  technology.
+                  Ethereum is a decentralized platform that runs smart
+                  contracts: applications that run exactly as programmed without
+                  any possibility of downtime, censorship, fraud or third-party
+                  interference.
                 </p>
               </Grid.Column>
               <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -147,10 +146,12 @@ class Home extends React.Component {
                   Software
                 </Header>
                 <p>
-                  dApps are so cool... Check out this awesome software stack we
-                  use. Hooray. We use Metamask and Web3, working on the Ethereum
-                  network to bring you the freshest, cutest, unique Kryptomon.
-                  Totally not related in any way to Pokemon.
+                  Kryptomon is a dApp, which is short for decentralized
+                  application. What this means is that its backend code running
+                  on a decentralized peer-to-peer network, instead of on a
+                  server like other popular apps you use every day. We use
+                  Metamask and Web3, working on the Ethereum network to bring
+                  you the freshest, cutest, unique Kryptomon.
                 </p>
               </Grid.Column>
             </Grid.Row>

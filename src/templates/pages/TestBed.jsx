@@ -147,9 +147,6 @@ class TestBed extends React.Component {
           />
         </label>
         <br />
-        <Button onClick={deployAllSpecies} color="yellow">
-          Deploy Test Species
-        </Button>
         <br />
         <br />
         <br />

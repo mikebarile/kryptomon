@@ -96,7 +96,7 @@ class MyKryptomon extends React.Component {
     if (
       this.state.showEggs &&
       this.state.ownedGenZeroEggs > 0 &&
-      this.startIdx === 0
+      this.state.startIdx === 0
     ) {
       return (
         <Grid.Column>

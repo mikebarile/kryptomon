@@ -13,12 +13,11 @@ import {
   Button,
 } from 'semantic-ui-react';
 import moment from 'moment';
-import faker from 'faker';
 
 import KryptomonKore from 'src/KryptomonKore';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
 import { getImageFromSpeciesId, getEvolutionInformation } from 'src/util';
-import { SpeciesNames, rarityById } from 'constants/Kryptomon';
+import { Species, rarityById } from 'constants/Kryptomon';
 import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods
@@ -59,8 +58,10 @@ class ViewKryptomon extends React.Component {
     },
     loading: true,
     evolutions: [],
-    evolutionTime: moment('01-01-2090'),
-    breedingTime: moment('01-01-2090'),
+    evolutionTime: moment('01-01-2090', 'MM-DD-YYYY'),
+    breedingTime: moment('01-01-2090', 'MM-DD-YYYY'),
+    speciesName: '',
+    speciesTypes: [],
   };
 
   componentDidMount() {
@@ -76,7 +77,11 @@ class ViewKryptomon extends React.Component {
     const kryptomon = await getKryptomon(
       this.props.match.params.kryptomonId,
     ).call();
-    this.setState({ kryptomon });
+    this.setState({
+      kryptomon,
+      speciesName: Species[kryptomon.speciesId].name,
+      speciesTypes: Species[kryptomon.speciesId].types,
+    });
     this.getSpeciesDetails(kryptomon.speciesId);
   }
 
@@ -175,7 +180,7 @@ class ViewKryptomon extends React.Component {
     return (
       <div>
         <Header textAlign="center" attached="top" as="h1">
-          {SpeciesNames[kryptomon.speciesId]}
+          {this.state.speciesName}
           <Label color="red" horizontal style={{ marginLeft: 24 }}>
             Gen {kryptomon.generation}
           </Label>
@@ -261,7 +266,9 @@ class ViewKryptomon extends React.Component {
         >
           Lineage
         </Divider>
-        <p>{faker.lorem.paragraphs()}</p>
+        <p style={{ margin: '0 auto' }}>
+          This Kryptomon is the first of its line!
+        </p>
       </div>
     );
   }

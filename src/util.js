@@ -4,7 +4,7 @@
 import numeral from 'numeral';
 
 import KryptomonKore from 'src/KryptomonKore';
-import { SpeciesNames } from 'constants/Kryptomon';
+import { Species } from 'constants/Kryptomon';
 
 // Unpack KryptomonKore methods
 const { getKryptomon, getSpeciesDetails } = KryptomonKore.methods;
@@ -40,7 +40,7 @@ export async function getEvolutionInformation(species) {
   while (species._evolveToId !== '0') {
     evolutions.push({
       src: getImageFromSpeciesId(species._evolveToId),
-      name: SpeciesNames[species._evolveToId],
+      name: Species[species._evolveToId].name,
     });
     species = await getSpeciesDetails(species._evolveToId).call();
   }

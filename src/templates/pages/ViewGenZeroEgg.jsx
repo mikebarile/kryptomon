@@ -19,7 +19,7 @@ import faker from 'faker';
 import KryptomonKore from 'src/KryptomonKore';
 import web3 from 'src/web3';
 import ROUTES from 'constants/Routes';
-import { SpeciesNames } from 'constants/Kryptomon';
+import { Species } from 'constants/Kryptomon';
 import { getImageFromSpeciesId } from 'src/util';
 import EggImg from 'images/logo2.png';
 import FixedMenu from 'misc/FixedMenu';
@@ -53,10 +53,10 @@ class ViewGenZeroEgg extends React.Component {
   getPossibleContents() {
     const possibleContents = [];
     times(6, () => {
-      const speciesId = random(1, SpeciesNames.length);
+      const speciesId = random(1, Species.length);
       possibleContents.push({
         speciesId,
-        name: SpeciesNames[speciesId],
+        name: Species[speciesId].name,
         src: getImageFromSpeciesId(speciesId),
       });
     });

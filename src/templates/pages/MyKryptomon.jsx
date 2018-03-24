@@ -14,7 +14,6 @@ import KryptomonKore from 'src/KryptomonKore';
 import web3 from 'src/web3';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
 import ROUTES from 'constants/Routes';
-
 import GenZeroEggCard from 'misc/GenZeroEggCard';
 import KryptomonCard from 'misc/KryptomonCard';
 import FixedMenu from 'misc/FixedMenu';
@@ -34,6 +33,7 @@ class MyKryptomon extends React.Component {
     ownageLoading: true,
     gridLoading: true,
     startIdx: 0,
+    perPage: 15,
     totalLength: 0,
     showEggs: true,
   };
@@ -61,7 +61,7 @@ class MyKryptomon extends React.Component {
       totalLength:
         ownedKryptomon.length + ownedEggs.length + Number(ownedGenZeroEggs),
       ownageLoading: false,
-      gridLoading: false, // TODO: Remove later
+      gridLoading: false,
     });
   };
 
@@ -93,7 +93,11 @@ class MyKryptomon extends React.Component {
   }
 
   renderGenZeroEggs() {
-    if (this.state.showEggs && this.state.ownedGenZeroEggs > 0) {
+    if (
+      this.state.showEggs &&
+      this.state.ownedGenZeroEggs > 0 &&
+      this.startIdx === 0
+    ) {
       return (
         <Grid.Column>
           <GenZeroEggCard
@@ -112,17 +116,20 @@ class MyKryptomon extends React.Component {
   }
 
   renderKryptomon() {
-    return this.state.ownedKryptomon.map((kryptomonId) => (
-      <Grid.Column key={kryptomonId}>
-        <KryptomonCard
-          link
-          onClick={() =>
-            this.props.history.push(ROUTES.VIEW_KRYPTOMON + `/${kryptomonId}`)
-          }
-          kryptomonId={kryptomonId}
-        />
-      </Grid.Column>
-    ));
+    const { startIdx, perPage, ownedKryptomon } = this.state;
+    return ownedKryptomon
+      .slice(startIdx, startIdx + perPage)
+      .map((kryptomonId) => (
+        <Grid.Column key={kryptomonId}>
+          <KryptomonCard
+            link
+            onClick={() =>
+              this.props.history.push(ROUTES.VIEW_KRYPTOMON + `/${kryptomonId}`)
+            }
+            kryptomonId={kryptomonId}
+          />
+        </Grid.Column>
+      ));
   }
 
   renderKrytomonGrid() {
@@ -131,12 +138,19 @@ class MyKryptomon extends React.Component {
     //   this.setState({ showEggs: !this.state.showEggs });
     //   console.log(event.data);
     // };
+    const {
+      gridLoading,
+      startIdx,
+      perPage,
+      totalLength,
+      ownedKryptomon,
+    } = this.state;
     return (
       <div style={{ marginTop: '2em' }}>
         <Header as="h1" attached="top">
           My Kryptomon
         </Header>
-        <Segment attached loading={this.state.gridLoading}>
+        <Segment attached loading={gridLoading} style={{ minHeight: 350 }}>
           <Grid doubling columns={3}>
             {this.renderGenZeroEggs()}
             {this.renderEggs()}
@@ -146,17 +160,31 @@ class MyKryptomon extends React.Component {
         <Segment attached="bottom" clearing>
           <Button
             floated="left"
+            onClick={() =>
+              this.setState({
+                startIdx: startIdx - perPage,
+              })
+            }
             content="Previous"
             icon="left arrow"
             labelPosition="left"
-            disabled={this.state.startIdx === 0}
+            disabled={startIdx === 0}
           />
           <Button
             floated="right"
+            onClick={() =>
+              this.setState({
+                startIdx: startIdx + perPage,
+              })
+            }
             content="Next"
             icon="right arrow"
             labelPosition="right"
-            disabled={this.state.totalLength <= 9}
+            disabled={
+              totalLength <= 9 ||
+              ownedKryptomon.slice(startIdx, startIdx + perPage).length <
+                perPage
+            }
           />
         </Segment>
       </div>

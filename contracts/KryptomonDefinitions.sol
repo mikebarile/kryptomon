@@ -275,33 +275,10 @@ contract KryptomonDefinitions is KryptoGodController {
     }
     uint256 speciesId = getRarityBasedSpeciesId(_eggId, rarity);
     if (rarity == 7) {
-      /* setLegendarySpeciesExtinct(speciesId); */
+      setLegendarySpeciesExtinct(speciesId);
     }
 
     return speciesId;
-  }
-
-  function test(uint max, uint offset) external view
-    returns(
-        uint256[8]
-    )
-  {
-    uint256[8] memory list;
-    for (uint i = 0; i < max; i++) {
-      uint speciesId = determineSpeciesId(i + offset, 1);
-      uint rarity = speciesList[speciesId].rarity;
-      if (rarity == 1) {list[0] = list[0] += 1;}
-      else if (rarity == 2) {list[1] = list[1] += 1;}
-      else if (rarity == 3) {list[2] = list[2] += 1;}
-      else if (rarity == 4) {list[3] = list[3] += 1;}
-      else if (rarity == 5) {list[4] = list[4] += 1;}
-      else if (rarity == 6) {list[5] = list[5] += 1;}
-      else if (rarity == 7) {list[6] = list[6] += 1;}
-      else {list[7] = list[7] += 1;}
-    }
-    return (
-        list
-    );
   }
 
   // Returns an array with the "rarity-based bracket" e.g. the

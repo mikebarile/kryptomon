@@ -42,7 +42,6 @@ contract KryptomonKore is KryptomonBreeding {
         numChildren: 0
       })
     );
-    setLegendarySpeciesExtinct(0);
     kryptomonIndexToOwner[0] = msg.sender;
     KryptomonAssigned(msg.sender, 0);
   }

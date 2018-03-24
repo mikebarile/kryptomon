@@ -11,6 +11,7 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import faker from 'faker';
 
@@ -37,6 +38,9 @@ class EggStore extends React.Component {
       genZeroEggSupply: '',
       eggPrice: '',
       loading: true,
+      error: false,
+      errorMessage: '',
+      trxn: '',
       quantity: 1,
     };
     this.buyGenZeroEggs = this.buyGenZeroEggs.bind(this);
@@ -53,7 +57,7 @@ class EggStore extends React.Component {
 
   async buyGenZeroEggs() {
     const { quantity, eggPrice } = this.state;
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
     const accounts = await web3.eth.getAccounts();
     if (accounts[0]) {
       buyGenZeroEggs(quantity)
@@ -61,8 +65,19 @@ class EggStore extends React.Component {
           from: accounts[0],
           value: Number(eggPrice) * quantity,
         })
-        .then(() => {
-          this.setState({ loading: false });
+        .then(({ transactionHash }) => {
+          this.setState({
+            loading: false,
+            error: false,
+            trxn: transactionHash,
+          });
+        })
+        .catch((err) => {
+          this.setState({
+            loading: false,
+            error: true,
+            errorMessage: err.message,
+          });
         });
     } else {
       this.props.history.push(ROUTES.METAMASK);
@@ -73,13 +88,111 @@ class EggStore extends React.Component {
     window.clearInterval(this.checker);
   }
 
+  renderStatRow(label, value) {
+    return (
+      <Grid.Row>
+        <Grid.Column textAlign="right">
+          <Header as="h3" style={{ fontWeight: 'lighter' }}>
+            {label}
+          </Header>
+        </Grid.Column>
+        <Grid.Column>
+          <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
+            {value}
+          </Header>
+        </Grid.Column>
+      </Grid.Row>
+    );
+  }
+
+  renderQuantityRow() {
+    return (
+      <Grid.Row>
+        <Grid.Column textAlign="right">
+          <Header
+            as="h3"
+            style={{ fontWeight: 'lighter' }}
+            content="Quantity"
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              compact
+              disabled={this.state.quantity <= 1}
+              icon="minus"
+              size="mini"
+              style={{ margin: 0 }}
+              onClick={() =>
+                this.setState({ quantity: this.state.quantity - 1 })
+              }
+            />
+            <Header
+              as="strong"
+              color="green"
+              style={{
+                fontWeight: 'lighter',
+                margin: '0 7px',
+                fontSize: '2rem',
+              }}
+              content={this.state.quantity}
+            />
+            <Button
+              compact
+              disabled={this.state.quantity >= 20}
+              icon="plus"
+              size="mini"
+              onClick={() =>
+                this.setState({ quantity: this.state.quantity + 1 })
+              }
+            />
+          </div>
+        </Grid.Column>
+      </Grid.Row>
+    );
+  }
+
+  renderMessages() {
+    const { error, trxn } = this.state;
+    if (error) {
+      return (
+        <Grid.Row>
+          <Message error compact style={{ margin: '0 21px' }}>
+            <Message.Header>Uh Oh</Message.Header>
+            There was an error processing your transaction. Please try again
+            later.
+          </Message>
+        </Grid.Row>
+      );
+    }
+    if (!error && trxn.length > 0) {
+      return (
+        <Grid.Row>
+          <Message success compact style={{ margin: '0 21px' }}>
+            <Message.Header>Yay!</Message.Header>
+            <p>
+              Your eggs are on their way! You can follow their journey by
+              visiting <a href={`https://etherscan.io/tx/${trxn}`}>this </a>
+              Etherscan.io link.
+              <br />
+              <br />
+              Once delivered, visit
+              <Link to={ROUTES.MY_KRYPTOMON}> My Kryptomon</Link> to see them!
+            </p>
+          </Message>
+        </Grid.Row>
+      );
+    }
+    return null;
+  }
+
   renderEggStatsBox() {
     const displayPrice = web3.utils.fromWei(
       this.state.eggPrice.toString(),
       'ether',
     );
-
     const displaySupply = numeral(this.state.genZeroEggSupply).format('0,0');
+
     return (
       <div>
         <Header
@@ -90,74 +203,12 @@ class EggStore extends React.Component {
         />
         <Segment attached compact loading={this.state.loading} size="small">
           <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
-            <Grid.Row>
-              <Grid.Column textAlign="right">
-                <Header as="h3" style={{ fontWeight: 'lighter' }}>
-                  Current Egg Price
-                </Header>
-              </Grid.Column>
-              <Grid.Column>
-                <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
-                  {displayPrice} ETH
-                </Header>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column textAlign="right">
-                <Header as="h3" style={{ fontWeight: 'lighter' }}>
-                  Egg Supply Remaining
-                </Header>
-              </Grid.Column>
-              <Grid.Column>
-                <Header as="h1" color="green" style={{ fontWeight: 'lighter' }}>
-                  {displaySupply} Eggs
-                </Header>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column textAlign="right">
-                <Header
-                  as="h3"
-                  style={{ fontWeight: 'lighter' }}
-                  content="Quantity"
-                />
-              </Grid.Column>
-              <Grid.Column>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Button
-                    compact
-                    disabled={this.state.quantity <= 1}
-                    icon="minus"
-                    size="mini"
-                    style={{ margin: 0 }}
-                    onClick={() =>
-                      this.setState({ quantity: this.state.quantity - 1 })
-                    }
-                  />
-                  <Header
-                    as="strong"
-                    color="green"
-                    style={{
-                      fontWeight: 'lighter',
-                      margin: '0 7px',
-                      fontSize: '2rem',
-                    }}
-                    content={this.state.quantity}
-                  />
-                  <Button
-                    compact
-                    disabled={
-                      this.state.quantity === this.state.genZeroEggSupply
-                    }
-                    icon="plus"
-                    size="mini"
-                    onClick={() =>
-                      this.setState({ quantity: this.state.quantity + 1 })
-                    }
-                  />
-                </div>
-              </Grid.Column>
-            </Grid.Row>
+            {this.renderStatRow('Current Egg Price', `${displayPrice} ETH`)}
+            {this.renderStatRow(
+              'Egg Supply Remaining',
+              `${displaySupply} Eggs`,
+            )}
+            {this.renderQuantityRow()}
             <Grid.Row>
               <Message info compact style={{ margin: '0 21px' }}>
                 <Message.Header>No More Eggs?</Message.Header>
@@ -167,12 +218,12 @@ class EggStore extends React.Component {
                 </p>
               </Message>
             </Grid.Row>
+            {this.renderMessages()}
           </Grid>
         </Segment>
         <Button
           attached="bottom"
           loading={this.state.loading}
-          // disabled={this.state.loading}
           onClick={this.buyGenZeroEggs}
           color="green"
         >

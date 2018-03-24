@@ -4,6 +4,7 @@ module.exports = function(deployer) {
   var k = KryptomonKore.at(KryptomonKore.address);
 
   // Add all 150 species (except Krypto God).
+
   k.addSpecies(87, 72, 111, 103, 87, 146, 1, 259200, 2, 1296000, 3);
   k.addSpecies(100, 87, 133, 118, 102, 174, 1, 345600, 3, 1728000, 4);
   k.addSpecies(131, 107, 166, 155, 127, 218, 1, 432000, 0, 2160000, 5);

@@ -10,13 +10,10 @@ import TestBed from 'pages/TestBed';
 import MetaMask from 'pages/MetaMask';
 import NotFound from 'pages/NotFound';
 import MyKryptomon from 'pages/MyKryptomon';
-import ViewEgg from 'pages/ViewEgg';
+import ViewGenZeroEgg from 'pages/ViewGenZeroEgg';
 import ViewKryptomon from 'pages/ViewKryptomon';
 import Bestiary from 'pages/Bestiary';
-
-// TODO: Remove when we get a real getting started page
-import GettingStarted from 'misc/GettingStarted';
-
+import FAQ from 'pages/FAQ';
 import ROUTES from 'constants/Routes';
 
 const Root = () => (
@@ -26,19 +23,19 @@ const Root = () => (
         <Route path={ROUTES.HOME} exact component={Home} />
         <Route path={ROUTES.METAMASK} component={MetaMask} />
         <Route path={ROUTES.BESTIARY} component={Bestiary} />
-        <Route path={ROUTES.FAQ} component={GettingStarted} />
+        <Route path={ROUTES.FAQ} component={FAQ} />
         {/* Below should require log in!! */}
         <Route path={ROUTES.EGG_STORE} component={EggStore} />
         <Route path={ROUTES.MY_KRYPTOMON} component={MyKryptomon} />
         <Route
           exact
           path={ROUTES.VIEW_GEN_ZERO_EGG}
-          render={(props) => <ViewEgg genZero {...props} />}
+          component={ViewGenZeroEgg}
         />
-        <Route
+        {/* <Route
           path={ROUTES.VIEW_EGG + '/:eggId'}
-          render={(props) => <ViewEgg genZero={false} {...props} />}
-        />
+          component={ViewEgg}
+        /> */}
         <Route
           path={ROUTES.VIEW_KRYPTOMON + '/:kryptomonId'}
           component={ViewKryptomon}

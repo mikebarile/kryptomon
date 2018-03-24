@@ -149,7 +149,6 @@ class TestBed extends React.Component {
         <br />
         <br />
         <br />
-        <br />
         <Button onClick={this.refreshState}>Refresh State</Button>
         <br />
       </Container>

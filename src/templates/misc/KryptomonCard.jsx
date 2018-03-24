@@ -68,7 +68,7 @@ class KryptomonCard extends React.Component {
       <Card link={this.props.link} onClick={this.props.onClick}>
         <Image
           src={this.state.imgSrc}
-          style={{ width: '100%', height: 'auto', minHeight: 150 }}
+          style={{ width: '100%', height: 'auto', minHeight: 283 }}
           label={{
             color: rarity.color,
             content: rarity.name,

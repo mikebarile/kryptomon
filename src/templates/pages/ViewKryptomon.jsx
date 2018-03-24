@@ -19,7 +19,7 @@ import faker from 'faker';
 import KryptomonKore from 'src/KryptomonKore';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
 import { getImageFromSpeciesId, getEvolutionInformation } from 'src/util';
-import { Species, rarityById } from 'constants/Kryptomon';
+import { Species, rarityById, typeByName } from 'constants/Kryptomon';
 import FixedMenu from 'misc/FixedMenu';
 
 // Unpack KryptomonKore methods
@@ -175,6 +175,24 @@ class ViewKryptomon extends React.Component {
     return null;
   }
 
+  renderTypes() {
+    const types = (
+      <div>
+        {this.state.speciesTypes.map((type, idx) => (
+          <Label
+            key={idx}
+            basic
+            color={typeByName[type].color}
+            content={type}
+            horizontal
+          />
+        ))}
+      </div>
+    );
+
+    return this.renderStatRow('Types', types);
+  }
+
   renderStatsBox() {
     const { kryptomon, loading, species, stats } = this.state;
     const rarity = rarityById[species._rarity] || {};
@@ -219,6 +237,7 @@ class ViewKryptomon extends React.Component {
             {this.renderStatRow('Health', stats.hitPoints)}
             {this.renderStatRow('Speed', stats.speed)}
             {this.renderEvolutionRow()}
+            {this.renderTypes()}
           </Grid>
         </Segment>
         {this.isReadyToEvolve() ? (

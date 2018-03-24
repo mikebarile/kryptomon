@@ -78,7 +78,16 @@ class Home extends React.Component {
         >
           <Segment
             textAlign="center"
-            style={{ minHeight: 700, padding: '1em 0' }}
+            style={{
+              minHeight: 700,
+              padding: '1em 0',
+              background: 'black',
+              backgroundImage:
+                'url(https://res.cloudinary.com/adoundakov/image/upload/b_rgb:000000,e_blur:50,o_50/v1521916244/banner_glooqj.png)',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundSize: 'contain',
+            }}
             inverted
             vertical
           >

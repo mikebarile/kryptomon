@@ -200,7 +200,6 @@ class ViewGenZeroEgg extends React.Component {
         />
         <Segment attached compact loading={this.state.loading} size="small">
           <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
-            {this.renderStatRow('Stuff', 'STUFF')}
             {this.renderQuantityRow()}
             {this.renderMessages()}
           </Grid>

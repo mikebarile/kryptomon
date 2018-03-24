@@ -37,13 +37,15 @@ class ViewGenZeroEgg extends React.Component {
     trxn: '',
     quantity: 1,
     possibleContents: this.getPossibleContents(),
+    network: 'private',
   };
 
   async componentDidMount() {
     this.checker = MetaMaskChecker(this.props.history);
     const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType();
     const ownedGenZeroEggs = await genZeroEggBalanceOf(accounts[0]).call();
-    this.setState({ ownedGenZeroEggs });
+    this.setState({ ownedGenZeroEggs, network });
   }
 
   componentWillUnmount() {
@@ -153,7 +155,7 @@ class ViewGenZeroEgg extends React.Component {
   }
 
   renderMessages() {
-    const { error, trxn } = this.state;
+    const { error, trxn, network } = this.state;
     if (error) {
       return (
         <Grid.Row centered textAlign="left">
@@ -166,6 +168,14 @@ class ViewGenZeroEgg extends React.Component {
       );
     }
     if (!error && trxn.length > 0) {
+      const generateEtherscan = (trxn) => {
+        if (network === 'main') {
+          return `https://etherscan.io/tx/${trxn}`;
+        }
+        if (network === 'rinkeby') {
+          return `https://rinkeby.etherscan.io/tx/${trxn}`;
+        }
+      };
       return (
         <Grid.Row centered textAlign="left">
           <Message success compact style={{ margin: '0 21px' }}>
@@ -175,7 +185,9 @@ class ViewGenZeroEgg extends React.Component {
             </Message.Header>
             <p>
               Track {this.state.quantity === 1 ? 'its' : 'their'} progress{' '}
-              <a href={`https://etherscan.io/tx/${trxn}`}>here</a>.
+              <a href={generateEtherscan(trxn)} target="_blank">
+                here
+              </a>.
               <br />
               <br />
               Once hatched, visit

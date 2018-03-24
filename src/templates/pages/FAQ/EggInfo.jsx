@@ -13,7 +13,7 @@ const panels = times(3, () => ({
 
 export default function EggInfo() {
   return (
-    <Segment vertical>
+    <Segment vertical basic>
       <Container text>
         <Header attached="top" as="h3">
           What is an Egg?

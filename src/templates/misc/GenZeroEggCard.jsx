@@ -9,7 +9,12 @@ export default function GenZeroEggCard({ link, onClick, quantity }) {
   return (
     <Card link={link} onClick={onClick}>
       <Label
-        style={{ position: 'absolute', right: 0, bottom: 50, fontSize: 18 }}
+        style={{
+          position: 'absolute',
+          right: 0,
+          bottom: 50,
+          fontSize: 18,
+        }}
         color="red"
         content={'x ' + quantity}
         horizontal

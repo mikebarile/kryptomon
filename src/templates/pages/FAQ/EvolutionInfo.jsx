@@ -11,7 +11,7 @@ const panels = times(3, () => ({
 
 export default function EvolutionInfo() {
   return (
-    <Segment vertical>
+    <Segment vertical basic>
       <Container text>
         <Header attached="top" as="h3">
           How to Evolve Kryptomon?

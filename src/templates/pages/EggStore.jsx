@@ -42,17 +42,18 @@ class EggStore extends React.Component {
       errorMessage: '',
       trxn: '',
       quantity: 1,
+      network: 'private', // default to main?
     };
     this.buyGenZeroEggs = this.buyGenZeroEggs.bind(this);
   }
 
   async componentDidMount() {
     this.checker = MetaMaskChecker(this.props.history);
-
+    const network = await web3.eth.net.getNetworkType();
     const eggPrice = await genZeroEggPrice().call();
     const genZeroEggSupply = await unassignedGenZeroEggs().call();
 
-    this.setState({ eggPrice, genZeroEggSupply, loading: false });
+    this.setState({ eggPrice, genZeroEggSupply, loading: false, network });
   }
 
   async buyGenZeroEggs() {
@@ -153,7 +154,7 @@ class EggStore extends React.Component {
   }
 
   renderMessages() {
-    const { error, trxn } = this.state;
+    const { error, trxn, network } = this.state;
     if (error) {
       return (
         <Grid.Row>
@@ -166,13 +167,24 @@ class EggStore extends React.Component {
       );
     }
     if (!error && trxn.length > 0) {
+      const generateEtherscan = (trxn) => {
+        if (network === 'main') {
+          return `https://etherscan.io/tx/${trxn}`;
+        }
+        if (network === 'rinkeby') {
+          return `https://rinkeby.etherscan.io/tx/${trxn}`;
+        }
+      };
       return (
         <Grid.Row>
           <Message success compact style={{ margin: '0 21px' }}>
             <Message.Header>Yay!</Message.Header>
             <p>
               Your eggs are on their way! You can follow their journey by
-              visiting <a href={`https://etherscan.io/tx/${trxn}`}>this </a>
+              visiting{' '}
+              <a href={generateEtherscan(trxn)} target="_blank">
+                this{' '}
+              </a>
               Etherscan.io link.
               <br />
               <br />

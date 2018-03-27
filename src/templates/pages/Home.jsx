@@ -26,7 +26,13 @@ class Home extends React.Component {
   renderTopMenu() {
     return (
       <Container>
-        <Menu inverted secondary size="large">
+        <Menu
+          inverted
+          borderless
+          secondary
+          size="large"
+          style={{ paddingTop: '2px' }}
+        >
           <Menu.Item as={Link} to={ROUTES.HOME} header>
             <Image
               size="mini"
@@ -37,7 +43,7 @@ class Home extends React.Component {
               Kryptomon
             </Header>
           </Menu.Item>
-          <Container>
+          <Menu.Menu position="right">
             <Menu.Item as={Link} to={ROUTES.MY_KRYPTOMON}>
               My Kryptomon
             </Menu.Item>
@@ -47,18 +53,12 @@ class Home extends React.Component {
             <Menu.Item as={Link} to={ROUTES.FAQ}>
               How It Works
             </Menu.Item>
-            <Menu.Item position="right">
-              <Button
-                as={Link}
-                to={ROUTES.EGG_STORE}
-                color="green"
-                inverted
-                style={{ marginLeft: '0.5em' }}
-              >
+            <Menu.Item>
+              <Button as={Link} to={ROUTES.EGG_STORE} color="green" inverted>
                 Buy Eggs
               </Button>
             </Menu.Item>
-          </Container>
+          </Menu.Menu>
         </Menu>
       </Container>
     );
@@ -80,7 +80,7 @@ class Home extends React.Component {
             textAlign="center"
             style={{
               minHeight: 700,
-              padding: '1em 0',
+              padding: '0',
               background: 'black',
               backgroundImage:
                 // eslint-disable-next-line

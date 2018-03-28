@@ -5,8 +5,8 @@ import {
   Divider,
   Segment,
   Header,
-  Button,
   Grid,
+  Pagination,
 } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -33,9 +33,10 @@ class MyKryptomon extends React.Component {
     ownedGenZeroEggs: 0,
     ownageLoading: true,
     gridLoading: true,
-    startIdx: 0,
     perPage: 15,
     totalLength: 0,
+    activePage: 1,
+    totalPages: 1,
     showEggs: true,
   };
 
@@ -55,17 +56,24 @@ class MyKryptomon extends React.Component {
     const ownedEggs = await getEggIdsForAddress(account).call();
     const ownedGenZeroEggs = await genZeroEggBalanceOf(account).call();
 
+    const totalLength =
+      ownedKryptomon.length +
+      ownedEggs.length +
+      (Number(ownedGenZeroEggs) > 0 ? 1 : 0);
+
     this.setState({
       ownedKryptomon,
       ownedEggs,
       ownedGenZeroEggs,
-      totalLength:
-        ownedKryptomon.length +
-        ownedEggs.length +
-        (Number(ownedGenZeroEggs) > 0 ? 1 : 0),
+      totalLength,
+      totalPages: Math.ceil(totalLength / this.state.perPage),
       ownageLoading: false,
       gridLoading: false,
     });
+  };
+
+  handlePagination = (e, { activePage }) => {
+    this.setState({ activePage });
   };
 
   renderOwnageStats() {
@@ -99,7 +107,7 @@ class MyKryptomon extends React.Component {
     if (
       this.state.showEggs &&
       this.state.ownedGenZeroEggs > 0 &&
-      this.state.startIdx === 0
+      this.state.activePage === 1
     ) {
       return (
         <Grid.Column>
@@ -119,11 +127,23 @@ class MyKryptomon extends React.Component {
   }
 
   renderKryptomon() {
-    const { startIdx, perPage, ownedKryptomon, ownedGenZeroEggs } = this.state;
+    const {
+      activePage,
+      perPage,
+      ownedKryptomon,
+      ownedGenZeroEggs,
+    } = this.state;
+
+    let startIdx = (activePage - 1) * perPage;
     let totalPerPage = perPage;
-    if (startIdx === 0 && ownedGenZeroEggs > 0) {
-      totalPerPage -= 1;
+    if (ownedGenZeroEggs > 0) {
+      if (activePage === 1) {
+        totalPerPage -= 1;
+      } else {
+        startIdx -= 1;
+      }
     }
+
     return ownedKryptomon
       .slice(startIdx, startIdx + totalPerPage)
       .map((kryptomonId) => (
@@ -145,13 +165,7 @@ class MyKryptomon extends React.Component {
     //   this.setState({ showEggs: !this.state.showEggs });
     //   console.log(event.data);
     // };
-    const {
-      gridLoading,
-      startIdx,
-      perPage,
-      totalLength,
-      ownedKryptomon,
-    } = this.state;
+    const { gridLoading } = this.state;
     return (
       <div style={{ marginTop: '2em' }}>
         <Header as="h1" attached="top">
@@ -164,34 +178,11 @@ class MyKryptomon extends React.Component {
             {this.renderKryptomon()}
           </Grid>
         </Segment>
-        <Segment attached="bottom" clearing>
-          <Button
-            floated="left"
-            onClick={() =>
-              this.setState({
-                startIdx: startIdx - perPage,
-              })
-            }
-            content="Previous"
-            icon="left arrow"
-            labelPosition="left"
-            disabled={startIdx === 0}
-          />
-          <Button
-            floated="right"
-            onClick={() =>
-              this.setState({
-                startIdx: startIdx + perPage,
-              })
-            }
-            content="Next"
-            icon="right arrow"
-            labelPosition="right"
-            disabled={
-              totalLength <= 9 ||
-              ownedKryptomon.slice(startIdx, startIdx + perPage).length <
-                perPage
-            }
+        <Segment attached="bottom" textAlign="center" basic>
+          <Pagination
+            activePage={this.state.activePage}
+            onPageChange={this.handlePagination}
+            totalPages={this.state.totalPages}
           />
         </Segment>
       </div>
@@ -241,7 +232,7 @@ class MyKryptomon extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ marginBottom: 100 }}>
         <FixedMenu />
         <Container style={{ marginTop: 84 }}>
           {this.renderOwnageStats()}

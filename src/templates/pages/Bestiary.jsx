@@ -1,5 +1,11 @@
 import React from 'react';
-import { Container, Segment, Header, Button, Grid } from 'semantic-ui-react';
+import {
+  Container,
+  Segment,
+  Header,
+  Grid,
+  Pagination,
+} from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { range } from 'lodash';
 
@@ -11,12 +17,18 @@ class Bestiary extends React.Component {
     allSpecies: range(150),
     gridLoading: false,
     perPage: 15,
-    startIdx: 0,
+    activePage: 1,
     totalLength: 150,
+    totalPages: 10, // totalLength / perPage,
+  };
+
+  handlePagination = (e, { activePage }) => {
+    this.setState({ activePage });
   };
 
   renderKryptomon() {
-    const { startIdx, perPage, allSpecies } = this.state;
+    const { activePage, perPage, allSpecies } = this.state;
+    const startIdx = (activePage - 1) * perPage;
     return allSpecies.slice(startIdx, startIdx + perPage).map((speciesId) => (
       <Grid.Column key={speciesId}>
         <BestiaryCard speciesId={speciesId} />
@@ -25,15 +37,9 @@ class Bestiary extends React.Component {
   }
 
   render() {
-    const {
-      gridLoading,
-      startIdx,
-      totalLength,
-      allSpecies,
-      perPage,
-    } = this.state;
+    const { gridLoading, activePage, totalPages } = this.state;
     return (
-      <div>
+      <div style={{ marginBottom: 100 }}>
         <FixedMenu />
         <Container style={{ marginTop: 84 }}>
           <Header as="h1" attached="top">
@@ -44,33 +50,11 @@ class Bestiary extends React.Component {
               {this.renderKryptomon()}
             </Grid>
           </Segment>
-          <Segment attached="bottom" clearing>
-            <Button
-              floated="left"
-              onClick={() =>
-                this.setState({
-                  startIdx: startIdx - perPage,
-                })
-              }
-              content="Previous"
-              icon="left arrow"
-              labelPosition="left"
-              disabled={startIdx === 0}
-            />
-            <Button
-              floated="right"
-              onClick={() =>
-                this.setState({
-                  startIdx: startIdx + perPage,
-                })
-              }
-              content="Next"
-              icon="right arrow"
-              labelPosition="right"
-              disabled={
-                totalLength <= 9 ||
-                allSpecies.slice(startIdx, startIdx + perPage).length < perPage
-              }
+          <Segment attached="bottom" basic textAlign="center">
+            <Pagination
+              activePage={activePage}
+              onPageChange={this.handlePagination}
+              totalPages={totalPages}
             />
           </Segment>
         </Container>

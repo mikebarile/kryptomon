@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image, Label } from 'semantic-ui-react';
+import { Card, Image, Label, Dimmer, Header, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 
 import { getImageFromSpeciesId } from 'src/util';
@@ -30,8 +30,35 @@ class BestiaryCard extends React.Component {
     });
   }
 
+  renderExtinctCard() {
+    return (
+      <Dimmer.Dimmable as={Card} dimmed blurring>
+        <Dimmer active>
+          <Header icon as="h2" inverted>
+            <Icon name="question" />
+            Coming Soon!
+          </Header>
+        </Dimmer>
+
+        <Image style={{ width: '100%', height: 'auto', minHeight: 283 }} />
+        <Card.Content>
+          <Card.Header>???</Card.Header>
+          <Card.Description>
+            {this.state.speciesTypes.map((type, idx) => (
+              <Label key={idx} basic color="grey" content="???" horizontal />
+            ))}
+          </Card.Description>
+        </Card.Content>
+      </Dimmer.Dimmable>
+    );
+  }
+
   render() {
     const rarity = rarityById[this.state.species._rarity] || {};
+    if (this.state.species.isExtinct) {
+      return this.renderExtinctCard();
+    }
+
     return (
       <Card
         link

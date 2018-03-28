@@ -60,7 +60,9 @@ class MyKryptomon extends React.Component {
       ownedEggs,
       ownedGenZeroEggs,
       totalLength:
-        ownedKryptomon.length + ownedEggs.length + Number(ownedGenZeroEggs),
+        ownedKryptomon.length +
+        ownedEggs.length +
+        (Number(ownedGenZeroEggs) > 0 ? 1 : 0),
       ownageLoading: false,
       gridLoading: false,
     });
@@ -117,9 +119,13 @@ class MyKryptomon extends React.Component {
   }
 
   renderKryptomon() {
-    const { startIdx, perPage, ownedKryptomon } = this.state;
+    const { startIdx, perPage, ownedKryptomon, ownedGenZeroEggs } = this.state;
+    let totalPerPage = perPage;
+    if (startIdx === 0 && ownedGenZeroEggs > 0) {
+      totalPerPage -= 1;
+    }
     return ownedKryptomon
-      .slice(startIdx, startIdx + perPage)
+      .slice(startIdx, startIdx + totalPerPage)
       .map((kryptomonId) => (
         <Grid.Column key={kryptomonId}>
           <KryptomonCard

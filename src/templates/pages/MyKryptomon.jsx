@@ -183,6 +183,8 @@ class MyKryptomon extends React.Component {
             activePage={this.state.activePage}
             onPageChange={this.handlePagination}
             totalPages={this.state.totalPages}
+            firstItem={null}
+            lastItem={null}
           />
         </Segment>
       </div>

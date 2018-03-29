@@ -55,6 +55,8 @@ class Bestiary extends React.Component {
               activePage={activePage}
               onPageChange={this.handlePagination}
               totalPages={totalPages}
+              firstItem={null}
+              lastItem={null}
             />
           </Segment>
         </Container>

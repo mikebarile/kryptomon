@@ -77,7 +77,7 @@ class ViewKryptomon extends React.Component {
 
   async getKryptomonDetails() {
     const kryptomon = await getKryptomon(
-      this.props.match.params.kryptomonId,
+      this.props.match.params.kryptomonId
     ).call();
     this.setState({
       kryptomon,
@@ -98,10 +98,10 @@ class ViewKryptomon extends React.Component {
     // Compute Kryptomon stats and store for rendering later
     const { kryptomon, species } = this.state;
     const evolutionTime = moment.unix(
-      Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve),
+      Number(kryptomon.birthTimeStamp) + Number(species._timeToEvolve)
     );
     const breedingTime = moment.unix(
-      Number(kryptomon.lastBred) + Number(species._breedingCooldown),
+      Number(kryptomon.lastBred) + Number(species._breedingCooldown)
     );
 
     const stats = {
@@ -168,7 +168,7 @@ class ViewKryptomon extends React.Component {
       } else {
         return this.renderStatRow(
           'Ready to Evolve',
-          this.state.evolutionTime.from(moment()),
+          this.state.evolutionTime.from(moment())
         );
       }
     }
@@ -185,6 +185,7 @@ class ViewKryptomon extends React.Component {
             color={typeByName[type].color}
             content={type}
             horizontal
+            style={{ margin: 2 }}
           />
         ))}
       </div>
@@ -228,7 +229,7 @@ class ViewKryptomon extends React.Component {
             {this.renderStatRow('Power Rating', kryptomon.geneticValue)}
             {this.renderStatRow(
               'Born',
-              moment.unix(kryptomon.birthTimeStamp).format('MM/DD/YY'),
+              moment.unix(kryptomon.birthTimeStamp).format('MM/DD/YY')
             )}
             {this.renderStatRow('Attack', stats.attack)}
             {this.renderStatRow('Defense', stats.defense)}

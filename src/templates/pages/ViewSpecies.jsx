@@ -94,6 +94,7 @@ class ViewKryptomon extends React.Component {
             color={typeByName[type].color}
             content={type}
             horizontal
+            style={{ margin: 2 }}
           />
         ))}
       </div>

@@ -1,6 +1,7 @@
 pragma solidity ^0.4.11;
 import './KryptoGodController.sol';
 import '../libraries/SafeMath.sol';
+import '../libraries/Util.sol';
 
 contract KryptomonDefinitions is KryptoGodController {
   using SafeMath for uint256;
@@ -177,6 +178,7 @@ contract KryptomonDefinitions is KryptoGodController {
   function random(uint256 _seed) internal view returns(uint256) {
     return uint256(keccak256(
       _seed,
+      block.blockhash(block.number - Util.min(block.number - 1, 255)),
       msg.gas,
       msg.sender,
       block.timestamp

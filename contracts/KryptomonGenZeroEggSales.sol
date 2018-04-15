@@ -160,11 +160,10 @@ contract KryptomonGenZeroEggSales is KryptomonDefinitions {
       genZeroEggBalances[msg.sender]
         = genZeroEggBalances[msg.sender].sub(1);
       uint256 kryptomonId = createGenZeroKryptomon(i);
-      Debug("got Id");
       kryptomonIndexToOwner[kryptomonId] = msg.sender;
       totalGenZeroEggs = totalGenZeroEggs.sub(1);
       GenZeroEggHatched(msg.sender);
-      KryptomonAssigned(msg.sender, 1/*kryptomonId*/);
+      KryptomonAssigned(msg.sender, kryptomonId);
     }
   }
 

@@ -12,7 +12,7 @@ import {
   Button,
   Message,
 } from 'semantic-ui-react';
-import { times, random } from 'lodash';
+import { sampleSize, reject } from 'lodash';
 
 import faker from 'faker';
 
@@ -53,14 +53,10 @@ class ViewGenZeroEgg extends React.Component {
   }
 
   getPossibleContents() {
-    const possibleContents = [];
-    times(6, () => {
-      const speciesId = random(1, Species.length);
-      possibleContents.push({
-        speciesId,
-        name: Species[speciesId].name,
-        src: getImageFromSpeciesId(speciesId),
-      });
+    const possibleIds = reject(Species, 'isExtinct');
+    const possibleContents = sampleSize(possibleIds, 6).map((sp) => {
+      sp.src = getImageFromSpeciesId(sp.id);
+      return sp;
     });
     return possibleContents;
   }
@@ -290,18 +286,3 @@ class ViewGenZeroEgg extends React.Component {
 }
 
 export default withRouter(ViewGenZeroEgg);
-
-// Regular Egg FAQ Section
-{
-  /* <div>
-              <Divider
-                as="h1"
-                className="header"
-                horizontal
-                style={{ margin: 24, textTransform: 'uppercase' }}
-              >
-                Lineage
-              </Divider>
-              <p>{faker.lorem.paragraphs()}</p>
-            </div> */
-}

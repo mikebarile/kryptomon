@@ -9,15 +9,20 @@ import {
   Message,
   Container,
   Divider,
+  Card,
+  Popup,
 } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import { reject, sampleSize } from 'lodash';
 
 import faker from 'faker';
 
 import web3 from 'src/web3';
 import KryptomonKore from 'src/KryptomonKore';
 import ROUTES from 'constants/Routes';
+import { Species } from 'constants/Kryptomon';
+import { getImageFromSpeciesId } from 'src/util';
 import MetaMaskChecker from 'misc/MetaMaskChecker';
 
 import EggImg from 'images/logo2.png';
@@ -43,6 +48,7 @@ class EggStore extends React.Component {
       trxn: '',
       quantity: 1,
       network: 'private', // default to main?
+      possibleContents: this.getPossibleContents(),
     };
     this.buyGenZeroEggs = this.buyGenZeroEggs.bind(this);
   }
@@ -54,6 +60,15 @@ class EggStore extends React.Component {
     const genZeroEggSupply = await unassignedGenZeroEggs().call();
 
     this.setState({ eggPrice, genZeroEggSupply, loading: false, network });
+  }
+
+  getPossibleContents() {
+    const possibleIds = reject(Species, 'isExtinct');
+    const possibleContents = sampleSize(possibleIds, 6).map((sp) => {
+      sp.src = getImageFromSpeciesId(sp.id);
+      return sp;
+    });
+    return possibleContents;
   }
 
   async buyGenZeroEggs() {
@@ -201,7 +216,7 @@ class EggStore extends React.Component {
   renderEggStatsBox() {
     const displayPrice = web3.utils.fromWei(
       this.state.eggPrice.toString(),
-      'ether',
+      'ether'
     );
     const displaySupply = numeral(this.state.genZeroEggSupply).format('0,0');
 
@@ -218,7 +233,7 @@ class EggStore extends React.Component {
             {this.renderStatRow('Current Egg Price', `${displayPrice} ETH`)}
             {this.renderStatRow(
               'Egg Supply Remaining',
-              `${displaySupply} Eggs`,
+              `${displaySupply} Eggs`
             )}
             {this.renderQuantityRow()}
             <Grid.Row>
@@ -260,13 +275,13 @@ class EggStore extends React.Component {
           {this.renderEggStatsBox()}
           <Image src={EggImg} size="medium" style={{ padding: '34px' }} />
         </div>
-        <Segment style={{ padding: '8em 0em' }} vertical>
+        <Segment style={{ padding: '8em 0' }} vertical>
           <Container text>
             <Divider
               as="h1"
               className="header"
               horizontal
-              style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+              style={{ margin: '2em 0', textTransform: 'uppercase' }}
             >
               What is an Egg?
             </Divider>
@@ -275,11 +290,33 @@ class EggStore extends React.Component {
               as="h1"
               className="header"
               horizontal
-              style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+              style={{ margin: '2em 0', textTransform: 'uppercase' }}
             >
               How do Generations work?
             </Divider>
             <p>{faker.lorem.paragraphs()}</p>
+            <Divider
+              as="h1"
+              className="header"
+              horizontal
+              style={{ margin: '2em 0', textTransform: 'uppercase' }}
+            >
+              Possible Contents
+            </Divider>
+            <Card.Group itemsPerRow={6}>
+              {this.state.possibleContents.map((el, idx) => (
+                <Popup
+                  key={idx}
+                  trigger={
+                    <Card>
+                      <Image src={el.src} style={{ background: 'none' }} />
+                    </Card>
+                  }
+                >
+                  {el.name}
+                </Popup>
+              ))}
+            </Card.Group>
           </Container>
         </Segment>
       </div>

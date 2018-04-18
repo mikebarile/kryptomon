@@ -11,8 +11,11 @@ import {
   Header,
   Button,
   Message,
+  Label,
+  Loader,
+  Dimmer,
 } from 'semantic-ui-react';
-import { times, random } from 'lodash';
+import { sampleSize, reject } from 'lodash';
 
 import faker from 'faker';
 
@@ -31,10 +34,12 @@ const { hatchGenZeroEgg, genZeroEggBalanceOf } = KryptomonKore.methods;
 
 class ViewGenZeroEgg extends React.Component {
   state = {
-    loading: false,
+    loading: true,
     error: false,
     ownedGenZeroEggs: 0,
     trxn: '',
+    receipt: undefined,
+    inTransaction: false,
     quantity: 1,
     possibleContents: this.getPossibleContents(),
     network: 'private',
@@ -45,7 +50,7 @@ class ViewGenZeroEgg extends React.Component {
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType();
     const ownedGenZeroEggs = await genZeroEggBalanceOf(accounts[0]).call();
-    this.setState({ ownedGenZeroEggs, network });
+    this.setState({ ownedGenZeroEggs, network, loading: false });
   }
 
   componentWillUnmount() {
@@ -53,35 +58,45 @@ class ViewGenZeroEgg extends React.Component {
   }
 
   getPossibleContents() {
-    const possibleContents = [];
-    times(6, () => {
-      const speciesId = random(1, Species.length);
-      possibleContents.push({
-        speciesId,
-        name: Species[speciesId].name,
-        src: getImageFromSpeciesId(speciesId),
-      });
+    const possibleIds = reject(Species, 'isExtinct');
+    const possibleContents = sampleSize(possibleIds, 6).map((sp) => {
+      sp.src = getImageFromSpeciesId(sp.id);
+      return sp;
     });
     return possibleContents;
   }
 
   hatchEgg = async () => {
-    this.setState({ loading: true, error: false });
+    this.setState({
+      loading: true,
+      error: false,
+      receipt: undefined,
+      inTransaction: true,
+      trxn: '',
+    });
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
     hatchGenZeroEgg(this.state.quantity)
       .send({ from: account })
-      .then(({ transactionHash }) => {
+      .on('transactionHash', (transactionHash) => {
         this.setState({
-          loading: false,
-          error: false,
           trxn: transactionHash,
         });
       })
-      .catch((err) => {
+      .on('receipt', (receipt) => {
+        this.setState({
+          loading: false,
+          error: false,
+          inTransaction: false,
+          receipt,
+        });
+      })
+      .on('error', (err) => {
         this.setState({
           loading: false,
           error: true,
+          inTransaction: false,
+          receipt: undefined,
           errorMessage: err.message,
         });
       });
@@ -101,6 +116,29 @@ class ViewGenZeroEgg extends React.Component {
           </Header>
         </Grid.Column>
       </Grid.Row>
+    );
+  }
+
+  renderDimmer() {
+    let dimmerContent = '';
+    if (this.state.inTransaction) {
+      if (this.state.trxn.length > 0) {
+        dimmerContent = 'Confirming transaction with blockchain';
+      } else {
+        dimmerContent = 'Waiting for transaction id';
+      }
+    }
+
+    return (
+      <Dimmer active={this.state.loading}>
+        <Loader
+          indeterminate={
+            this.state.inTransaction && this.state.trxn.length === 0
+          }
+        >
+          {dimmerContent}
+        </Loader>
+      </Dimmer>
     );
   }
 
@@ -155,7 +193,7 @@ class ViewGenZeroEgg extends React.Component {
   }
 
   renderMessages() {
-    const { error, trxn, network } = this.state;
+    const { error, trxn, network, receipt } = this.state;
     if (error) {
       return (
         <Grid.Row centered textAlign="left">
@@ -167,30 +205,27 @@ class ViewGenZeroEgg extends React.Component {
         </Grid.Row>
       );
     }
-    if (!error && trxn.length > 0) {
-      const generateEtherscan = (trxn) => {
-        if (network === 'main') {
-          return `https://etherscan.io/tx/${trxn}`;
-        }
-        if (network === 'rinkeby') {
-          return `https://rinkeby.etherscan.io/tx/${trxn}`;
-        }
-      };
+    if (!error && typeof receipt === 'object') {
+      let etherscanUrl = `https://etherscan.io/tx/${trxn}`;
+      if (network === 'rinkeby') {
+        // Use rinkeby URL instead
+        etherscanUrl = `https://rinkeby.etherscan.io/tx/${trxn}`;
+      }
       return (
         <Grid.Row centered textAlign="left">
           <Message success compact style={{ margin: '0 21px' }}>
             <Message.Header>
-              Your Kryptomon {this.state.quantity === 1 ? 'is' : 'are'}{' '}
-              hatching!
+              Your Kryptomon {this.state.quantity === 1 ? 'has' : 'have'}{' '}
+              hatched!
             </Message.Header>
             <p>
-              Track {this.state.quantity === 1 ? 'its' : 'their'} progress{' '}
-              <a href={generateEtherscan(trxn)} target="_blank">
+              View your confirmation{' '}
+              <a href={etherscanUrl} target="_blank">
                 here
               </a>.
               <br />
               <br />
-              Once hatched, visit
+              Visit
               <Link to={ROUTES.MY_KRYPTOMON}> My Kryptomon</Link> to meet{' '}
               {this.state.quantity === 1 ? 'it' : 'them'}!
             </p>
@@ -204,18 +239,29 @@ class ViewGenZeroEgg extends React.Component {
   renderEggStatsBox() {
     return (
       <div>
-        <Header
-          textAlign="center"
-          attached="top"
-          as="h1"
-          content="Kryptomon Egg"
-        />
-        <Segment attached compact loading={this.state.loading} size="small">
+        <Header textAlign="center" attached="top" as="h1">
+          Kryptomon Egg
+          <Label
+            style={{ fontSize: 18, marginLeft: 14 }}
+            horizontal
+            color="red"
+            content={`x ${this.state.ownedGenZeroEggs}`}
+          />
+        </Header>
+        <Dimmer.Dimmable
+          as={Segment}
+          dimmed={this.state.loading}
+          attached
+          compact
+          size="small"
+          style={{ minHeight: 250 }}
+        >
+          {this.renderDimmer()}
           <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
             {this.renderQuantityRow()}
             {this.renderMessages()}
           </Grid>
-        </Segment>
+        </Dimmer.Dimmable>
         <Button
           attached="bottom"
           loading={this.state.loading}
@@ -290,18 +336,3 @@ class ViewGenZeroEgg extends React.Component {
 }
 
 export default withRouter(ViewGenZeroEgg);
-
-// Regular Egg FAQ Section
-{
-  /* <div>
-              <Divider
-                as="h1"
-                className="header"
-                horizontal
-                style={{ margin: 24, textTransform: 'uppercase' }}
-              >
-                Lineage
-              </Divider>
-              <p>{faker.lorem.paragraphs()}</p>
-            </div> */
-}

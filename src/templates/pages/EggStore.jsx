@@ -11,6 +11,8 @@ import {
   Divider,
   Card,
   Popup,
+  Loader,
+  Dimmer,
 } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -46,6 +48,8 @@ class EggStore extends React.Component {
       error: false,
       errorMessage: '',
       trxn: '',
+      inTransaction: false,
+      receipt: undefined,
       quantity: 1,
       network: 'private', // default to main?
       possibleContents: this.getPossibleContents(),
@@ -73,7 +77,13 @@ class EggStore extends React.Component {
 
   async buyGenZeroEggs() {
     const { quantity, eggPrice } = this.state;
-    this.setState({ loading: true, error: false });
+    this.setState({
+      loading: true,
+      error: false,
+      receipt: undefined,
+      trxn: '',
+      inTransaction: true,
+    });
     const accounts = await web3.eth.getAccounts();
     if (accounts[0]) {
       buyGenZeroEggs(quantity)
@@ -81,17 +91,25 @@ class EggStore extends React.Component {
           from: accounts[0],
           value: Number(eggPrice) * quantity,
         })
-        .then(({ transactionHash }) => {
+        .on('transactionHash', (transactionHash) => {
           this.setState({
-            loading: false,
-            error: false,
             trxn: transactionHash,
           });
         })
-        .catch((err) => {
+        .on('receipt', (receipt) => {
+          this.setState({
+            loading: false,
+            error: false,
+            inTransaction: false,
+            receipt,
+          });
+        })
+        .on('error', (err) => {
           this.setState({
             loading: false,
             error: true,
+            receipt: undefined,
+            inTransaction: false,
             errorMessage: err.message,
           });
         });
@@ -168,8 +186,31 @@ class EggStore extends React.Component {
     );
   }
 
+  renderDimmer() {
+    let dimmerContent = '';
+    if (this.state.inTransaction) {
+      if (this.state.trxn.length > 0) {
+        dimmerContent = 'Confirming transaction with blockchain';
+      } else {
+        dimmerContent = 'Waiting for transaction id';
+      }
+    }
+
+    return (
+      <Dimmer active={this.state.loading}>
+        <Loader
+          indeterminate={
+            this.state.inTransaction && this.state.trxn.length === 0
+          }
+        >
+          {dimmerContent}
+        </Loader>
+      </Dimmer>
+    );
+  }
+
   renderMessages() {
-    const { error, trxn, network } = this.state;
+    const { error, trxn, network, receipt } = this.state;
     if (error) {
       return (
         <Grid.Row>
@@ -181,30 +222,28 @@ class EggStore extends React.Component {
         </Grid.Row>
       );
     }
-    if (!error && trxn.length > 0) {
-      const generateEtherscan = (trxn) => {
-        if (network === 'main') {
-          return `https://etherscan.io/tx/${trxn}`;
-        }
-        if (network === 'rinkeby') {
-          return `https://rinkeby.etherscan.io/tx/${trxn}`;
-        }
-      };
+    if (!error && typeof receipt === 'object') {
+      let etherscanUrl = `https://etherscan.io/tx/${trxn}`;
+      if (network === 'rinkeby') {
+        // Use rinkeby URL instead
+        etherscanUrl = `https://rinkeby.etherscan.io/tx/${trxn}`;
+      }
       return (
         <Grid.Row>
           <Message success compact style={{ margin: '0 21px' }}>
             <Message.Header>Yay!</Message.Header>
             <p>
-              Your eggs are on their way! You can follow their journey by
-              visiting{' '}
-              <a href={generateEtherscan(trxn)} target="_blank">
+              Your eggs were delivered! You can view your transaction
+              confirmation with{' '}
+              <a href={etherscanUrl} target="_blank">
                 this{' '}
               </a>
               Etherscan.io link.
               <br />
               <br />
-              Once delivered, visit
-              <Link to={ROUTES.MY_KRYPTOMON}> My Kryptomon</Link> to see them!
+              Visit
+              <Link to={ROUTES.MY_KRYPTOMON}> My Kryptomon</Link> to hatch your
+              new eggs!
             </p>
           </Message>
         </Grid.Row>
@@ -228,7 +267,14 @@ class EggStore extends React.Component {
           as="h1"
           content="Gen Zero Eggs"
         />
-        <Segment attached compact loading={this.state.loading} size="small">
+        <Dimmer.Dimmable
+          as={Segment}
+          dimmed={this.state.loading}
+          attached
+          compact
+          size="small"
+        >
+          {this.renderDimmer()}
           <Grid columns="2" verticalAlign="middle" style={{ width: 410 }}>
             {this.renderStatRow('Current Egg Price', `${displayPrice} ETH`)}
             {this.renderStatRow(
@@ -240,14 +286,14 @@ class EggStore extends React.Component {
               <Message info compact style={{ margin: '0 21px' }}>
                 <Message.Header>No More Eggs?</Message.Header>
                 <p>
-                  You can always obtain Kryptomon directly from other users in
-                  our Marketplace! (coming soon)
+                  You can always obtain Kryptomon directly from other trainers
+                  in our Marketplace! (coming soon)
                 </p>
               </Message>
             </Grid.Row>
             {this.renderMessages()}
           </Grid>
-        </Segment>
+        </Dimmer.Dimmable>
         <Button
           attached="bottom"
           loading={this.state.loading}
